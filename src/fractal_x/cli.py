@@ -16,9 +16,6 @@ parser.add_argument(
     required=True,
 )
 
-# FIXME: these two should come from the task_list.py (name TBD file)
-
-
 
 def main():
     args = parser.parse_args()
