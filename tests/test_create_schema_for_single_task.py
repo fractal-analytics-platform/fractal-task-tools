@@ -4,7 +4,7 @@ from typing import Optional
 
 import pytest
 from devtools import debug
-from fractal_x.lib_args_schemas import create_schema_for_single_task
+from fractal_x._args_schemas import create_schema_for_single_task
 from pydantic import validate_call
 
 

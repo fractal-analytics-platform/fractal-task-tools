@@ -5,7 +5,7 @@ from typing import Optional
 
 from docstring_parser import parse as docparse
 
-from .lib_descriptions import _get_function_docstring
+from ._descriptions import _get_function_docstring
 
 
 def _get_function_description(

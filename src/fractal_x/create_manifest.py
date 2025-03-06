@@ -9,9 +9,9 @@ from importlib import import_module
 from pathlib import Path
 from typing import Optional
 
-from .lib_args_schemas import create_schema_for_single_task
-from .lib_task_docs import create_docs_info
-from .lib_task_docs import read_docs_info_from_file
+from ._args_schemas import create_schema_for_single_task
+from ._task_docs import create_docs_info
+from ._task_docs import read_docs_info_from_file
 
 
 
