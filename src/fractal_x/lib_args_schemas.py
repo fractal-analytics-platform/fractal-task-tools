@@ -73,7 +73,7 @@ def _create_schema_for_function(function: Callable) -> _Schema:
 
 def create_schema_for_single_task(
     executable: str,
-    package: Optional[str] = "fractal_tasks_core",
+    package: Optional[str] = None,
     pydantic_models: Optional[list[tuple[str, str, str]]] = None,
     task_function: Optional[Callable] = None,
     verbose: bool = False,

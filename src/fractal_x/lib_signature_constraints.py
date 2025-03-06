@@ -23,7 +23,7 @@ FORBIDDEN_PARAM_NAMES = (
 def _extract_function(
     module_relative_path: str,
     function_name: str,
-    package_name: str = "fractal_tasks_core",
+    package_name: str,
     verbose: bool = False,
 ) -> Callable:
     """
