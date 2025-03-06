@@ -62,6 +62,14 @@ def create_manifest(
 
     logging.info("Start generating a new manifest")
 
+    # Prepare an empty manifest
+    manifest = dict(
+        manifest_version=manifest_version,
+        task_list=[],
+        has_args_schemas=has_args_schemas,
+    )
+    if has_args_schemas:
+        manifest["args_schema_version"] = ARGS_SCHEMA_VERSION
 
     # Import the task list from `task_list_relative_path`
     task_list_module = import_module(f"{package}.{task_list_relative_path}")
@@ -80,22 +88,12 @@ def create_manifest(
         manifest["authors"] = AUTHORS
     except AttributeError:
         logging.warning("FIXME")
-    from devtools import debug
-    debug(AUTHORS)
     try:
         DOCS_LINKS = getattr(task_list_module, "DOCS_LINK")
     except AttributeError:
         DOCS_LINKS = None
         logging.warning("FIXME")
 
-    # Prepare an empty manifest
-    manifest = dict(
-        manifest_version=manifest_version,
-        task_list=[],
-        has_args_schemas=has_args_schemas,
-    )
-    if has_args_schemas:
-        manifest["args_schema_version"] = ARGS_SCHEMA_VERSION
 
 
 

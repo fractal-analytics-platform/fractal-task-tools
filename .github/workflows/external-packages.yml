@@ -26,7 +26,7 @@ jobs:
         include:
           - package: fractal-tasks-core
             github_repo: fractal-analytics-platform/fractal-tasks-core
-            github_branch: main
+            github_branch: test-new-manifest-tools
             cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-x[dev]'
             manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
             cmd_create_manifest: 'fractal-create-manifest  --package fractal_tasks_core --task-list-relative-path dev.task_list  --docs-link "https://fractal-analytics-platform.github.io/fractal-tasks-core" --authors "Fractal Core Team"'
