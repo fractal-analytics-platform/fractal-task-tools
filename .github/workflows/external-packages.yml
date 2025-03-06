@@ -11,7 +11,7 @@ on:
 
 
 jobs:
-  test-external-packages:
+  test-manifest:
     runs-on: ubuntu-22.04
     strategy:
       # Do not make the whole matrix fail if one element fails
