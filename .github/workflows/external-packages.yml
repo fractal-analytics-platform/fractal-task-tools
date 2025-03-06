@@ -47,7 +47,7 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
             manifest_path: src/apx_fractal_task_collection/__FRACTAL_MANIFEST__.json
-            cmd_create_manifest: 'fractal-create-manifest  --package apx_fractal_task_collection --task-list-relative-path dev.task_list'
+            cmd_create_manifest: 'fractal-create-manifest  --package apx_fractal_task_collection --task-list-relative-path dev.task_list --authors "Adrian Tschan"'
         exclude:
           - package: skip
             github_repo: skip
