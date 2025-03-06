@@ -24,30 +24,35 @@ jobs:
         # manifest_path: [skip]
         # cmd_create_manifest: [skip]
         include:
+
           - package: fractal-tasks-core
             github_repo: fractal-analytics-platform/fractal-tasks-core
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-x'
             # manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
             # cmd_create_manifest: 'python fractal_tasks_core/dev/create_manifest.py'
+
           - package: scMultipleX
             github_repo: fmi-basel/gliberal-scMultipleX
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-x'
             # manifest_path: src/scmultiplex/__FRACTAL_MANIFEST__.json
             # cmd_create_manifest: 'python src/scmultiplex/dev/create_manifest.py'
+
           - package: fractal-helper-tasks
             github_repo: jluethi/fractal-helper-tasks
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
             # manifest_path: src/fractal_helper_tasks/__FRACTAL_MANIFEST__.json
-            cmd_create_manifest: 'pyt?hon src/fractal_helper_tasks/dev/create_manifest.py'
+            # cmd_create_manifest: 'pyt?hon src/fractal_helper_tasks/dev/create_manifest.py'
+
           - package: APx_fractal_task_collection
             github_repo: Apricot-Therapeutics/APx_fractal_task_collection
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
             # manifest_path: src/apx_fractal_task_collection/__FRACTAL_MANIFEST__.json
             # cmd_create_manifest: 'python src/apx_fractal_task_collection/dev/update_manifest.py'
+
         exclude:
           - package: skip
             github_repo: skip
@@ -64,19 +69,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
 
       - name: Update pip
         run:  python -m pip install --upgrade pip
 
-      - name: Get package source code
+      - name: Fetch external-package source code
         uses: actions/checkout@v4
         with:
           repository: ${{ matrix.github_repo }}
           ref: ${{ matrix.github_branch }}
           persist-credentials: false
 
-
-      - name: Get current branch of `fractal-x`
+      - name: Fetch current branch of `fractal-x`
         uses: actions/checkout@v4
         with:
           path: fractal-x
