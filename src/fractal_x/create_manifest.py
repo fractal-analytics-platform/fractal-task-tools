@@ -86,6 +86,8 @@ def create_manifest(
     except AttributeError:
         INPUT_MODELS = []
         logging.warning("FIXME")
+    from devtools import debug
+    debug(INPUT_MODELS)
     # custom_pydantic_models: Optional[list[tuple[str, str, str]]] = None
     # if input_pydantic_models_file is not None:
     #     with open(input_pydantic_models_file, "r") as f:
