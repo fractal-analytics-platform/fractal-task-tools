@@ -55,7 +55,7 @@ def create_manifest(
 
     # # Normalize package name
     # package = normalize_package_name(package)
-    # package = package.replace("-", "_")
+    package = package.replace("-", "_") # FIXME
     # FIXME Validate `task_list_relative_path`
     if "/" in task_list_relative_path:
         raise ValueError("FIXME")
