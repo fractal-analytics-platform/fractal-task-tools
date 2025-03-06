@@ -1,4 +1,4 @@
-name: Manifest creation (external packages)
+name: External packages
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 
 jobs:
-  test-manifest-creation:
+  test-external-packages:
     runs-on: ubuntu-22.04
     strategy:
       # Do not make the whole matrix fail if one element fails
@@ -86,8 +86,7 @@ jobs:
           persist-credentials: false
 
       - name: Install current fractal-x
-        run: python -m pip install -e ./fractal-x
-
+        run: python -m pip install -e .
 
       # - name: Create manifest
       #   run: ${{ matrix.cmd_create_manifest }}
