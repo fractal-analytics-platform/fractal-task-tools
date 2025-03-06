@@ -21,10 +21,8 @@ ARGS_SCHEMA_VERSION = "pydantic_v2"
 def create_manifest(
     package: str,
     task_list_relative_path: str,
-    authors: Optional[str] = None,
     manifest_version: str = "2",
     has_args_schemas: bool = True,
-    docs_link: Optional[str] = None,
 ):
     """
     This function creates the package manifest based on a `task_list.py`
@@ -64,6 +62,32 @@ def create_manifest(
 
     logging.info("Start generating a new manifest")
 
+
+    # Import the task list from `task_list_relative_path`
+    task_list_module = import_module(f"{package}.{task_list_relative_path}")
+    TASK_LIST = getattr(task_list_module, "TASK_LIST")
+
+    # Load custom input Pydantic models
+    try:
+        INPUT_MODELS = getattr(task_list_module, "INPUT_MODELS")
+    except AttributeError:
+        INPUT_MODELS = []
+        logging.warning("FIXME")
+
+    # Load custom input Pydantic models
+    try:
+        AUTHORS = getattr(task_list_module, "AUTHORS")
+        manifest["authors"] = AUTHORS
+    except AttributeError:
+        logging.warning("FIXME")
+    from devtools import debug
+    debug(AUTHORS)
+    try:
+        DOCS_LINKS = getattr(task_list_module, "DOCS_LINK")
+    except AttributeError:
+        DOCS_LINKS = None
+        logging.warning("FIXME")
+
     # Prepare an empty manifest
     manifest = dict(
         manifest_version=manifest_version,
@@ -72,22 +96,9 @@ def create_manifest(
     )
     if has_args_schemas:
         manifest["args_schema_version"] = ARGS_SCHEMA_VERSION
-    if authors is not None:
-        manifest["authors"] = authors
-
-    # Import the task list from `task_list_relative_path`
-    task_list_module = import_module(f"{package}.{task_list_relative_path}")
-    TASK_LIST = getattr(task_list_module, "TASK_LIST")
 
 
-    # Load custom input Pydantic models
-    try:
-        INPUT_MODELS = getattr(task_list_module, "INPUT_MODELS")
-    except AttributeError:
-        INPUT_MODELS = []
-        logging.warning("FIXME")
-    from devtools import debug
-    debug(INPUT_MODELS)
+
     # custom_pydantic_models: Optional[list[tuple[str, str, str]]] = None
     # if input_pydantic_models_file is not None:
     #     with open(input_pydantic_models_file, "r") as f:
@@ -142,8 +153,8 @@ def create_manifest(
 
         if docs_info is not None:
             task_dict["docs_info"] = docs_info
-        if docs_link is not None:
-            task_dict["docs_link"] = docs_link
+        if DOCS_LINKS is not None:
+            task_dict["docs_link"] = DOCS_LINKS
 
         manifest["task_list"].append(task_dict)
         print()
