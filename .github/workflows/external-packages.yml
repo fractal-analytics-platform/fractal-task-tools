@@ -21,40 +21,40 @@ jobs:
         github_repo: [skip]
         github_branch: [skip]
         cmd_install: [skip]
-        # manifest_path: [skip]
-        # cmd_create_manifest: [skip]
+        manifest_path: [skip]
+        cmd_create_manifest: [skip]
         include:
           - package: fractal-tasks-core
             github_repo: fractal-analytics-platform/fractal-tasks-core
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-x'
-            # manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
-            # cmd_create_manifest: 'python fractal_tasks_core/dev/create_manifest.py'
+            manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
+            cmd_create_manifest: 'fractal-create-manifest  --package fractal_tasks_core --task-list-relative-path dev.task_list  --docs-link "https://fractal-analytics-platform.github.io/fractal-tasks-core" --authors "Fractal Core Team"'
           - package: scMultipleX
             github_repo: fmi-basel/gliberal-scMultipleX
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-x'
-            # manifest_path: src/scmultiplex/__FRACTAL_MANIFEST__.json
-            # cmd_create_manifest: 'python src/scmultiplex/dev/create_manifest.py'
+            manifest_path: src/scmultiplex/__FRACTAL_MANIFEST__.json
+            cmd_create_manifest: 'fractal-create-manifest  --package fractal_tasks_core --task-list-relative-path dev.task_list'
           - package: fractal-helper-tasks
             github_repo: jluethi/fractal-helper-tasks
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
-            # manifest_path: src/fractal_helper_tasks/__FRACTAL_MANIFEST__.json
-            cmd_create_manifest: 'pyt?hon src/fractal_helper_tasks/dev/create_manifest.py'
+            manifest_path: src/fractal_helper_tasks/__FRACTAL_MANIFEST__.json
+            cmd_create_manifest: 'fractal-create-manifest  --package fractal_tasks_core --task-list-relative-path dev.task_list'
           - package: APx_fractal_task_collection
             github_repo: Apricot-Therapeutics/APx_fractal_task_collection
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
-            # manifest_path: src/apx_fractal_task_collection/__FRACTAL_MANIFEST__.json
-            # cmd_create_manifest: 'python src/apx_fractal_task_collection/dev/update_manifest.py'
+            manifest_path: src/apx_fractal_task_collection/__FRACTAL_MANIFEST__.json
+            cmd_create_manifest: 'fractal-create-manifest  --package fractal_tasks_core --task-list-relative-path dev.task_list'
         exclude:
           - package: skip
             github_repo: skip
             github_branch: skip
             cmd_install: skip
-            # manifest_path: skip
-            # cmd_create_manifest: skip
+            manifest_path: skip
+            cmd_create_manifest: skip
 
     steps:
 
@@ -84,20 +84,17 @@ jobs:
       - name: Install package
         run:  ${{ matrix.cmd_install }}
 
-      # FIXME: The block below requires updates in fractal-x and in the
-      # external packages
+      - name: Create manifest
+        run: ${{ matrix.cmd_create_manifest }}
 
-      # - name: Create manifest
-      #   run: ${{ matrix.cmd_create_manifest }}
+      - name: Setup friendly diff style
+        run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"
 
-      # - name: Setup friendly diff style
-      #   run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"
+      - name: Run git diff for manifest
+        run: git diff ${{ matrix.manifest_path }}
 
-      # - name: Run git diff for manifest
-      #   run: git diff ${{ matrix.manifest_path }}
+      - name: Clean up before checking repo status
+        run: rm -rf fractal-x .gitattributes
 
-      # - name: Clean up before checking repo status
-      #   run: rm -rf fractal-x .gitattributes
-
-      # - name: Check repo status
-      #   run: if [[ -z $(git status -s) ]]; then echo "Clean status"; else echo "Dirty status"; git status; exit 1; fi
+      - name: Check repo status
+        run: if [[ -z $(git status -s) ]]; then echo "Clean status"; else echo "Dirty status"; git status; exit 1; fi

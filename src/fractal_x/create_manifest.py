@@ -9,13 +9,10 @@ from importlib import import_module
 from pathlib import Path
 from typing import Optional
 
-from .lib_args_schemas import (
-    create_schema_for_single_task,
-)
+from .lib_args_schemas import create_schema_for_single_task
 from .lib_task_docs import create_docs_info
 from .lib_task_docs import read_docs_info_from_file
-from .task_models import CompoundTask, NonParallelTask, ParallelTask
-from .package_names import normalize_package_name
+
 
 
 ARGS_SCHEMA_VERSION = "pydantic_v2"
@@ -23,12 +20,11 @@ ARGS_SCHEMA_VERSION = "pydantic_v2"
 
 def create_manifest(
     package: str,
-    task_list_file: str,
+    task_list_relative_path: str,
     authors: Optional[str] = None,
     manifest_version: str = "2",
     has_args_schemas: bool = True,
     docs_link: Optional[str] = None,
-    custom_pydantic_models: Optional[list[tuple[str, str, str]]] = None,
 ):
     """
     This function creates the package manifest based on a `task_list.py`
@@ -59,12 +55,12 @@ def create_manifest(
     if manifest_version != "2":
         raise NotImplementedError(f"{manifest_version=} is not supported")
 
-
-    # Normalize package name
-    package = normalize_package_name(package)
-    package = package.replace("-", "_")
-    from devtools import debug
-    debug(package)
+    # # Normalize package name
+    # package = normalize_package_name(package)
+    # package = package.replace("-", "_")
+    # FIXME Validate `task_list_relative_path`
+    if "/" in task_list_relative_path:
+        raise ValueError("FIXME")
 
     logging.info("Start generating a new manifest")
 
@@ -79,24 +75,21 @@ def create_manifest(
     if authors is not None:
         manifest["authors"] = authors
 
-    # Import the task list from `dev/task_list.py`
-    with open(task_list_file, "r") as f:
-        TASK_LIST_JSON = json.load(f)
+    # Import the task list from `task_list_relative_path`
+    task_list_module = import_module(f"{package}.{task_list_relative_path}")
+    TASK_LIST = getattr(task_list_module, "TASK_LIST")
 
-    TASK_LIST = []
-    for task_json in TASK_LIST_JSON:
-        task_type = task_json.pop("type")
-        debug(task_type)
-        if task_type == "compound":
-            task = CompoundTask(**task_json)
-        elif task_type == "parallel":
-            task = ParallelTask(**task_json)
-        elif task_type == "non-parallel":
-            task = NonParallelTask(**task_json)
-        else:
-            raise
-        TASK_LIST.append(task)
-    debug(TASK_LIST)
+
+    # Load custom input Pydantic models
+    try:
+        INPUT_MODELS = getattr(task_list_module, "INPUT_MODELS")
+    except AttributeError:
+        INPUT_MODELS = []
+        logging.warning("FIXME")
+    # custom_pydantic_models: Optional[list[tuple[str, str, str]]] = None
+    # if input_pydantic_models_file is not None:
+    #     with open(input_pydantic_models_file, "r") as f:
+    #         custom_pydantic_models = json.load(f)
 
     # Loop over TASK_LIST, and append the proper task dictionary
     # to manifest["task_list"]
@@ -126,7 +119,7 @@ def create_manifest(
                     schema = create_schema_for_single_task(
                         executable,
                         package=package,
-                        pydantic_models=custom_pydantic_models,
+                        pydantic_models=INPUT_MODELS,
                     )
                     logging.info(f"[{executable}] END (new schema)")
                     task_dict[f"args_schema_{kind}"] = schema
@@ -142,7 +135,7 @@ def create_manifest(
         elif docs_info.startswith("file:"):
             docs_info = read_docs_info_from_file(
                 docs_info=docs_info,
-                task_list_path=task_list_file,
+                task_list_path=task_list_module.__file__,
             )
 
         if docs_info is not None:
@@ -160,9 +153,3 @@ def create_manifest(
         json.dump(manifest, f, indent=2)
         f.write("\n")
     logging.info(f"Manifest stored in {manifest_path.as_posix()}")
-
-
-def main():
-    PACKAGE = "fractal_tasks_core"
-    AUTHORS = "Fractal Core Team"
-    create_manifest(package=PACKAGE, authors=AUTHORS)

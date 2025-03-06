@@ -10,9 +10,9 @@ parser.add_argument(
     required=True,
 )
 parser.add_argument(
-    "--task-list-file",
+    "--task-list-relative-path",
     type=str,
-    help="Example: '/somewhere/task_list.py'",
+    help="Example: '.dev.task_list'",
     required=True,
 )
 parser.add_argument(
@@ -22,12 +22,20 @@ parser.add_argument(
     required=False,
     default=None,
 )
+parser.add_argument(
+    "--docs-link",
+    type=str,
+    help="Example: https://example.org'",
+    required=False,
+    default=None,
+)
 
 
 def main():
     args = parser.parse_args()
     create_manifest(
-        task_list_file=args.task_list_file,
         package=args.package,
+        task_list_relative_path=args.task_list_relative_path,
         authors=args.authors,
+        docs_link=args.docs_link,
     )
