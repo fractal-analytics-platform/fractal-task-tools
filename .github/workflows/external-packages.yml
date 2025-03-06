@@ -26,29 +26,26 @@ jobs:
         cmd_create_manifest: [skip]
         include:
           - package: fractal-tasks-core
-            task_list_relative_path: 'dev.task_list'
             github_repo: fractal-analytics-platform/fractal-tasks-core
             github_branch: test-new-manifest-tools
             cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-x[dev]'
+            task_list_relative_path: 'dev.task_list'
             manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
           # - package: scMultipleX
           #   github_repo: fmi-basel/gliberal-scMultipleX
           #   github_branch: main
           #   cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-x[dev]'
           #   manifest_path: src/scmultiplex/__FRACTAL_MANIFEST__.json
-          #   cmd_create_manifest: 'fractal-create-manifest  --package scmultiplex --task-list-relative-path dev.task_list --authors "Nicole Repina, Enrico Tagliavini, Tim-Oliver Buchholz, Joel Luethi" --docs-link "https://github.com/fmi-basel/gliberal-scMultipleX"'
           # - package: fractal-helper-tasks
           #   github_repo: jluethi/fractal-helper-tasks
           #   github_branch: main
           #   cmd_install: 'python -m pip install -e . ./fractal-x[dev]'
           #   manifest_path: src/fractal_helper_tasks/__FRACTAL_MANIFEST__.json
-          #   cmd_create_manifest: 'fractal-create-manifest  --package fractal_helper_tasks --task-list-relative-path dev.task_list --authors "Joel Luethi" --docs-link "https://github.com/jluethi/fractal-helper-tasks"'
           # - package: APx_fractal_task_collection
           #   github_repo: Apricot-Therapeutics/APx_fractal_task_collection
           #   github_branch: main
           #   cmd_install: 'python -m pip install -e . ./fractal-x[dev]'
           #   manifest_path: src/apx_fractal_task_collection/__FRACTAL_MANIFEST__.json
-          #   cmd_create_manifest: 'fractal-create-manifest  --package apx_fractal_task_collection --task-list-relative-path dev.task_list --authors "Adrian Tschan"'
         exclude:
           - package: skip
             github_repo: skip
@@ -88,7 +85,6 @@ jobs:
 
       - name: Create manifest
         run: fractal-create-manifest  --package $$ {{ matrix.package }} --task-list-relative-path ${{ matrix.task_list_relative_path }}
-
 
       - name: Setup friendly diff style
         run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"
