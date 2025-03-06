@@ -20,16 +20,17 @@ jobs:
         package: [skip]
         github_repo: [skip]
         github_branch: [skip]
+        task_list_relative_path: [skip]
         cmd_install: [skip]
         manifest_path: [skip]
         cmd_create_manifest: [skip]
         include:
           - package: fractal-tasks-core
+            task_list_relative_path: 'dev.task_list'
             github_repo: fractal-analytics-platform/fractal-tasks-core
             github_branch: test-new-manifest-tools
             cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-x[dev]'
             manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
-            cmd_create_manifest: 'fractal-create-manifest  --package fractal_tasks_core --task-list-relative-path dev.task_list  --docs-link "https://fractal-analytics-platform.github.io/fractal-tasks-core" --authors "Fractal Core Team"'
           # - package: scMultipleX
           #   github_repo: fmi-basel/gliberal-scMultipleX
           #   github_branch: main
@@ -52,6 +53,7 @@ jobs:
           - package: skip
             github_repo: skip
             github_branch: skip
+            task_list_relative_path: skip
             cmd_install: skip
             manifest_path: skip
             cmd_create_manifest: skip
@@ -85,7 +87,8 @@ jobs:
         run:  ${{ matrix.cmd_install }}
 
       - name: Create manifest
-        run: ${{ matrix.cmd_create_manifest }}
+        run: fractal-create-manifest  --package $$ {{ matrix.package }} --task-list-relative-path ${{ matrix.task_list_relative_path }}
+
 
       - name: Setup friendly diff style
         run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"
