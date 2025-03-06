@@ -35,7 +35,7 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-x'
             manifest_path: src/scmultiplex/__FRACTAL_MANIFEST__.json
-            cmd_create_manifest: 'fractal-create-manifest  --package scmultiplex --task-list-relative-path dev.task_list --authors "Nicole Repina, Enrico Tagliavini, Tim-Oliver Buchholz, Joel Luethi"'
+            cmd_create_manifest: 'fractal-create-manifest  --package scmultiplex --task-list-relative-path dev.task_list --authors "Nicole Repina, Enrico Tagliavini, Tim-Oliver Buchholz, Joel Luethi" --docs-link "https://github.com/fmi-basel/gliberal-scMultipleX"'
           - package: fractal-helper-tasks
             github_repo: jluethi/fractal-helper-tasks
             github_branch: main
