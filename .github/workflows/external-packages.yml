@@ -75,7 +75,6 @@ jobs:
           ref: ${{ matrix.github_branch }}
           persist-credentials: false
 
-
       - name: Get current branch of `fractal-x`
         uses: actions/checkout@v4
         with:
@@ -85,9 +84,8 @@ jobs:
       - name: Install package
         run:  ${{ matrix.cmd_install }}
 
-      # - name: Install current fractal-x
-      #   working-directory: ./fractal-x
-      #   run: python -m pip install -e .'
+      # FIXME: The block below requires updates in fractal-x and in the
+      # external packages
 
       # - name: Create manifest
       #   run: ${{ matrix.cmd_create_manifest }}
