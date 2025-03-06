@@ -41,7 +41,7 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
             manifest_path: src/fractal_helper_tasks/__FRACTAL_MANIFEST__.json
-            cmd_create_manifest: 'fractal-create-manifest  --package fractal_helper_tasks --task-list-relative-path dev.task_list --authors "Joel Luethi"'
+            cmd_create_manifest: 'fractal-create-manifest  --package fractal_helper_tasks --task-list-relative-path dev.task_list --authors "Joel Luethi" --docs-link "https://github.com/jluethi/fractal-helper-tasks"'
           - package: APx_fractal_task_collection
             github_repo: Apricot-Therapeutics/APx_fractal_task_collection
             github_branch: main
