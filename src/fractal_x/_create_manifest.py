@@ -2,18 +2,32 @@
 Script to generate JSON schemas for task arguments afresh, and write them
 to the package manifest.
 """
-
+import re
 import json
 import logging
 from importlib import import_module
 from pathlib import Path
-from typing import Optional
-
 from ._args_schemas import create_schema_for_single_task
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
 
 
+def normalize_package_name(name: str) -> str: # FIXME move
+    """
+    Implement PyPa specifications for package-name normalization
+
+    The name should be lowercased with all runs of the characters `.`, `-`,
+    or `_` replaced with a single `-` character. This can be implemented in
+    Python with the re module.
+    (https://packaging.python.org/en/latest/specifications/name-normalization)
+
+    Args:
+        name: The non-normalized package name.
+
+    Returns:
+        The normalized package name.
+    """
+    return re.sub(r"[-_.]+", "-", name).lower()
 
 ARGS_SCHEMA_VERSION = "pydantic_v2"
 
@@ -54,7 +68,7 @@ def create_manifest(
         raise NotImplementedError(f"{manifest_version=} is not supported")
 
     # # Normalize package name
-    # package = normalize_package_name(package)
+    package = normalize_package_name(package)
     package = package.replace("-", "_") # FIXME
     # FIXME Validate `task_list_relative_path`
     if "/" in task_list_relative_path:

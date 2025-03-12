@@ -93,7 +93,7 @@ jobs:
         run:  ${{ matrix.cmd_install }}
 
       - name: Create manifest
-        run: fractal-create-manifest  --package ${{ matrix.package }} --task-list-relative-path ${{ matrix.task_list_relative_path }}
+        run: fractal-create-manifest --package ${{ matrix.package }} --task-list-relative-path ${{ matrix.task_list_relative_path }}
 
       - name: Setup friendly diff style
         run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"
