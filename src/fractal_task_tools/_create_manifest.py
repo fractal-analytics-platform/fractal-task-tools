@@ -159,21 +159,25 @@ def write_manifest_to_file(
         manifest: The manifest object
     """
     logging.info("[write_manifest_to_file] START")
+
     package_name = normalize_package_name(raw_package_name)
     logging.info(f"[write_manifest_to_file] {package_name=}")
-    logging.info(f"[write_manifest_to_file] {os.getcwd()=}")
+
     imported_package = import_module(package_name)
     package_root_dir = Path(imported_package.__file__).parent
-    logging.info(f"[write_manifest_to_file] {package_root_dir=}")
     manifest_path = (package_root_dir / MANIFEST_FILENAME).as_posix()
+    logging.info(f"[write_manifest_to_file] {os.getcwd()=}")
+    logging.info(f"[write_manifest_to_file] {package_root_dir=}")
     logging.info(f"[write_manifest_to_file] {manifest_path=}")
+
     with open(manifest_path, "w") as f:
         json.dump(manifest, f, indent=2)
         f.write("\n")
+
     logging.info("[write_manifest_to_file] END")
 
 
-def check_manifest_unchanged(
+def check_manifest(
     *,
     raw_package_name: str,
     manifest: str,
@@ -185,12 +189,23 @@ def check_manifest_unchanged(
         raw_package_name:
         manifest: The manifest object
     """
+
     package_name = normalize_package_name(raw_package_name)
+    logging.info(f"[check_manifest] {package_name=}")
+
     imported_package = import_module(package_name)
     package_root_dir = Path(imported_package.__file__).parent
-    manifest_path = package_root_dir / MANIFEST_FILENAME
-    with manifest_path.open("f") as f:
+    manifest_path = (package_root_dir / MANIFEST_FILENAME).as_posix()
+    logging.info(f"[check_manifest] {os.getcwd()=}")
+    logging.info(f"[check_manifest] {package_root_dir=}")
+    logging.info(f"[check_manifest] {manifest_path=}")
+
+    with manifest_path.open("r") as f:
         old_manifest = json.load(f)
     logging.info(f"Manifest read from {manifest_path.as_posix()}")
     if manifest != old_manifest:
-        raise ValueError("New/old manifests differ")
+        import sys
+
+        sys.exit("New/old manifests differ")
+
+    logging.info("[check_manifest] END")
