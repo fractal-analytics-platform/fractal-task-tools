@@ -3,7 +3,6 @@ import logging
 from importlib import import_module
 from inspect import signature
 from pathlib import Path
-from typing import Callable
 
 from pydantic.v1.decorator import ALT_V_ARGS
 from pydantic.v1.decorator import ALT_V_KWARGS
@@ -25,7 +24,7 @@ def _extract_function(
     function_name: str,
     package_name: str,
     verbose: bool = False,
-) -> Callable:
+) -> callable:
     """
     Extract function from a module with the same name.
 
@@ -58,7 +57,7 @@ def _extract_function(
     return task_function
 
 
-def _validate_function_signature(function: Callable):
+def _validate_function_signature(function: callable):
     """
     Validate the function signature.
 

@@ -4,6 +4,7 @@ Generate JSON schemas for task arguments and combine them into a manifest.
 import json
 import logging
 import os
+import sys
 from importlib import import_module
 from pathlib import Path
 from typing import Any
@@ -202,9 +203,10 @@ def check_manifest(
 
     with open(manifest_path, "r") as f:
         old_manifest = json.load(f)
-    if manifest != old_manifest:
-        import sys
-
+    if manifest == old_manifest:
+        logging.info("[check_manifest] On-disk manifest is up to date.")
+    else:
+        logging.error("[check_manifest] On-disk manifest is not up to date.")
         print(json.dumps(old_manifest, indent=2))
         print(json.dumps(manifest, indent=2))
         sys.exit("New/old manifests differ")
