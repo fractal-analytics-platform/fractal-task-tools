@@ -1,7 +1,7 @@
-from fractal_task_tools._create_manifest import create_manifest
+import argparse as ap
 import sys
 
-import argparse as ap
+from fractal_task_tools._create_manifest import create_manifest
 
 
 main_parser = ap.ArgumentParser(

@@ -23,7 +23,7 @@ jobs:
         cmd_install: [skip]
         manifest_path: [skip]
         cmd_create_manifest: [skip]
-        
+
         include:
 
           - package: fractal-tasks-core

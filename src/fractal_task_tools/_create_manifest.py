@@ -2,17 +2,18 @@
 Script to generate JSON schemas for task arguments afresh, and write them
 to the package manifest.
 """
-import re
 import json
 import logging
+import re
 from importlib import import_module
 from pathlib import Path
+
 from ._args_schemas import create_schema_for_single_task
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
 
 
-def normalize_package_name(name: str) -> str: # FIXME move
+def normalize_package_name(name: str) -> str:  # FIXME move
     """
     Implement PyPa specifications for package-name normalization
 
@@ -28,6 +29,7 @@ def normalize_package_name(name: str) -> str: # FIXME move
         The normalized package name.
     """
     return re.sub(r"[-_.]+", "-", name).lower()
+
 
 ARGS_SCHEMA_VERSION = "pydantic_v2"
 
@@ -70,7 +72,7 @@ def create_manifest(
 
     # # Normalize package name
     package = normalize_package_name(package)
-    package = package.replace("-", "_") # FIXME
+    package = package.replace("-", "_")  # FIXME
     # FIXME Validate `task_list_relative_path`
     if "/" in task_list_path:
         raise ValueError("FIXME")
@@ -109,9 +111,6 @@ def create_manifest(
         DOCS_LINKS = None
         logging.warning("FIXME")
 
-
-
-
     # custom_pydantic_models: Optional[list[tuple[str, str, str]]] = None
     # if input_pydantic_models_file is not None:
     #     with open(input_pydantic_models_file, "r") as f:
@@ -128,7 +127,9 @@ def create_manifest(
 
         # Copy some properties from `task_obj` to `task_dict`
         if task_obj.executable_non_parallel is not None:
-            task_dict["executable_non_parallel"] = task_obj.executable_non_parallel
+            task_dict[
+                "executable_non_parallel"
+            ] = task_obj.executable_non_parallel
         if task_obj.executable_parallel is not None:
             task_dict["executable_parallel"] = task_obj.executable_parallel
         if task_obj.meta_non_parallel is not None:
@@ -174,7 +175,9 @@ def create_manifest(
 
     # Write manifest
     imported_package = import_module(package)
-    manifest_path = Path(imported_package.__file__).parent / "__FRACTAL_MANIFEST__.json"
+    manifest_path = (
+        Path(imported_package.__file__).parent / "__FRACTAL_MANIFEST__.json"
+    )
     with manifest_path.open("w") as f:
         json.dump(manifest, f, indent=2)
         f.write("\n")

@@ -1,4 +1,3 @@
-
 import ast
 import logging
 import os
@@ -23,7 +22,7 @@ def _sanitize_description(string: str) -> str:
     """
     # Replace newline with space
     new_string = string.replace("\n", " ")
-    # Replace N-whitespace characterss with a single one
+    # Replace N-whitespace characters with a single one
     while "  " in new_string:
         new_string = new_string.replace("  ", " ")
     return new_string
