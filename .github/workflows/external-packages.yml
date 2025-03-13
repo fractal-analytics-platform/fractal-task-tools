@@ -86,17 +86,17 @@ jobs:
       - name: Install package
         run:  ${{ matrix.cmd_install }}
 
-      - name: Create manifest
-        run: fractal-manifest create --package ${{ matrix.package }}
+      - name: Check manifest
+        run: fractal-manifest check --package ${{ matrix.package }}
 
-      - name: Setup friendly diff style
-        run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"
+      # - name: Setup friendly diff style
+      #   run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"
 
-      - name: Run git diff for manifest
-        run: git diff ${{ matrix.manifest_path }}
+      # - name: Run git diff for manifest
+      #   run: git diff ${{ matrix.manifest_path }}
 
-      - name: Clean up before checking repo status
-        run: rm -rf fractal-task-tools .gitattributes
+      # - name: Clean up before checking repo status
+      #   run: rm -rf fractal-task-tools .gitattributes
 
-      - name: Check repo status
-        run: if [[ -z $(git status -s) ]]; then echo "Clean status"; else echo "Dirty status"; git status; exit 1; fi
+      # - name: Check repo status
+      #   run: if [[ -z $(git status -s) ]]; then echo "Clean status"; else echo "Dirty status"; git status; exit 1; fi
