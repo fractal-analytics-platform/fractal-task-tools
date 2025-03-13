@@ -202,10 +202,11 @@ def check_manifest(
 
     with open(manifest_path, "r") as f:
         old_manifest = json.load(f)
-    logging.info(f"Manifest read from {manifest_path.as_posix()}")
     if manifest != old_manifest:
         import sys
 
+        print(json.dumps(old_manifest, indent=2))
+        print(json.dumps(manifest, indent=2))
         sys.exit("New/old manifests differ")
 
     logging.info("[check_manifest] END")
