@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/fractal-task-tools?color=gree)](https://pypi.org/project/fractal-task-tools/)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![CI Status](https://github.com/fractal-analytics-platform/fractal-task-tools/actions/workflows/ci_pip.yml/badge.svg)](https://github.com/fractal-analytics-platform/fractal-task-tools/actions/workflows/ci_pip.yml)
+[![CI Status](https://github.com/fractal-analytics-platform/fractal-task-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/fractal-analytics-platform/fractal-task-tools/actions/workflows/ci_pip.yml)
 [![Coverage](https://raw.githubusercontent.com/fractal-analytics-platform/fractal-task-tools/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/fractal-analytics-platform/fractal-task-tools/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
 Fractal-task-tools provides some basic tools for building tasks for the [Fractal](https://fractal-analytics-platform.github.io/) framework.
