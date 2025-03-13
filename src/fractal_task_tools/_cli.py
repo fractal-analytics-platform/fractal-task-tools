@@ -1,7 +1,9 @@
 import argparse as ap
 import sys
 
+from fractal_task_tools._create_manifest import check_manifest_unchanged
 from fractal_task_tools._create_manifest import create_manifest
+from fractal_task_tools._create_manifest import write_manifest_to_file
 
 
 main_parser = ap.ArgumentParser(
@@ -50,9 +52,21 @@ for subparser in (create_manifest_parser, check_manifest_parser):
 def main():
     args = main_parser.parse_args(sys.argv[1:])
     if args.cmd == "create":
-        create_manifest(
-            package=args.package,
+        manifest = create_manifest(
+            raw_package_name=args.package,
             task_list_path=args.task_list_path,
         )
+        write_manifest_to_file(
+            raw_package_name=args.package,
+            manifest=manifest,
+        )
+
     elif args.cmd == "check":
-        raise NotImplementedError()
+        manifest = create_manifest(
+            raw_package_name=args.package,
+            task_list_path=args.task_list_path,
+        )
+        check_manifest_unchanged(
+            raw_package_name=args.package,
+            manifest=manifest,
+        )
