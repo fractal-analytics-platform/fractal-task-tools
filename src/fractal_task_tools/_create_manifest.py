@@ -157,14 +157,18 @@ def write_manifest_to_file(
         raw_package_name:
         manifest: The manifest object
     """
+    logging.info("[write_manifest_to_file] START")
     package_name = normalize_package_name(raw_package_name)
+    logging.info(f"[write_manifest_to_file] {package_name=}")
     imported_package = import_module(package_name)
     package_root_dir = Path(imported_package.__file__).parent
-    manifest_path = package_root_dir / MANIFEST_FILENAME
-    with manifest_path.open("w") as f:
+    logging.info(f"[write_manifest_to_file] {package_root_dir=}")
+    manifest_path = (package_root_dir / MANIFEST_FILENAME).as_posix()
+    logging.info(f"[write_manifest_to_file] {manifest_path=}")
+    with open(manifest_path, "w") as f:
         json.dump(manifest, f, indent=2)
         f.write("\n")
-    logging.info(f"Manifest stored in {manifest_path.as_posix()}")
+    logging.info("[write_manifest_to_file] END")
 
 
 def check_manifest_unchanged(
