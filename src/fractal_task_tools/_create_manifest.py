@@ -200,7 +200,7 @@ def check_manifest(
     logging.info(f"[check_manifest] {package_root_dir=}")
     logging.info(f"[check_manifest] {manifest_path=}")
 
-    with manifest_path.open("r") as f:
+    with open(manifest_path, "r") as f:
         old_manifest = json.load(f)
     logging.info(f"Manifest read from {manifest_path.as_posix()}")
     if manifest != old_manifest:
