@@ -49,9 +49,6 @@ for subparser in (create_manifest_parser, check_manifest_parser):
 
 def main():
     args = main_parser.parse_args(sys.argv[1:])
-    from devtools import debug
-
-    debug(args)
     if args.cmd == "create":
         create_manifest(
             package=args.package,
