@@ -3,6 +3,7 @@ Generate JSON schemas for task arguments and combine them into a manifest.
 """
 import json
 import logging
+import os
 from importlib import import_module
 from pathlib import Path
 from typing import Any
@@ -160,6 +161,7 @@ def write_manifest_to_file(
     logging.info("[write_manifest_to_file] START")
     package_name = normalize_package_name(raw_package_name)
     logging.info(f"[write_manifest_to_file] {package_name=}")
+    logging.info(f"[write_manifest_to_file] {os.getcwd()=}")
     imported_package = import_module(package_name)
     package_root_dir = Path(imported_package.__file__).parent
     logging.info(f"[write_manifest_to_file] {package_root_dir=}")
