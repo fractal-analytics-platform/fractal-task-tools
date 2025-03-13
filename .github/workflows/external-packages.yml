@@ -20,7 +20,6 @@ jobs:
         package: [skip]
         github_repo: [skip]
         github_branch: [skip]
-        task_list_relative_path: [skip]
         cmd_install: [skip]
         manifest_path: [skip]
         cmd_create_manifest: [skip]
@@ -32,34 +31,29 @@ jobs:
             github_branch: test-new-manifest-tools
             cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-x'
             manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
-            task_list_relative_path: 'dev.task_list'
 
           - package: scMultipleX
             github_repo: tcompa/gliberal-scMultipleX
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-x'
             manifest_path: src/scmultiplex/__FRACTAL_MANIFEST__.json
-            task_list_relative_path: 'dev.task_list'
 
           - package: fractal-helper-tasks
             github_repo: tcompa/fractal-helper-tasks
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
             manifest_path: src/fractal_helper_tasks/__FRACTAL_MANIFEST__.json
-            task_list_relative_path: 'dev.task_list'
 
           - package: APx_fractal_task_collection
             github_repo: tcompa/APx_fractal_task_collection
             github_branch: main
             cmd_install: 'python -m pip install -e . ./fractal-x'
             manifest_path: src/apx_fractal_task_collection/__FRACTAL_MANIFEST__.json
-            task_list_relative_path: 'dev.task_list'
 
         exclude:
           - package: skip
             github_repo: skip
             github_branch: skip
-            task_list_relative_path: skip
             cmd_install: skip
             manifest_path: skip
             cmd_create_manifest: skip
@@ -93,7 +87,7 @@ jobs:
         run:  ${{ matrix.cmd_install }}
 
       - name: Create manifest
-        run: fractal-create-manifest --package ${{ matrix.package }} --task-list-relative-path ${{ matrix.task_list_relative_path }}
+        run: fractal-manifest create --package ${{ matrix.package }}
 
       - name: Setup friendly diff style
         run: echo "*.json diff=json" >> .gitattributes && git config diff.json.textconv "jq --sort-keys '.' \$1"

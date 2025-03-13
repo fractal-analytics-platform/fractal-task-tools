@@ -34,7 +34,7 @@ ARGS_SCHEMA_VERSION = "pydantic_v2"
 
 def create_manifest(
     package: str,
-    task_list_relative_path: str,
+    task_list_path: str,
     manifest_version: str = "2",
     has_args_schemas: bool = True,
 ):
@@ -53,6 +53,7 @@ def create_manifest(
     ]
     ```
 
+    FIXME:
     Arguments:
         package: The name of the package (must be importable).
         manifest_version: Only `"2"` is supported.
@@ -71,7 +72,7 @@ def create_manifest(
     package = normalize_package_name(package)
     package = package.replace("-", "_") # FIXME
     # FIXME Validate `task_list_relative_path`
-    if "/" in task_list_relative_path:
+    if "/" in task_list_path:
         raise ValueError("FIXME")
 
     logging.info("Start generating a new manifest")
@@ -86,7 +87,7 @@ def create_manifest(
         manifest["args_schema_version"] = ARGS_SCHEMA_VERSION
 
     # Import the task list from `task_list_relative_path`
-    task_list_module = import_module(f"{package}.{task_list_relative_path}")
+    task_list_module = import_module(f"{package}.{task_list_path}")
     TASK_LIST = getattr(task_list_module, "TASK_LIST")
 
     # Load custom input Pydantic models
