@@ -13,6 +13,16 @@ def test_extract_function():
         assert function.__name__ == "create_manifest"
 
     with pytest.raises(
+        ValueError,
+        match="must end with '.py'",
+    ):
+        _extract_function(
+            module_relative_path="_create_manifest",
+            package_name="fractal_task_tools",
+            function_name="missing_function",
+            verbose=True,
+        )
+    with pytest.raises(
         AttributeError,
         match="has no attribute 'missing_function'",
     ):
@@ -20,7 +30,6 @@ def test_extract_function():
             module_relative_path="_create_manifest.py",
             package_name="fractal_task_tools",
             function_name="missing_function",
-            verbose=True,
         )
 
     with pytest.raises(
@@ -31,5 +40,4 @@ def test_extract_function():
             module_relative_path="missing_module.py",
             package_name="fractal_task_tools",
             function_name="missing_function",
-            verbose=True,
         )
