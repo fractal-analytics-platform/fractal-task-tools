@@ -1,7 +1,7 @@
 import argparse as ap
 import sys
 
-from fractal_task_tools._create_manifest import check_manifest_unchanged
+from fractal_task_tools._create_manifest import check_manifest
 from fractal_task_tools._create_manifest import create_manifest
 from fractal_task_tools._create_manifest import write_manifest_to_file
 
@@ -66,7 +66,7 @@ def main():
             raw_package_name=args.package,
             task_list_path=args.task_list_path,
         )
-        check_manifest_unchanged(
+        check_manifest(
             raw_package_name=args.package,
             manifest=manifest,
         )
