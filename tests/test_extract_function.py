@@ -1,6 +1,6 @@
 import pytest
 from devtools import debug
-from fractal_x._signature_constraints import _extract_function
+from fractal_task_tools._signature_constraints import _extract_function
 
 
 @pytest.mark.xfail(reason="FIXME: depends on fractal-tasks-core")

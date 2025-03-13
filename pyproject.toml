@@ -1,5 +1,5 @@
 [project]
-name = "fractal-x"
+name = "fractal-task-tools"
 version = "0.0.1"
 description = "FIXME"
 authors = [
@@ -21,9 +21,9 @@ dev = [
 ]
 
 [project.urls]
-homepage = "https://github.com/fractal-analytics-platform/fractal-x"
-repository = "https://github.com/fractal-analytics-platform/fractal-x"
-changelog = "https://github.com/fractal-analytics-platform/fractal-x/blob/main/CHANGELOG.md"
+homepage = "https://github.com/fractal-analytics-platform/fractal-task-tools"
+repository = "https://github.com/fractal-analytics-platform/fractal-task-tools"
+changelog = "https://github.com/fractal-analytics-platform/fractal-task-tools/blob/main/CHANGELOG.md"
 
 
 [build-system]
@@ -31,7 +31,7 @@ requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-fractal-manifest = "fractal_x._cli:main"
+fractal-manifest = "fractal_task_tools._cli:main"
 
 [tool.bumpver]
 current_version = "0.0.1"
@@ -43,7 +43,7 @@ push = true
 
 [tool.bumpver.file_patterns]
 "pyproject.toml" = ['version = "{version}"$']
-"src/fractal_x/__init__.py" = ['__VERSION__ = "{version}"$']
+"src/fractal_task_tools/__init__.py" = ['__VERSION__ = "{version}"$']
 
 
 [tool.coverage.run]

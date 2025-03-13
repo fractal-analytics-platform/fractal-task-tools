@@ -1,4 +1,4 @@
-from fractal_x._create_manifest import create_manifest
+from fractal_task_tools._create_manifest import create_manifest
 import sys
 
 import argparse as ap

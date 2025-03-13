@@ -1,7 +1,7 @@
 import pytest
 from devtools import debug
-from fractal_x._descriptions import _get_class_attrs_descriptions
-from fractal_x._descriptions import _get_function_args_descriptions
+from fractal_task_tools._descriptions import _get_class_attrs_descriptions
+from fractal_task_tools._descriptions import _get_function_args_descriptions
 
 
 @pytest.mark.xfail(reason="FIXME: depends on fractal-tasks-core")

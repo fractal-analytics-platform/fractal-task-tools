@@ -29,25 +29,25 @@ jobs:
           - package: fractal-tasks-core
             github_repo: fractal-analytics-platform/fractal-tasks-core
             github_branch: test-new-manifest-tools
-            cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-x'
+            cmd_install: 'python -m pip install -e .[fractal-tasks] ./fractal-task-tools'
             manifest_path: fractal_tasks_core/__FRACTAL_MANIFEST__.json
 
           - package: scMultipleX
             github_repo: tcompa/gliberal-scMultipleX
             github_branch: main
-            cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-x'
+            cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-task-tools'
             manifest_path: src/scmultiplex/__FRACTAL_MANIFEST__.json
 
           - package: fractal-helper-tasks
             github_repo: tcompa/fractal-helper-tasks
             github_branch: main
-            cmd_install: 'python -m pip install -e . ./fractal-x'
+            cmd_install: 'python -m pip install -e . ./fractal-task-tools'
             manifest_path: src/fractal_helper_tasks/__FRACTAL_MANIFEST__.json
 
           - package: APx_fractal_task_collection
             github_repo: tcompa/APx_fractal_task_collection
             github_branch: main
-            cmd_install: 'python -m pip install -e . ./fractal-x'
+            cmd_install: 'python -m pip install -e . ./fractal-task-tools'
             manifest_path: src/apx_fractal_task_collection/__FRACTAL_MANIFEST__.json
 
         exclude:
@@ -77,10 +77,10 @@ jobs:
           ref: ${{ matrix.github_branch }}
           persist-credentials: false
 
-      - name: Get current branch of `fractal-x`
+      - name: Get current branch of `fractal-task-tools`
         uses: actions/checkout@v4
         with:
-          path: fractal-x
+          path: fractal-task-tools
           persist-credentials: false
 
       - name: Install package
@@ -96,7 +96,7 @@ jobs:
         run: git diff ${{ matrix.manifest_path }}
 
       - name: Clean up before checking repo status
-        run: rm -rf fractal-x .gitattributes
+        run: rm -rf fractal-task-tools .gitattributes
 
       - name: Check repo status
         run: if [[ -z $(git status -s) ]]; then echo "Clean status"; else echo "Dirty status"; git status; exit 1; fi
