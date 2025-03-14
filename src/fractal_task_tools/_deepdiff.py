@@ -13,8 +13,8 @@ def deepdiff(
 ):
     if type(old_object) is not type(new_object):
         raise ValueError(
-            f"[{path}] Type difference: "
-            f"{type(old_object)} (old) vs {type(new_object)} (new)."
+            f"[{path}] Type difference:\n"
+            f"\tOld: {type(old_object)}\n\tNew:{type(new_object)}"
         )
 
     if type(old_object) is dict:
@@ -25,8 +25,8 @@ def deepdiff(
             new_keys = sorted(new_keys)
         if old_keys != new_keys:
             raise ValueError(
-                f"[{path}] Dictionaries have different keys "
-                f"{old_keys} (old) vs {new_keys} (new)."
+                f"[{path}] Dictionaries have different keys:\n"
+                f"\tOld: {old_keys}\n\tNew: {new_keys}"
             )
 
         for key, value_a in old_object.items():
@@ -38,8 +38,8 @@ def deepdiff(
     elif type(old_object) is list:
         if len(old_object) != len(new_object):
             raise ValueError(
-                f"{path} Lists have different lengths "
-                f"{len(old_object)} (old) vs {len(new_object)} (new)."
+                f"{path} Lists have different lengths:\n"
+                f"\tOld:{len(old_object)}\n\tNew: {len(new_object)}"
             )
         for ind, item_a in enumerate(old_object):
             deepdiff(
@@ -50,6 +50,6 @@ def deepdiff(
     else:
         if old_object != new_object:
             raise ValueError(
-                f"{path} Values are different "
-                "'{old_object}' (old) vs '{new_object}' (new)."
+                f"{path} Values are different:\n"
+                f"\tOld: '{old_object}'\n\tNew:'{new_object}'"
             )
