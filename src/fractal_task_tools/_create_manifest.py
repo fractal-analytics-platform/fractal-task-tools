@@ -54,9 +54,10 @@ def create_manifest(
 
     # Prepare an empty manifest
     manifest = dict(
+        manifest_version=MANIFEST_VERSION,
+        task_list=[],
         has_args_schemas=True,
         args_schema_version=ARGS_SCHEMA_VERSION,
-        manifest_version=MANIFEST_VERSION,
     )
 
     # Import the task-list module
@@ -89,7 +90,6 @@ def create_manifest(
 
     # Loop over TASK_LIST, and append the proper task dictionaries
     # to manifest["task_list"]
-    manifest["task_list"] = []
     for task_obj in TASK_LIST:
         # Convert Pydantic object to dictionary
         task_dict = task_obj.model_dump(
