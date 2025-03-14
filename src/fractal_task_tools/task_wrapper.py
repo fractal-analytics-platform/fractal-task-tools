@@ -12,16 +12,14 @@ from typing import Optional
 class TaskParameterEncoder(JSONEncoder):
     """
     Custom JSONEncoder that transforms Path objects to strings.
+
+    Ref https://docs.python.org/3/library/json.html
     """
 
-    def default(self, value):
-        """
-        Subclass implementation of `default`, to serialize Path objects as
-        strings.
-        """
-        if isinstance(value, Path):
-            return value.as_posix()
-        return JSONEncoder.default(self, value)
+    def default(self, obj):
+        if isinstance(obj, Path):
+            return obj.as_posix()
+        return super().default(obj)
 
 
 def run_fractal_task(

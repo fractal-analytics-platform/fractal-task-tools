@@ -1,21 +1,19 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 import pytest
-from devtools import debug
 from fractal_task_tools.task_wrapper import run_fractal_task
 from pydantic import ValidationError
 from pydantic.validate_call_decorator import validate_call
 
 TASK_OUTPUT = {
     "some": "thing",
-    "and": "another",
     "path": Path("/something"),
 }
 
 SERIALIZED_TASK_OUTPUT = {
     "some": "thing",
-    "and": "another",
     "path": "/something",
 }
 
@@ -25,9 +23,15 @@ def fake_task(zarr_url: str, parameter: float):
     return TASK_OUTPUT
 
 
+@validate_call
+def fake_task_invalid_output(zarr_url: str, parameter: float):
+    return dict(non_json_serializable=datetime.now())
+
+
 def test_run_fractal_task(tmp_path, monkeypatch, caplog):
 
-    args_path = tmp_path / "args.json"
+    ARGS_PATH = tmp_path / "args.json"
+    METADIFF_PATH = tmp_path / "metadiff.json"
 
     # Mock argparse.ArgumentParser
     class MockArgumentParser:
@@ -37,8 +41,8 @@ def test_run_fractal_task(tmp_path, monkeypatch, caplog):
         def parse_args(self, *args, **kwargs):
             class Args(object):
                 def __init__(self):
-                    self.args_json = str(args_path)
-                    self.out_json = str(tmp_path / "metadiff.json")
+                    self.args_json = str(ARGS_PATH)
+                    self.out_json = str(METADIFF_PATH)
 
             return Args()
 
@@ -51,26 +55,32 @@ def test_run_fractal_task(tmp_path, monkeypatch, caplog):
 
     # Success
     args = dict(zarr_url="/somewhere", parameter=1.0)
-    debug(args)
-    with args_path.open("w") as f:
+    with ARGS_PATH.open("w") as f:
         json.dump(args, f, indent=2)
     function_output = run_fractal_task(task_function=fake_task)
     assert function_output is None
-    with (tmp_path / "metadiff.json").open("r") as f:
+    with METADIFF_PATH.open("r") as f:
         task_output = json.load(f)
     assert task_output == SERIALIZED_TASK_OUTPUT
 
-    # Failure
+    # Failure (metadiff file already exists)
     caplog.clear()
     with pytest.raises(SystemExit):
         run_fractal_task(task_function=fake_task)
     assert "already exists" in caplog.text
 
-    # Failure
-    (tmp_path / "metadiff.json").unlink()
+    # Failure (invalid output)
+    METADIFF_PATH.unlink()
+    with pytest.raises(
+        TypeError,
+        match="datetime is not JSON serializable",
+    ):
+        run_fractal_task(task_function=fake_task_invalid_output)
+
+    # Failure (invalid input)
+    METADIFF_PATH.unlink()
     args = dict(zarr_url="/somewhere", parameter=None)
-    debug(args)
-    with args_path.open("w") as f:
+    with ARGS_PATH.open("w") as f:
         json.dump(args, f, indent=2)
     with pytest.raises(
         ValidationError, match="validation error for fake_task"
