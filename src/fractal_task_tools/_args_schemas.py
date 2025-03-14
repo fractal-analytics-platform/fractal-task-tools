@@ -96,7 +96,7 @@ def create_schema_for_single_task(
         testing.
     """
 
-    DEFINITIONS_KEY = "$defsa"
+    DEFINITIONS_KEY = "$defs"
 
     logging.info("[create_schema_for_single_task] START")
     if task_function is None:
