@@ -1,5 +1,6 @@
 from typing import Union
 
+
 ValidType = Union[list, dict, str, int, float, bool, None]
 
 

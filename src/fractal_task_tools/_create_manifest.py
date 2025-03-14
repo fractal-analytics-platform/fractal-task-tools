@@ -212,12 +212,15 @@ def check_manifest(
         logging.error("[check_manifest] On-disk manifest is not up to date.")
         # print(json.dumps(old_manifest, indent=2))
         # print(json.dumps(manifest, indent=2))
-        deepdiff(
-            old_object=old_manifest,
-            new_object=manifest,
-            path="manifest",
-            ignore_keys_order=ignore_keys_order,
-        )
-        sys.exit("New/old manifests differ")
+        try:
+            deepdiff(
+                old_object=old_manifest,
+                new_object=manifest,
+                path="manifest",
+                ignore_keys_order=ignore_keys_order,
+            )
+        except ValueError as e:
+            logging.error(str(e))
+            sys.exit("New/old manifests differ")
 
     logging.info("[check_manifest] END")
