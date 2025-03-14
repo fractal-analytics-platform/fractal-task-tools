@@ -17,6 +17,9 @@ def deepdiff(
             f"\tOld: {type(old_object)}\n\tNew:{type(new_object)}"
         )
 
+    if type(old_object) not in [list, dict, str, int, float, bool, None]:
+        raise ValueError(f"[{path}] Invalid type {type(old_object)}, exit.")
+
     if type(old_object) is dict:
         old_keys = list(old_object.keys())
         new_keys = list(new_object.keys())
