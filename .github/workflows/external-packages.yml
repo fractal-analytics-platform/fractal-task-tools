@@ -33,17 +33,17 @@ jobs:
           - package: scMultipleX
             github_repo: tcompa/gliberal-scMultipleX
             github_branch: main
-            cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics] ./fractal-task-tools'
+            cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics]'
 
           - package: fractal-helper-tasks
             github_repo: tcompa/fractal-helper-tasks
             github_branch: main
-            cmd_install: 'python -m pip install -e . ./fractal-task-tools'
+            cmd_install: 'python -m pip install -e .'
 
           - package: APx_fractal_task_collection
             github_repo: tcompa/APx_fractal_task_collection
             github_branch: main
-            cmd_install: 'python -m pip install -e . ./fractal-task-tools'
+            cmd_install: 'python -m pip install -e .'
 
         exclude:
           - package: skip
@@ -77,7 +77,10 @@ jobs:
           persist-credentials: false
 
       - name: Install package
-        run:  ${{ matrix.cmd_install }}
+        run: ${{ matrix.cmd_install }}
+
+      - name: Install fractal-task-tools
+        run: python -m pip install ./fractal-task-tools
 
       - name: Check manifest
         run: fractal-manifest check --package ${{ matrix.package }}
