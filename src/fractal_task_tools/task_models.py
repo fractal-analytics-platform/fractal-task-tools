@@ -2,13 +2,12 @@ from typing import Any
 from typing import Optional
 
 from pydantic import BaseModel
+from pydantic import ConfigDict
 from pydantic import Field
 
 
 class _BaseTask(BaseModel):
-    class Config:
-        arbitrary_types_allowed = True
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid", arbitrary_types_allowed=True)
 
     name: str
     executable: str
