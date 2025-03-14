@@ -58,6 +58,7 @@ def create_manifest(
         task_list=[],
         has_args_schemas=True,
         args_schema_version=ARGS_SCHEMA_VERSION,
+        authors=None,
     )
 
     # Import the task-list module
