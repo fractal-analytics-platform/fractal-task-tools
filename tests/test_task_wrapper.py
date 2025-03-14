@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import pytest
 from devtools import debug
@@ -6,8 +7,17 @@ from fractal_task_tools.task_wrapper import run_fractal_task
 from pydantic import ValidationError
 from pydantic.validate_call_decorator import validate_call
 
+TASK_OUTPUT = {
+    "some": "thing",
+    "and": "another",
+    "path": Path("/something"),
+}
 
-TASK_OUTPUT = {"some": "thing", "and": "another"}
+SERIALIZED_TASK_OUTPUT = {
+    "some": "thing",
+    "and": "another",
+    "path": "/something",
+}
 
 
 @validate_call
@@ -48,7 +58,7 @@ def test_run_fractal_task(tmp_path, monkeypatch, caplog):
     assert function_output is None
     with (tmp_path / "metadiff.json").open("r") as f:
         task_output = json.load(f)
-    assert task_output == TASK_OUTPUT
+    assert task_output == SERIALIZED_TASK_OUTPUT
 
     # Failure
     caplog.clear()
