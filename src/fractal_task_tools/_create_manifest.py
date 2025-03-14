@@ -140,5 +140,4 @@ def create_manifest(
 
         # Append task
         manifest["task_list"].append(task_dict)
-        print()
     return manifest
