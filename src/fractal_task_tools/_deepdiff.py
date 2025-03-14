@@ -34,9 +34,10 @@ def deepdiff(
 
         for key, value_a in old_object.items():
             deepdiff(
-                value_a,
-                new_object[key],
+                old_object=value_a,
+                new_object=new_object[key],
                 path=f"{path}['{key}']",
+                ignore_keys_order=ignore_keys_order,
             )
     elif type(old_object) is list:
         if len(old_object) != len(new_object):
@@ -46,9 +47,10 @@ def deepdiff(
             )
         for ind, item_a in enumerate(old_object):
             deepdiff(
-                item_a,
-                new_object[ind],
+                old_object=item_a,
+                new_object=new_object[ind],
                 path=f"{path}[{ind}]",
+                ignore_keys_order=ignore_keys_order,
             )
     else:
         if old_object != new_object:
