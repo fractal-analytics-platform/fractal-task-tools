@@ -7,7 +7,8 @@
 | src/fractal\_task\_tools/\_\_init\_\_.py                   |        3 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_args\_schemas.py                |       83 |       13 |       30 |        7 |     79% |49-50, 59, 110->130, 133-135, 145->150, 162->173, 186-206 |
 | src/fractal\_task\_tools/\_cli.py                          |       20 |       20 |        6 |        0 |      0% |      1-69 |
-| src/fractal\_task\_tools/\_create\_manifest.py             |       97 |       80 |       26 |        0 |     14% |44-147, 162-178, 194-214 |
+| src/fractal\_task\_tools/\_create\_manifest.py             |       99 |       81 |       26 |        0 |     14% |45-148, 163-179, 195-216 |
+| src/fractal\_task\_tools/\_deepdiff.py                     |       17 |       14 |       16 |        0 |      9% |     11-42 |
 | src/fractal\_task\_tools/\_descriptions.py                 |       81 |       32 |       34 |        9 |     56% |27, 52, 57, 62, 65, 71->75, 112->116, 138, 142-164, 182, 190, 217-236 |
 | src/fractal\_task\_tools/\_package\_name\_tools.py         |        5 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_pydantic\_generatejsonschema.py |       18 |        0 |        4 |        1 |     95% |    27->32 |
@@ -16,7 +17,7 @@
 | src/fractal\_task\_tools/\_titles.py                       |       37 |        5 |       22 |        8 |     78% |22->28, 31-33, 34->39, 65->70, 75->79, 83->81, 89-92, 95->100 |
 | src/fractal\_task\_tools/task\_models.py                   |       57 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/task\_wrapper.py                  |       27 |        0 |        4 |        0 |    100% |           |
-|                                                  **TOTAL** |  **512** |  **193** |  **158** |   **29** | **58%** |           |
+|                                                  **TOTAL** |  **531** |  **208** |  **174** |   **29** | **55%** |           |
 
 
 ## Setup coverage badge
