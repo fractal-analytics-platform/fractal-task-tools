@@ -10,6 +10,37 @@ from fractal_task_tools._deepdiff import deepdiff
 from fractal_task_tools._package_name_tools import normalize_package_name
 
 
+def write_manifest_to_file(
+    *,
+    raw_package_name: str,
+    manifest: str,
+) -> None:
+    """
+    Write manifest to file.
+
+    Arguments:
+        raw_package_name:
+        manifest: The manifest object
+    """
+    logging.info("[write_manifest_to_file] START")
+
+    package_name = normalize_package_name(raw_package_name)
+    logging.info(f"[write_manifest_to_file] {package_name=}")
+
+    imported_package = import_module(package_name)
+    package_root_dir = Path(imported_package.__file__).parent
+    manifest_path = (package_root_dir / MANIFEST_FILENAME).as_posix()
+    logging.info(f"[write_manifest_to_file] {os.getcwd()=}")
+    logging.info(f"[write_manifest_to_file] {package_root_dir=}")
+    logging.info(f"[write_manifest_to_file] {manifest_path=}")
+
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2)
+        f.write("\n")
+
+    logging.info("[write_manifest_to_file] END")
+
+
 def check_manifest(
     *,
     raw_package_name: str,
@@ -53,34 +84,3 @@ def check_manifest(
             sys.exit("New/old manifests differ")
 
     logging.info("[check_manifest] END")
-
-
-def write_manifest_to_file(
-    *,
-    raw_package_name: str,
-    manifest: str,
-) -> None:
-    """
-    Write manifest to file.
-
-    Arguments:
-        raw_package_name:
-        manifest: The manifest object
-    """
-    logging.info("[write_manifest_to_file] START")
-
-    package_name = normalize_package_name(raw_package_name)
-    logging.info(f"[write_manifest_to_file] {package_name=}")
-
-    imported_package = import_module(package_name)
-    package_root_dir = Path(imported_package.__file__).parent
-    manifest_path = (package_root_dir / MANIFEST_FILENAME).as_posix()
-    logging.info(f"[write_manifest_to_file] {os.getcwd()=}")
-    logging.info(f"[write_manifest_to_file] {package_root_dir=}")
-    logging.info(f"[write_manifest_to_file] {manifest_path=}")
-
-    with open(manifest_path, "w") as f:
-        json.dump(manifest, f, indent=2)
-        f.write("\n")
-
-    logging.info("[write_manifest_to_file] END")
