@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from ._args_schemas import create_schema_for_single_task
+from ._deepdiff import deepdiff
 from ._package_name_tools import normalize_package_name
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
@@ -209,6 +210,7 @@ def check_manifest(
         logging.error("[check_manifest] On-disk manifest is not up to date.")
         print(json.dumps(old_manifest, indent=2))
         print(json.dumps(manifest, indent=2))
+        deepdiff(old_manifest, manifest, path="manifest")
         sys.exit("New/old manifests differ")
 
     logging.info("[check_manifest] END")
