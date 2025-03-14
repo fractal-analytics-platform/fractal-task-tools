@@ -54,8 +54,8 @@ def create_manifest(
 
     # Prepare an empty manifest
     manifest = dict(
-        task_list=[],
         manifest_version=MANIFEST_VERSION,
+        task_list=[],
         has_args_schemas=True,
         args_schema_version=ARGS_SCHEMA_VERSION,
     )
