@@ -211,8 +211,6 @@ def check_manifest(
         logging.info("[check_manifest] On-disk manifest is up to date.")
     else:
         logging.error("[check_manifest] On-disk manifest is not up to date.")
-        # print(json.dumps(old_manifest, indent=2))
-        # print(json.dumps(manifest, indent=2))
         try:
             deepdiff(
                 old_object=old_manifest,
