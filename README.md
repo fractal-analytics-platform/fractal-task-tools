@@ -8,7 +8,7 @@
 | src/fractal\_task\_tools/\_args\_schemas.py                |       83 |       13 |       30 |        7 |     79% |49-50, 59, 110->130, 133-135, 145->150, 162->173, 186-206 |
 | src/fractal\_task\_tools/\_cli.py                          |       21 |       21 |        6 |        0 |      0% |      1-79 |
 | src/fractal\_task\_tools/\_create\_manifest.py             |      100 |       82 |       26 |        0 |     14% |45-149, 164-180, 198-225 |
-| src/fractal\_task\_tools/\_deepdiff.py                     |       24 |       21 |       20 |        0 |      7% |     14-55 |
+| src/fractal\_task\_tools/\_deepdiff.py                     |       24 |       21 |       20 |        0 |      7% |     14-57 |
 | src/fractal\_task\_tools/\_descriptions.py                 |       81 |       32 |       34 |        9 |     56% |27, 52, 57, 62, 65, 71->75, 112->116, 138, 142-164, 182, 190, 217-236 |
 | src/fractal\_task\_tools/\_package\_name\_tools.py         |        5 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_pydantic\_generatejsonschema.py |       18 |        0 |        4 |        1 |     95% |    27->32 |
