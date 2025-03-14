@@ -183,6 +183,7 @@ def check_manifest(
     *,
     raw_package_name: str,
     manifest: str,
+    ignore_keys_order: bool,
 ) -> None:
     """
     Write manifest to file.
@@ -190,6 +191,7 @@ def check_manifest(
     Arguments:
         raw_package_name:
         manifest: The manifest object
+        ignore_keys_order: Whether to ignore keys order.
     """
 
     package_name = normalize_package_name(raw_package_name)
@@ -210,7 +212,12 @@ def check_manifest(
         logging.error("[check_manifest] On-disk manifest is not up to date.")
         # print(json.dumps(old_manifest, indent=2))
         # print(json.dumps(manifest, indent=2))
-        deepdiff(old_object=old_manifest, new_object=manifest, path="manifest")
+        deepdiff(
+            old_object=old_manifest,
+            new_object=manifest,
+            path="manifest",
+            ignore_keys_order=ignore_keys_order,
+        )
         sys.exit("New/old manifests differ")
 
     logging.info("[check_manifest] END")

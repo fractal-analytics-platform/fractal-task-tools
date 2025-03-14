@@ -47,6 +47,16 @@ for subparser in (create_manifest_parser, check_manifest_parser):
         default="dev.task_list",
         required=False,
     )
+check_manifest_parser.add_argument(
+    "--ignore-keys-order",
+    type=bool,
+    help=(
+        "Ignore the order of dictionary keys when comparing manifests "
+        "(default value: False)."
+    ),
+    default=False,
+    required=False,
+)
 
 
 def main():
@@ -69,4 +79,5 @@ def main():
         check_manifest(
             raw_package_name=args.package,
             manifest=manifest,
+            ignore_keys_order=args.ignore_keys_order,
         )

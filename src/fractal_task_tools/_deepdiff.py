@@ -8,6 +8,7 @@ def deepdiff(
     old_object: ValidType,
     new_object: ValidType,
     path: str,
+    ignore_keys_order: bool,
 ):
     if type(old_object) is not type(new_object):
         raise ValueError(
@@ -18,6 +19,9 @@ def deepdiff(
     if type(old_object) is dict:
         old_keys = list(old_object.keys())
         new_keys = list(new_object.keys())
+        if ignore_keys_order:
+            old_keys = sorted(old_keys)
+            new_keys = sorted(new_keys)
         if old_keys != new_keys:
             raise ValueError(
                 f"[{path}] Dictionaries have different keys "
