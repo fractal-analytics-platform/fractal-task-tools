@@ -14,7 +14,7 @@ def deepdiff(
         )
 
     if type(a) is dict:
-        if set(a.keys()) != set(b.keys()):
+        if list(a.keys()) != list(b.keys()):
             raise ValueError(
                 f"[{path}] Dictionaries have different keys "
                 f"({set(a.keys())} vs {set(b.keys())})"
