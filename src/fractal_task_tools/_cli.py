@@ -59,8 +59,15 @@ check_manifest_parser.add_argument(
 )
 
 
+def _parse_arguments(sys_argv: list[str] | None) -> ap.Namespace:
+    if sys_argv is None:
+        sys_argv = sys.argv[:]
+    args = main_parser.parse_args(sys_argv[1:])
+    return args
+
+
 def main():
-    args = main_parser.parse_args(sys.argv[1:])
+    args = _parse_arguments()
     if args.cmd == "create":
         manifest = create_manifest(
             raw_package_name=args.package,
