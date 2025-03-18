@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from fractal_task_tools._deepdiff import deepdiff
 
@@ -29,7 +31,6 @@ def test_ignore_keys_order():
             new_object=new_obj,
             ignore_keys_order=False,
             path="base",
-            recursion_level=1,
         )
 
     deepdiff(
@@ -37,8 +38,20 @@ def test_ignore_keys_order():
         new_object=new_obj,
         ignore_keys_order=True,
         path="base",
-        recursion_level=1,
     )
+
+
+def test_list_length():
+    with pytest.raises(
+        ValueError,
+        match="Lists have different lengths",
+    ):
+        deepdiff(
+            old_object=[1],
+            new_object=[2, 3],
+            ignore_keys_order=False,
+            path="base",
+        )
 
 
 def test_path():
@@ -50,6 +63,33 @@ def test_path():
             new_object=new_obj,
             ignore_keys_order=False,
             path="base",
-            recursion_level=1,
         )
     assert "base['mykey1'][4]['mykey2']" in str(exc_info.value)
+
+
+@pytest.mark.parametrize(
+    "old_obj,new_obj",
+    [
+        (1, 2.0),
+        (None, "a"),
+        ([], {}),
+    ],
+)
+def test_type_diff(old_obj, new_obj):
+    with pytest.raises(ValueError, match="Type difference"):
+        deepdiff(
+            old_object=old_obj,
+            new_object=new_obj,
+            ignore_keys_order=False,
+            path="base",
+        )
+
+
+def test_invalid_type():
+    with pytest.raises(ValueError, match="Invalid type"):
+        deepdiff(
+            old_object=datetime.now(),
+            new_object=datetime.now(),
+            ignore_keys_order=False,
+            path="base",
+        )
