@@ -5,20 +5,20 @@
 | Name                                                       |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | src/fractal\_task\_tools/\_\_init\_\_.py                   |        3 |        0 |        0 |        0 |    100% |           |
-| src/fractal\_task\_tools/\_args\_schemas.py                |       83 |       13 |       30 |        7 |     79% |49-50, 59, 110->130, 133-135, 145->150, 162->173, 186-206 |
+| src/fractal\_task\_tools/\_args\_schemas.py                |       83 |        3 |       30 |        3 |     95% |59, 162->173, 193-194 |
 | src/fractal\_task\_tools/\_cli.py                          |       21 |       21 |        6 |        0 |      0% |      1-79 |
 | src/fractal\_task\_tools/\_cli\_tools.py                   |       43 |       43 |        2 |        0 |      0% |      1-86 |
-| src/fractal\_task\_tools/\_create\_manifest.py             |       60 |       49 |       24 |        0 |     13% |    40-143 |
+| src/fractal\_task\_tools/\_create\_manifest.py             |       60 |       13 |       24 |        8 |     73% |41, 68-70, 77-78, 83-85, 97->101, 102, 103->105, 106, 129-130, 134->138, 138->142 |
 | src/fractal\_task\_tools/\_deepdiff.py                     |       27 |        0 |       22 |        0 |    100% |           |
-| src/fractal\_task\_tools/\_descriptions.py                 |       81 |       32 |       34 |        9 |     56% |27, 52, 57, 62, 65, 71->75, 112->116, 138, 142-164, 182, 190, 217-236 |
+| src/fractal\_task\_tools/\_descriptions.py                 |       81 |       11 |       34 |       10 |     82% |27, 52, 57, 65, 138, 150-151, 182, 190, 219, 224->223, 227 |
 | src/fractal\_task\_tools/\_package\_name\_tools.py         |        5 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_pydantic\_generatejsonschema.py |       18 |        0 |        4 |        1 |     95% |    27->32 |
 | src/fractal\_task\_tools/\_signature\_constraints.py       |       37 |        4 |       16 |        4 |     85% |76, 82, 86, 97 |
-| src/fractal\_task\_tools/\_task\_docs.py                   |       47 |       39 |       16 |        0 |     13% |22-43, 55-74, 91-109 |
-| src/fractal\_task\_tools/\_titles.py                       |       37 |        5 |       22 |        8 |     78% |22->28, 31-33, 34->39, 65->70, 75->79, 83->81, 89-92, 95->100 |
+| src/fractal\_task\_tools/\_task\_docs.py                   |       47 |       15 |       16 |        4 |     63% |33->35, 35->37, 41-43, 91-109 |
+| src/fractal\_task\_tools/\_titles.py                       |       37 |        3 |       22 |        2 |     92% |31-33, 83->81 |
 | src/fractal\_task\_tools/task\_models.py                   |       57 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/task\_wrapper.py                  |       27 |        0 |        4 |        0 |    100% |           |
-|                                                  **TOTAL** |  **546** |  **206** |  **180** |   **29** | **59%** |           |
+|                                                  **TOTAL** |  **546** |  **113** |  **180** |   **32** | **78%** |           |
 
 
 ## Setup coverage badge
