@@ -93,3 +93,13 @@ def test_invalid_type():
             ignore_keys_order=False,
             path="base",
         )
+
+
+def test_success():
+    old_obj = {"mykey1": [1, 2.0, "a", None], "mykey2": []}
+    deepdiff(
+        old_object=old_obj,
+        new_object=old_obj,
+        ignore_keys_order=False,
+        path="base",
+    )
