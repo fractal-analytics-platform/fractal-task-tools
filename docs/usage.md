@@ -14,8 +14,8 @@ pip install fractal-task-tools
 -- IN PROGRESS --
 
 See details about:
-* [The `fractal-manifest` command-line interface](/reference/fractal-task-tools/fractal-manifest).
-* The [task models](/reference/fractal-task-tools/fractal_task_tools/task_models) to be used in `task_list.py`.
+* [The `fractal-manifest` command-line interface](./reference/fractal-manifest/index.md).
+* The [task models](./reference/fractal_task_tools/task_models.md) to be used in `task_list.py`.
 
 ## Run tasks
 

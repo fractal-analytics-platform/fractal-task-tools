@@ -48,7 +48,7 @@ nav:
   - Home page: index.md
   - Usage: usage.md
   - Changelog: changelog.md
-  - API/CLI reference: reference/fractal-task-tools/
+  - API/CLI reference: reference/
   - Development: development.md
 
 watch:

@@ -97,7 +97,7 @@ nav = Nav()
 
 # Parser level 0
 for key in ["fractal_task_tools", "fractal-manifest"]:
-    nav[["fractal-task-tools", key]] = f"fractal-task-tools/{key}/index.md"
+    nav[[key]] = f"{key}/index.md"
 
 # API
 logger = logging.getLogger(f"mkdocs.plugins.{__name__}")
@@ -106,7 +106,7 @@ logger.info(f"{prefix} START")
 for path in sorted(Path("src/fractal_task_tools").rglob("*.py")):
     rel_doc_path = path.relative_to("src").with_suffix(".md")
     full_doc_path = Path(
-        "reference/fractal-task-tools",
+        "reference",
         rel_doc_path,
     )
     parts = list(rel_doc_path.with_suffix("").parts)
@@ -117,33 +117,29 @@ for path in sorted(Path("src/fractal_task_tools").rglob("*.py")):
     elif parts[-1] == "__main__":
         continue
 
-    nav[["fractal-task-tools"] + parts] = rel_doc_path.as_posix()
+    nav[parts] = rel_doc_path.as_posix()
 
     with mkdocs_gen_files.open(full_doc_path, "w") as fd:
         identifier = ".".join(parts)
         fd.write(f"::: {identifier}")
 
-    mkdocs_gen_files.set_edit_path(full_doc_path, path)
-
+    # mkdocs_gen_files.set_edit_path(full_doc_path, path)
 
 logger.info(f"{prefix} END")
 
 # CLI
 main = parse_parser(main_parser)
 main["name"] = "fractal-manifest"
-with mkdocs_gen_files.open(
-    "reference/fractal-task-tools/fractal-manifest/index.md", "w"
-) as f:
+with mkdocs_gen_files.open("reference/fractal-manifest/index.md", "w") as f:
     f.write(to_markdown(main, level=0))
 for child in main["children"]:
     name = child["name"]
-    nav[
-        ["fractal-task-tools", "fractal-manifest", name]
-    ] = f"fractal-task-tools/fractal-manifest/{name}/index.md"
+    nav[["fractal-manifest", name]] = f"fractal-manifest/{name}/index.md"
     with mkdocs_gen_files.open(
-        f"reference/fractal-task-tools/fractal-manifest/{name}/index.md", "w"
+        f"reference/fractal-manifest/{name}/index.md", "w"
     ) as f:
         f.write(to_markdown(child, level=0))
+
 
 summary_path = "reference/SUMMARY.md"
 logger.info(f"{prefix} {summary_path=}")
