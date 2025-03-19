@@ -1,0 +1,87 @@
+site_name: Fractal Task Tools
+
+repo_url: https://github.com/fractal-analytics-platform/fractal-task-tools
+repo_name: fractal-task-tools
+
+markdown_extensions:
+- admonition
+- pymdownx.details
+- pymdownx.emoji
+- pymdownx.magiclink
+- pymdownx.superfences
+- pymdownx.tabbed:
+    alternate_style: true
+- pymdownx.tasklist
+- toc:
+    permalink: true
+    toc_depth: 3
+
+theme:
+  name: "material"
+  logo: https://raw.githubusercontent.com/fractal-analytics-platform/fractal-logos/refs/heads/main/common/fractal_logo.png
+  favicon: https://raw.githubusercontent.com/fractal-analytics-platform/fractal-logos/refs/heads/main/common/fractal_favicon.png
+  custom_dir: "docs/overrides"
+  features:
+    - content.code.annotate
+    - content.code.copy
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: lime
+    accent: light blue
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: lime
+    accent: light blue
+    toggle:
+      icon: material/weather-night
+      name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+  navigation:
+    expand: true
+
+nav:
+  - Home page: index.md
+  - Usage: usage.md
+  - Changelog: changelog.md
+  - API/CLI reference: reference/fractal-task-tools/
+  - Development: development.md
+
+watch:
+  - src
+
+plugins:
+  - search
+  - autorefs
+  - gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_signature_annotations: false
+            docstring_section_style: "spacy"
+            docstring_style: "google"
+            show_source: true
+            filters: []
+            show_root_full_path: false
+  - include-markdown
+
+extra_css:
+  - extra.css
+
+copyright: |
+  © Copyright 2024
+  University of Zurich
+  (see <u><a href="https://github.com/fractal-analytics-platform/fractal/blob/main/LICENSE">
+  LICENSE
+  </a></u>).
