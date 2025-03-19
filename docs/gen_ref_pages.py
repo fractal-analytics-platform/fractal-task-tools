@@ -5,7 +5,6 @@ from textwrap import fill
 from typing import Any
 
 import mkdocs_gen_files
-from devtools import debug
 from mkdocs_gen_files import Nav
 
 sys.path.append(Path(__file__).parent.as_posix())
@@ -100,7 +99,6 @@ nav = Nav()
 nav[["fractal-task-tools"]] = "fractal-task-tools/index.md"
 for key in ["fractal_task_tools", "fractal-manifest"]:
     nav[["fractal-task-tools", key]] = f"fractal-task-tools/{key}/index.md"
-debug(nav.build_literate_nav())
 
 # API
 logger = logging.getLogger(f"mkdocs.plugins.{__name__}")
@@ -113,7 +111,6 @@ for path in sorted(Path("src/fractal_task_tools").rglob("*.py")):
         rel_doc_path,
     )
     parts = list(rel_doc_path.with_suffix("").parts)
-    debug(full_doc_path, rel_doc_path, parts)
     if parts[-1] == "__init__":
         parts = parts[:-1]
         rel_doc_path = rel_doc_path.with_name("index.md")
@@ -132,8 +129,6 @@ for path in sorted(Path("src/fractal_task_tools").rglob("*.py")):
 
 logger.info(f"{prefix} END")
 
-debug(nav.build_literate_nav())
-
 # CLI
 main = parse_parser(main_parser)
 main["name"] = "fractal-manifest"
@@ -150,9 +145,6 @@ for child in main["children"]:
         f"reference/fractal-task-tools/fractal-manifest/{name}/index.md", "w"
     ) as f:
         f.write(to_markdown(child, level=0))
-
-
-debug(nav.build_literate_nav())
 
 summary_path = "reference/SUMMARY.md"
 logger.info(f"{prefix} {summary_path=}")
