@@ -12,7 +12,7 @@ def normalize_package_name(pkg_name: str) -> str:
         imported-module name.
 
     Args:
-        name: The non-normalized package name.
+        pkg_name: The non-normalized package name.
 
     Returns:
         The normalized package name.

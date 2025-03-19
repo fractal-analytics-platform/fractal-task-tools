@@ -96,7 +96,6 @@ def to_markdown(
 nav = Nav()
 
 # Parser level 0
-nav[["fractal-task-tools"]] = "fractal-task-tools/index.md"
 for key in ["fractal_task_tools", "fractal-manifest"]:
     nav[["fractal-task-tools", key]] = f"fractal-task-tools/{key}/index.md"
 
