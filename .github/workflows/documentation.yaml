@@ -18,6 +18,7 @@ jobs:
         with:
           persist-credentials: false
 
+
       - name: Install current fractal-task-tools
         run: python -m pip install -e .[dev]
 
@@ -50,4 +51,4 @@ jobs:
         run: python -m pip install -e .[dev]
 
       - name: MKDocs build
-        run: mkdocs build --config-file mkdocs.yml # --strict
+        run: mkdocs build --config-file mkdocs.yml --strict
