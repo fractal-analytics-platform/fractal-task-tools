@@ -8,9 +8,10 @@ import mkdocs_gen_files
 from mkdocs_gen_files import Nav
 
 sys.path.append(Path(__file__).parent.as_posix())
-sys.path.append(Path(__file__).parents[1].as_posix())
 
 from parser import parse_parser  # noqa: E402
+
+sys.path.append((Path(__file__).parents[1] / "src").as_posix())
 from fractal_task_tools._cli import main_parser  # noqa: E402
 
 
