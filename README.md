@@ -6,7 +6,7 @@
 |----------------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | src/fractal\_task\_tools/\_\_init\_\_.py                   |        3 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_args\_schemas.py                |       83 |        3 |       30 |        3 |     95% |59, 162->173, 193-194 |
-| src/fractal\_task\_tools/\_cli.py                          |       26 |        8 |        8 |        1 |     62% | 64, 70-86 |
+| src/fractal\_task\_tools/\_cli.py                          |       26 |        8 |        8 |        1 |     62% | 70, 76-92 |
 | src/fractal\_task\_tools/\_cli\_tools.py                   |       43 |       32 |        2 |        0 |     24% |25-41, 59-86 |
 | src/fractal\_task\_tools/\_create\_manifest.py             |       60 |       13 |       24 |        8 |     73% |41, 68-70, 77-78, 83-85, 97->101, 102, 103->105, 106, 129-130, 134->138, 138->142 |
 | src/fractal\_task\_tools/\_deepdiff.py                     |       27 |        0 |       22 |        0 |    100% |           |
