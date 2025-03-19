@@ -59,7 +59,13 @@ check_manifest_parser.add_argument(
 )
 
 
-def _parse_arguments(sys_argv: list[str] | None) -> ap.Namespace:
+def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
+    """
+    Parse `sys.argv` or custom CLI arguments.
+
+    Arguments:
+        sys_argv: If set, overrides `sys.argv` (useful for testing).
+    """
     if sys_argv is None:
         sys_argv = sys.argv[:]
     args = main_parser.parse_args(sys_argv[1:])
