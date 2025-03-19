@@ -18,11 +18,17 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Update pip
+        run: pip install --upgrade pip
+
       - name: Install current fractal-task-tools
         run: python -m pip install .[dev]
 
-      - name: Create requirements.txt
+      - name: Create doc-requirements.txt
         run: pip freeze --exclude fractal-task-tools > doc-requirements.txt
+
+      - name: View doc-requirements.txt
+        run: cat doc-requirements.txt
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
