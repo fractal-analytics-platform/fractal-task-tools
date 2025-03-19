@@ -17,7 +17,7 @@ def deepdiff(
     if type(old_object) is not type(new_object):
         raise ValueError(
             f"[{path}] Type difference:\n"
-            f"\tOld: {type(old_object)}\n\tNew:{type(new_object)}"
+            f"\tOld: {type(old_object)}\n\tNew: {type(new_object)}"
         )
 
     if type(old_object) not in [list, dict, str, int, float, bool, type(None)]:
@@ -64,5 +64,5 @@ def deepdiff(
         if old_object != new_object:
             raise ValueError(
                 f"{path} Values are different:\n"
-                f"\tOld: '{old_object}'\n\tNew:'{new_object}'"
+                f"\tOld: '{old_object}'\n\tNew: '{new_object}'"
             )
