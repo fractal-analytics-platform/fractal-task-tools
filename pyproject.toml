@@ -24,7 +24,7 @@ dev = [
     "mkdocs-gen-files ==0.4.0",
     "mkdocs-section-index ==0.3.5",
     "mkdocstrings[python] ==0.25.2",
-    "mkdocs-include-markdown-plugin ==4.0.4",
+    "mkdocs-include-markdown-plugin >=5.0.0,<6.0.0",
 ]
 
 [project.urls]
