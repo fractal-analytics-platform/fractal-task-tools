@@ -1,0 +1,54 @@
+name: docs
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+
+  docs:
+    name: "Deploy docs"
+    runs-on: ubuntu-22.04
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+
+      - name: Install current fractal-task-tools
+        run: python -m pip install -e .[dev]
+
+      - name: Create requirements.txt
+        run: pip freeze > doc-requirements.txt
+
+      - name: Deploy docs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REQUIREMENTS: doc-requirements.txt
+
+  docs-build:
+    name: "Test docs build"
+    runs-on: ubuntu-22.04
+    if: ${{ github.event_name != 'push' || github.ref != 'refs/heads/main' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install current fractal-task-tools
+        run: python -m pip install -e .[dev]
+
+      - name: MKDocs build
+        run: mkdocs build --config-file mkdocs.yml --strict
