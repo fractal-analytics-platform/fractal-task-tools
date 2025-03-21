@@ -115,6 +115,9 @@ def create_manifest(
                     package=package_name,
                     pydantic_models=INPUT_MODELS,
                 )
+                # FIXME: compute info about task type (non-parallel, parallel,
+                # compound-init, compound-compute)
+                # Validate schema top-level properties
                 logging.info(f"[{executable}] END (new schema)")
                 task_dict[f"args_schema_{kind}"] = schema
 
