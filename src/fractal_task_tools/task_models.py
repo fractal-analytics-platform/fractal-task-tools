@@ -1,4 +1,5 @@
 from typing import Any
+from typing import Literal
 from typing import Optional
 
 from pydantic import BaseModel
@@ -29,6 +30,7 @@ class CompoundTask(_BaseTask):
 
     executable_init: str
     meta_init: Optional[dict[str, Any]] = None
+    type: Literal["compound"] = "compound"
 
     @property
     def executable_non_parallel(self) -> str:
@@ -53,6 +55,8 @@ class NonParallelTask(_BaseTask):
     may include the `meta` attribute.
     """
 
+    type: Literal["non_parallel"] = "non_parallel"
+
     @property
     def executable_non_parallel(self) -> str:
         return self.executable
@@ -75,6 +79,8 @@ class ParallelTask(_BaseTask):
     A `ParallelTask` object must include the `executable` attribute, and it may
     include the `meta` attribute.
     """
+
+    type: Literal["parallel"] = "parallel"
 
     @property
     def executable_non_parallel(self) -> None:

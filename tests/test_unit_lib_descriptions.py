@@ -4,11 +4,11 @@ from fractal_task_tools._descriptions import _get_class_attrs_descriptions
 from fractal_task_tools._descriptions import _get_function_args_descriptions
 
 
-@pytest.mark.xfail(reason="FIXME: depends on fractal-tasks-core")
+# @pytest.mark.xfail(reason="FIXME: depends on fractal-tasks-core")
 def test_get_function_args_descriptions():
     args_descriptions = _get_function_args_descriptions(
-        package_name="fractal_tasks_core",
-        module_path="dev/lib_signature_constraints.py",
+        package_name="fractal_task_tools",
+        module_path="_signature_constraints.py",
         function_name="_extract_function",
     )
     debug(args_descriptions)
