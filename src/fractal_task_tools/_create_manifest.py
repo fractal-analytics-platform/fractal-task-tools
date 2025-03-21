@@ -89,7 +89,13 @@ def create_manifest(
     for task_obj in TASK_LIST:
         # Convert Pydantic object to dictionary
         task_dict = task_obj.model_dump(
-            exclude={"meta_init", "executable_init", "meta", "executable"},
+            exclude={
+                "meta_init",
+                "executable_init",
+                "meta",
+                "executable",
+                "type",  # FIXME: to be included, later
+            },
             exclude_unset=True,
         )
 
@@ -117,8 +123,7 @@ def create_manifest(
                 )
 
                 validate_arguments(
-                    # task_type=task_obj.task_type,
-                    task_type=kind,  # FIXME
+                    task_type=task_obj.type,
                     schema=schema,
                     executable_kind=kind,
                 )
