@@ -7,9 +7,9 @@ from typing import Any
 
 from ._args_schemas import create_schema_for_single_task
 from ._package_name_tools import normalize_package_name
+from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
-
 
 ARGS_SCHEMA_VERSION = "pydantic_v2"
 MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
@@ -115,9 +115,14 @@ def create_manifest(
                     package=package_name,
                     pydantic_models=INPUT_MODELS,
                 )
-                # FIXME: compute info about task type (non-parallel, parallel,
-                # compound-init, compound-compute)
-                # Validate schema top-level properties
+
+                validate_arguments(
+                    # task_type=task_obj.task_type,
+                    task_type=kind,  # FIXME
+                    schema=schema,
+                    executable_kind=kind,
+                )
+
                 logging.info(f"[{executable}] END (new schema)")
                 task_dict[f"args_schema_{kind}"] = schema
 
