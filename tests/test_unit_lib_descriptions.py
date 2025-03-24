@@ -1,6 +1,8 @@
 from pathlib import Path
 
+import pytest
 from devtools import debug
+from fractal_task_tools._descriptions import _get_class_attrs_descriptions
 from fractal_task_tools._descriptions import (
     _get_class_attrs_descriptions_from_file,
 )
@@ -38,3 +40,19 @@ def test_get_class_attrs_descriptions_from_file():
     )
     debug(attrs_descriptions)
     assert attrs_descriptions == {"arg1": "Description of `arg1`."}
+
+
+def test_failures():
+    with pytest.raises(ValueError, match="must end with '.py'"):
+        _get_class_attrs_descriptions(
+            package_name="fractal_task_tools",
+            module_relative_path="task_models",
+            class_name="MyClass",
+        )
+
+    with pytest.raises(RuntimeError, match="Cannot find class_name"):
+        _get_class_attrs_descriptions(
+            package_name="fractal_task_tools",
+            module_relative_path="task_models.py",
+            class_name="MyClass",
+        )
