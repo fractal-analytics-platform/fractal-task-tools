@@ -19,6 +19,23 @@ class _BaseTask(BaseModel):
     modality: Optional[str] = None
     tags: list[str] = Field(default_factory=list)
     docs_info: Optional[str] = None
+    type: str
+
+    @property
+    def executable_non_parallel(self) -> str:
+        raise NotImplementedError()
+
+    @property
+    def meta_non_parallel(self) -> Optional[dict[str, Any]]:
+        raise NotImplementedError()
+
+    @property
+    def executable_parallel(self) -> str:
+        raise NotImplementedError()
+
+    @property
+    def meta_parallel(self) -> Optional[dict[str, Any]]:
+        raise NotImplementedError()
 
 
 class CompoundTask(_BaseTask):
