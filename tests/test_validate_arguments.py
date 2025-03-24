@@ -58,3 +58,28 @@ def test_validate_arguments():
         executable_kind="parallel",
         schema=_fake_schema("zarr_url", "arg1"),
     )
+
+    with pytest.raises(ValueError, match="Forbidden arguments"):
+        validate_arguments(
+            task_type="converter_non_parallel",
+            executable_kind="non_parallel",
+            schema=_fake_schema("zarr_urls", "zarr_dir", "arg1"),
+        )
+
+    validate_arguments(
+        task_type="converter_non_parallel",
+        executable_kind="non_parallel",
+        schema=_fake_schema("zarr_dir", "arg1"),
+    )
+
+    validate_arguments(
+        task_type="converter_compound",
+        executable_kind="non_parallel",
+        schema=_fake_schema("zarr_dir", "arg1"),
+    )
+
+    validate_arguments(
+        task_type="converter_compound",
+        executable_kind="parallel",
+        schema=_fake_schema("zarr_url", "init_args", "arg1"),
+    )
