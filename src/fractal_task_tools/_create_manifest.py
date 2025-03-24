@@ -94,7 +94,6 @@ def create_manifest(
                 "executable_init",
                 "meta",
                 "executable",
-                "type",  # FIXME: to be included, later
             },
             exclude_unset=True,
         )
