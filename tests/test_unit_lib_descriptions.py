@@ -1,10 +1,24 @@
-import pytest
+from pathlib import Path
+
 from devtools import debug
-from fractal_task_tools._descriptions import _get_class_attrs_descriptions
+from fractal_task_tools._descriptions import (
+    _get_class_attrs_descriptions_from_file,
+)
 from fractal_task_tools._descriptions import _get_function_args_descriptions
+from pydantic import BaseModel
 
 
-# @pytest.mark.xfail(reason="FIXME: depends on fractal-tasks-core")
+class MyClass(BaseModel):
+    """
+    Init Args for MIP task.
+
+    Attributes:
+        arg1: Description of `arg1`.
+    """
+
+    arg1: str
+
+
 def test_get_function_args_descriptions():
     args_descriptions = _get_function_args_descriptions(
         package_name="fractal_task_tools",
@@ -17,12 +31,10 @@ def test_get_function_args_descriptions():
     )
 
 
-@pytest.mark.xfail(reason="FIXME: depends on fractal-tasks-core")
-def test_get_class_attrs_descriptions():
-    attrs_descriptions = _get_class_attrs_descriptions(
-        package_name="fractal_tasks_core",
-        module_relative_path="channels.py",
-        class_name="ChannelInputModel",
+def test_get_class_attrs_descriptions_from_file():
+    attrs_descriptions = _get_class_attrs_descriptions_from_file(
+        module_path=Path(__file__),
+        class_name="MyClass",
     )
     debug(attrs_descriptions)
-    assert attrs_descriptions.keys() == set(("wavelength_id", "label"))
+    assert attrs_descriptions == {"arg1": "Description of `arg1`."}
