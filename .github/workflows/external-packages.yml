@@ -40,10 +40,10 @@ jobs:
             github_branch: use-fractal-task-tools
             cmd_install: 'python -m pip install -e .'
 
-          - package: APx_fractal_task_collection
-            github_repo: tcompa/APx_fractal_task_collection
-            github_branch: main
-            cmd_install: 'python -m pip install -e .'
+          # - package: APx_fractal_task_collection
+          #   github_repo: xxxxxxxxxxx/APx_fractal_task_collection
+          #   github_branch: main
+          #   cmd_install: 'python -m pip install -e .'
 
         exclude:
           - package: skip
