@@ -8,12 +8,18 @@ REQUIRED_ARGUMENTS: dict[tuple[str, str], set[str]] = {
     ("compound", "non_parallel"): {"zarr_urls", "zarr_dir"},
     ("parallel", "parallel"): {"zarr_url"},
     ("compound", "parallel"): {"zarr_url", "init_args"},
+    ("converter_non_parallel", "non_parallel"): {"zarr_dir"},
+    ("converter_compound", "non_parallel"): {"zarr_dir"},
+    ("converter_compound", "parallel"): {"zarr_url", "init_args"},
 }
 FORBIDDEN_ARGUMENTS: dict[tuple[str, str], set[str]] = {
     ("non_parallel", "non_parallel"): {"zarr_url"},
     ("compound", "non_parallel"): {"zarr_url"},
     ("parallel", "parallel"): {"zarr_urls", "zarr_dir"},
     ("compound", "parallel"): {"zarr_urls", "zarr_dir"},
+    ("converter_non_parallel", "non_parallel"): {"zarr_url", "zarr_urls"},
+    ("converter_compound", "non_parallel"): {"zarr_url", "zarr_urls"},
+    ("converter_compound", "parallel"): {"zarr_urls", "zarr_dir"},
 }
 
 
