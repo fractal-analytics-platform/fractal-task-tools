@@ -131,7 +131,36 @@ def test_enum_argument():
         verbose=True,
     )
     debug(schema)
-    # FIXME: Add assertion
+    assert schema["$defs"]["ColorA"] == {
+        "enum": [
+            "this-is-red",
+            "this-is-green",
+        ],
+        "title": "ColorA",
+        "type": "string",
+        "description": "Missing description for ColorA.",
+    }
+    assert schema["$defs"]["ColorB"] == {
+        "enum": [
+            "this-is-red",
+            "this-is-green",
+        ],
+        "title": "ColorB",
+        "type": "string",
+        "description": "Missing description for ColorB.",
+    }
+    assert schema["properties"] == {
+        "arg_A": {
+            "$ref": "#/$defs/ColorA",
+            "title": "Arg A",
+            "description": "Description of arg_A.",
+        },
+        "arg_B": {
+            "$ref": "#/$defs/ColorB",
+            "title": "Arg B",
+            "description": "Description of arg_B.",
+        },
+    }
 
 
 @validate_call
@@ -199,4 +228,21 @@ def test_tuple_argument():
         verbose=True,
     )
     debug(schema)
-    # FIXME: Add assertion
+    assert schema["properties"] == {
+        "arg_A": {
+            "default": [1, 1],
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+                {
+                    "type": "integer",
+                },
+                {
+                    "type": "integer",
+                },
+            ],
+            "title": "Arg A",
+            "type": "array",
+            "description": "Description of arg_A.",
+        },
+    }

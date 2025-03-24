@@ -7,9 +7,10 @@ from typing import Any
 
 from ._args_schemas import create_schema_for_single_task
 from ._package_name_tools import normalize_package_name
+from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
-
+from .task_models import _BaseTask
 
 ARGS_SCHEMA_VERSION = "pydantic_v2"
 MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
@@ -60,7 +61,7 @@ def create_manifest(
     task_list_module = import_module(f"{package_name}.{task_list_path}")
 
     # Load TASK_LIST
-    TASK_LIST = getattr(task_list_module, "TASK_LIST")
+    TASK_LIST: list[_BaseTask] = getattr(task_list_module, "TASK_LIST")
 
     # Load INPUT_MODELS
     try:
@@ -89,9 +90,15 @@ def create_manifest(
     for task_obj in TASK_LIST:
         # Convert Pydantic object to dictionary
         task_dict = task_obj.model_dump(
-            exclude={"meta_init", "executable_init", "meta", "executable"},
+            exclude={
+                "meta_init",
+                "executable_init",
+                "meta",
+                "executable",
+            },
             exclude_unset=True,
         )
+        task_dict["type"] = task_obj.type
 
         # Copy some properties from `task_obj` to `task_dict`
         if task_obj.executable_non_parallel is not None:
@@ -115,6 +122,13 @@ def create_manifest(
                     package=package_name,
                     pydantic_models=INPUT_MODELS,
                 )
+
+                validate_arguments(
+                    task_type=task_obj.type,
+                    schema=schema,
+                    executable_kind=kind,
+                )
+
                 logging.info(f"[{executable}] END (new schema)")
                 task_dict[f"args_schema_{kind}"] = schema
 

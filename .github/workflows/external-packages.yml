@@ -30,14 +30,14 @@ jobs:
             github_branch: 921-switch-to-fractal-task-tools
             cmd_install: 'python -m pip install -e .[fractal-tasks]'
 
-          - package: scMultipleX
-            github_repo: tcompa/gliberal-scMultipleX
-            github_branch: main
-            cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics]'
+          # - package: scMultipleX
+          #   github_repo: xxxxxxxxxxxxxxxxxx/gliberal-scMultipleX
+          #   github_branch: main
+          #   cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics]'
 
           - package: fractal-helper-tasks
-            github_repo: tcompa/fractal-helper-tasks
-            github_branch: main
+            github_repo: fractal-analytics-platform/fractal-helper-tasks
+            github_branch: use-fractal-task-tools
             cmd_install: 'python -m pip install -e .'
 
           - package: APx_fractal_task_collection

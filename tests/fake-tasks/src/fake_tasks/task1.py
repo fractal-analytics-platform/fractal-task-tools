@@ -13,7 +13,8 @@ class MyModel(BaseModel):
 
 
 def task1(
-    arg1: int,
+    zarr_urls: list[str],
+    zarr_dir: str,
     arg2: MyModel,
 ):
     """
@@ -22,8 +23,8 @@ def task1(
     Long description (very very long).
 
     Arguments:
-        arg1: An integer
+        zarr_urls: Default
+        zarr_dir: Default
         arg2: A `MyModel` object
-
     """
     pass

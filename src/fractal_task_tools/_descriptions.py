@@ -122,11 +122,43 @@ def _get_function_args_descriptions(
     return descriptions
 
 
+def _get_class_attrs_descriptions_from_file(
+    *,
+    module_path: Path,
+    class_name: str,
+) -> dict[str, str]:
+    """
+    Extract class-attribute descriptions from a Python script
+
+    Args:
+        module_path: Example `/something/my_class.py`.
+        class_name: Example `OmeroChannel`.
+    """
+    tree = ast.parse(module_path.read_text())
+    try:
+        _class = next(
+            c
+            for c in ast.walk(tree)
+            if (isinstance(c, ast.ClassDef) and c.name == class_name)
+        )
+    except StopIteration:
+        raise RuntimeError(f"Cannot find {class_name=} in {module_path}.")
+    docstring = ast.get_docstring(_class)
+    parsed_docstring = docparse(docstring)
+    descriptions = {
+        x.arg_name: _sanitize_description(x.description)
+        if x.description
+        else "Missing description"
+        for x in parsed_docstring.params
+    }
+    return descriptions
+
+
 def _get_class_attrs_descriptions(
     package_name: str, module_relative_path: str, class_name: str
 ) -> dict[str, str]:
     """
-    Extract attribute descriptions from a class.
+    Extract class-attribute descriptions from an imported module
 
     Args:
         package_name: Example `fractal_tasks_core`.
@@ -140,26 +172,10 @@ def _get_class_attrs_descriptions(
     # Get the class ast.ClassDef object
     package_path = Path(import_module(package_name).__file__).parent
     module_path = package_path / module_relative_path
-    tree = ast.parse(module_path.read_text())
-    try:
-        _class = next(
-            c
-            for c in ast.walk(tree)
-            if (isinstance(c, ast.ClassDef) and c.name == class_name)
-        )
-    except StopIteration:
-        raise RuntimeError(
-            f"Cannot find {class_name=} for {package_name=} "
-            f"and {module_relative_path=}"
-        )
-    docstring = ast.get_docstring(_class)
-    parsed_docstring = docparse(docstring)
-    descriptions = {
-        x.arg_name: _sanitize_description(x.description)
-        if x.description
-        else "Missing description"
-        for x in parsed_docstring.params
-    }
+    descriptions = _get_class_attrs_descriptions_from_file(
+        module_path=module_path,
+        class_name=class_name,
+    )
     logging.info(f"[_get_class_attrs_descriptions] END ({class_name=})")
     return descriptions
 
