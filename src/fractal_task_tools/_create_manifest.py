@@ -10,6 +10,7 @@ from ._package_name_tools import normalize_package_name
 from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
+from .task_models import _BaseTask
 
 ARGS_SCHEMA_VERSION = "pydantic_v2"
 MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
@@ -60,7 +61,7 @@ def create_manifest(
     task_list_module = import_module(f"{package_name}.{task_list_path}")
 
     # Load TASK_LIST
-    TASK_LIST = getattr(task_list_module, "TASK_LIST")
+    TASK_LIST: list[_BaseTask] = getattr(task_list_module, "TASK_LIST")
 
     # Load INPUT_MODELS
     try:
@@ -97,6 +98,7 @@ def create_manifest(
             },
             exclude_unset=True,
         )
+        task_dict["type"] = task_obj.type
 
         # Copy some properties from `task_obj` to `task_dict`
         if task_obj.executable_non_parallel is not None:
