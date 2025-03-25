@@ -10,7 +10,7 @@ license = {text ="BSD-3-Clause"}
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "pydantic >=2.0.0,<=2.8.2",
-    "docstring-parser ==0.15",
+    "docstring-parser >=0.15,<=0.16",
 ]
 [project.optional-dependencies]
 dev = [
