@@ -95,10 +95,7 @@ fractal-manifest check --package my-fractal-tasks-package
 ```
 This command replaces the custom logic often included in GitHub Actions, which re-creates the manifest and then run a `git diff` to see if it changed.
 
-
-## Run tasks
-
-For each one of your tasks' modules, replace the `import` from `fractal_tasks_core.tasks._utils` with
+6. For each one of your tasks' modules, replace the `import` from `fractal_tasks_core.tasks._utils` with
 ```python
 from fractal_task_tools.task_wrapper import run_fractal_task
 ```
