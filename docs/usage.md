@@ -69,7 +69,7 @@ from fractal_task_tools.task_models import ConverterNonParallelTask
 from fractal_task_tools.task_models import ParallelTask
 ```
 
-2. If some of your tasks are converters (that is, they create OME-NGFF images but do not take any OME-NGFF image as an input), you can now use one of the new available task types (`ConverterCompoundTask` and `ConverterNonParallelTask`).
+2. If some of your tasks are converters (that is, they create OME-Zarr images but do not take any OME-Zarr image as an input), you can now use one of the new available task types (`ConverterCompoundTask` and `ConverterNonParallelTask`).
 
 3. In the `task_list.py` file of your package, optionally include variables for `AUTHORS`, `DOCS_LINK` and `INPUT_MODELS` (if applicable), as in this example:
 ```python
