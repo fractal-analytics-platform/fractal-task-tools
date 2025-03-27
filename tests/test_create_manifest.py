@@ -27,7 +27,17 @@ def test_create_manifest(tmp_path: Path, caplog):
     manifest = create_manifest(
         raw_package_name="fake-tasks",
         task_list_path="task_list",
+        fractal_server_2_13=True,
     )
+    for task in manifest["task_list"]:
+        assert "type" not in task.keys()
+
+    manifest = create_manifest(
+        raw_package_name="fake-tasks",
+        task_list_path="task_list",
+    )
+    for task in manifest["task_list"]:
+        assert "type" in task.keys()
     debug(manifest)
     write_manifest_to_file(
         raw_package_name="fake-tasks",

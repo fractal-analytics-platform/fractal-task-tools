@@ -15,6 +15,5 @@ TASK_LIST = [
         category="Conversion",
         modality="HCS",
         tags=["Yokogawa", "Cellvoyager", "2D", "3D"],
-        # docs_info="file:task_info/convert_cellvoyager_to_ome_zarr.md",
     ),
 ]

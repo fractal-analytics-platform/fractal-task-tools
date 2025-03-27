@@ -47,6 +47,19 @@ for subparser in (create_manifest_parser, check_manifest_parser):
         default="dev.task_list",
         required=False,
     )
+
+    subparser.add_argument(
+        "--fractal-server-2-13",
+        action="store_true",
+        help=(
+            "If set, produce a manifest which is compatible with "
+            "fractal-server<2.14 (that is, exclude tasks' `type`s from "
+            "manifest and forbid converter types."
+        ),
+        default=False,
+        required=False,
+    )
+
 check_manifest_parser.add_argument(
     "--ignore-keys-order",
     type=bool,
@@ -78,6 +91,7 @@ def main():
         manifest = create_manifest(
             raw_package_name=args.package,
             task_list_path=args.task_list_path,
+            fractal_server_2_13=args.fractal_server_2_13,
         )
         write_manifest_to_file(
             raw_package_name=args.package,
@@ -88,6 +102,7 @@ def main():
         manifest = create_manifest(
             raw_package_name=args.package,
             task_list_path=args.task_list_path,
+            fractal_server_2_13=args.fractal_server_2_13,
         )
         check_manifest(
             raw_package_name=args.package,
