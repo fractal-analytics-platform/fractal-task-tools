@@ -103,15 +103,15 @@ def create_manifest(
             },
             exclude_unset=True,
         )
+        if fractal_server_2_13 and task_obj.type in [
+            "converter_compound",
+            "converter_non_parallel",
+        ]:
+            raise ValueError(
+                f"Invalid task type {task_obj.type} "
+                f"(with {fractal_server_2_13=})."
+            )
         if not fractal_server_2_13:
-            if task_obj.type in [
-                "converter_compound",
-                "converter_non_parallel",
-            ]:
-                raise ValueError(
-                    f"Invalid task type {task_obj.type} "
-                    f"(with {fractal_server_2_13=})."
-                )
             task_dict["type"] = task_obj.type
 
         # Copy some properties from `task_obj` to `task_dict`
