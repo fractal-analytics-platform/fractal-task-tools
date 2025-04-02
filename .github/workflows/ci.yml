@@ -9,7 +9,7 @@ on:
 jobs:
 
   tests:
-    name: "Python ${{ matrix.python-version }}"
+    name: "Python ${{ matrix.python-version }} / Pydantic ${{ matrix.pydantic-version }}"
     runs-on: ubuntu-22.04
     timeout-minutes: 30
 
