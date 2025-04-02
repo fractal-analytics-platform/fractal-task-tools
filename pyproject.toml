@@ -11,6 +11,7 @@ requires-python = ">=3.10,<3.13"
 dependencies = [
     "pydantic >=2.0.0,<2.12.0",
     "docstring-parser >=0.15,<=0.16",
+    "packaging",
 ]
 [project.optional-dependencies]
 dev = [
