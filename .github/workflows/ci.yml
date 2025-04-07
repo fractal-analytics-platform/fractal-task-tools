@@ -36,10 +36,6 @@ jobs:
       - name: Install pydantic ${{ matrix.pydantic-version }}
         run: pip install pydantic==${{ matrix.pydantic-version }}
 
-      - name: Check import
-        continue-on-error: true
-        run: python -c 'import pydantic; print(pydantic.__version__); import pydantic.experimental; import pydantic.experimental.arguments_schema; print(pydantic.experimental.arguments_schema.__file__)'
-
       - name: Test with pytest
         env:
           COVERAGE_FILE: coverage-data-${{ matrix.python-version }}
