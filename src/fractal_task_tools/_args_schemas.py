@@ -65,31 +65,30 @@ def _create_schema_for_function(function: Callable) -> _Schema:
     from packaging.version import parse
 
     if parse(pydantic.__version__) >= parse("2.11.0"):
+
         from pydantic.experimental.arguments_schema import (
             generate_arguments_schema,
-        )
+        )  # noqa
 
         core_schema = generate_arguments_schema(
             function,
             schema_type="arguments",
         )
     elif parse(pydantic.__version__) >= parse("2.9.0"):
-        from pydantic._internal._typing_extra import get_module_ns_of
-        from pydantic._internal._config import (
-            ConfigWrapper,
-        )  # FIXME: supported?
-        from pydantic._internal import _generate_schema  # FIXME: supported?
 
-        namespace = get_module_ns_of(function)
+        from pydantic._internal._config import ConfigWrapper  # noqa
+        from pydantic._internal import _generate_schema  # noqa
+
         gen_core_schema = _generate_schema.GenerateSchema(
-            ConfigWrapper(None), namespace
+            ConfigWrapper(None),
+            None,
         )
         core_schema = gen_core_schema.generate_schema(function)
         core_schema = gen_core_schema.clean_schema(core_schema)
     else:
-        from pydantic._internal._typing_extra import add_module_globals
-        from pydantic._internal import _generate_schema
-        from pydantic._internal._config import ConfigWrapper
+        from pydantic._internal._typing_extra import add_module_globals  # noqa
+        from pydantic._internal import _generate_schema  # noqa
+        from pydantic._internal._config import ConfigWrapper  # noqa
 
         namespace = add_module_globals(function, None)
         gen_core_schema = _generate_schema.GenerateSchema(
