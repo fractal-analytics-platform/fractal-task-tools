@@ -172,3 +172,8 @@ cython_debug/
 
 
 activate-venv.sh
+
+venv
+venv310
+venv311
+venv312
