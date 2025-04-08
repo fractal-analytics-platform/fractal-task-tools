@@ -8,9 +8,7 @@ authors = [
 readme = "README.md"
 license = {text ="BSD-3-Clause"}
 requires-python = ">=3.10,<3.13"
-dependencies = [
-    "pydantic >=2.0.0,<=2.8.2",
-]
+dependencies = ["pydantic >=2.0.0"]
 
 [build-system]
 requires = ["setuptools >= 61.0"]
