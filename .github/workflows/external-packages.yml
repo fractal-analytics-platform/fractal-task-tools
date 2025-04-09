@@ -40,6 +40,13 @@ jobs:
             github_branch: use-fractal-task-tools
             cmd_install: 'python -m pip install -e .'
 
+
+          - package: fractal-hcs-converters
+            github_repo: fractal-analytics-platform/fractal-hcs-converters
+            github_branch: adopt-fractal-task-tools
+            cmd_install: 'python -m pip install -e .'
+
+
           # - package: APx_fractal_task_collection
           #   github_repo: xxxxxxxxxxx/APx_fractal_task_collection
           #   github_branch: main
