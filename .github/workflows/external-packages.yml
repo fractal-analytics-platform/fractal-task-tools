@@ -37,7 +37,7 @@ jobs:
 
           - package: fractal-helper-tasks
             github_repo: fractal-analytics-platform/fractal-helper-tasks
-            github_branch: 29-deprecate-support-for-213-fractal-server
+            github_branch: main
             cmd_install: 'python -m pip install -e .'
 
 
