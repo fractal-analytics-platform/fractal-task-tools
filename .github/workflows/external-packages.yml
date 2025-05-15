@@ -27,7 +27,7 @@ jobs:
 
           - package: fractal-tasks-core
             github_repo: fractal-analytics-platform/fractal-tasks-core
-            github_branch: dev-1.5
+            github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks]'
 
           # - package: scMultipleX
@@ -37,7 +37,7 @@ jobs:
 
           - package: fractal-helper-tasks
             github_repo: fractal-analytics-platform/fractal-helper-tasks
-            github_branch: use-fractal-task-tools
+            github_branch: 29-deprecate-support-for-213-fractal-server
             cmd_install: 'python -m pip install -e .'
 
 
