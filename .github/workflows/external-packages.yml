@@ -43,7 +43,7 @@ jobs:
 
           - package: fractal-hcs-converters
             github_repo: fractal-analytics-platform/fractal-hcs-converters
-            github_branch: adopt-fractal-task-tools
+            github_branch: main
             cmd_install: 'python -m pip install -e .'
 
 
