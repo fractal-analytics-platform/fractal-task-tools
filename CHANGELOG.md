@@ -1,3 +1,3 @@
-# 0.1.0
+# 0.0.13
 
-First version tracked in this CHANGELOG.
+* Support Python 3.13 (\#35).
