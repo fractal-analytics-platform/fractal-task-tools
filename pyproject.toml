@@ -19,6 +19,7 @@ dev = [
     "devtools ==0.12.2",
     "pytest >=8.3.0, <9.0.0",
     "coverage >=7.6.0,<7.7.0",
+    "jsonschema >=4"
 ]
 docs = [
     "mkdocs >=1.6.0,<1.7.0",
