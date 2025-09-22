@@ -29,7 +29,6 @@ def fake_task_invalid_output(zarr_url: str, parameter: float):
 
 
 def test_run_fractal_task(tmp_path, monkeypatch, caplog):
-
     ARGS_PATH = tmp_path / "args.json"
     METADIFF_PATH = tmp_path / "metadiff.json"
 

@@ -61,7 +61,7 @@ jobs:
     steps:
 
       - name: Print matrix-element information
-        run: echo '${{ matrix.package }}, ${{ matrix.github_repo }}, ${{ matrix.cmd_install }}, ${{ matrix.cmd_create_manifest }}, ${{ matrix.manifest_path }}'
+        run: echo '${{ matrix.package }}, ${{ matrix.github_repo }}, ${{ matrix.github_branch }}, ${{ matrix.cmd_install }}'
 
       - uses: actions/setup-python@v5
         with:
@@ -91,3 +91,9 @@ jobs:
 
       - name: Check manifest
         run: fractal-manifest check --package ${{ matrix.package }}
+
+      - name: Install  current version of `fractal-task-tools` with `dev` extra
+        run: python -m pip install ./fractal-task-tools[dev]
+
+      - name: Run script to look at manifest with different JSON Schema drafts
+        run: python tests/scripts/validate_multi_draft.py

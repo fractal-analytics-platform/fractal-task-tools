@@ -65,7 +65,6 @@ def _create_schema_for_function(function: Callable) -> _Schema:
     from packaging.version import parse
 
     if parse(pydantic.__version__) >= parse("2.11.0"):
-
         from pydantic.experimental.arguments_schema import (
             generate_arguments_schema,
         )  # noqa
@@ -75,7 +74,6 @@ def _create_schema_for_function(function: Callable) -> _Schema:
             schema_type="arguments",
         )
     elif parse(pydantic.__version__) >= parse("2.9.0"):
-
         from pydantic._internal._config import ConfigWrapper  # noqa
         from pydantic._internal import _generate_schema  # noqa
 
