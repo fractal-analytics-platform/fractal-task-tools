@@ -33,7 +33,7 @@ if __name__ == "__main__":
     with open(manifest_files[0]) as fp:
         manifest = json.load(fp)
     for task in manifest["task_list"]:
-        print(f"Now looking at {task['name']}")
+        print(f"Now looking at '{task['name']}' task")
         for task_type in ("non_parallel", "parallel"):
             key = f"args_schema_{task_type}"
             schema = task.get(key, None)
@@ -42,6 +42,6 @@ if __name__ == "__main__":
                     my_validator = jsonschema_validator(schema=schema)
                     my_validator.check_schema(my_validator.schema)
                     print(
-                        f"Schema for task {task['name']}/{task_type} is valid "
-                        f"with {jsonschema_validator}."
+                        f"Schema for task '{task['name']}'/{task_type} is "
+                        f"valid with {jsonschema_validator}."
                     )
