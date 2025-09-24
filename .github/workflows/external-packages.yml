@@ -97,3 +97,6 @@ jobs:
 
       - name: Run script to look at manifest with different JSON Schema drafts
         run: python ./fractal-task-tools/tests/scripts/validate_multi_draft.py
+
+      - name: Run script to validate manifest against fractal-server schema
+        run: python ./fractal-task-tools/tests/scripts/validate_with_fractal_server.py
