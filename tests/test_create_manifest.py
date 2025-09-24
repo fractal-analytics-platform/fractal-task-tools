@@ -41,6 +41,14 @@ def test_create_manifest(tmp_path: Path, caplog):
     for task in manifest["task_list"]:
         assert "type" not in task.keys()
 
+    # SUCCESS: create manifest with `DOCS_LINK=""` transformed into `None`
+    manifest = create_manifest(
+        raw_package_name="fake-tasks",
+        task_list_path="task_list_with_empty_docs_link",
+    )
+    for task in manifest["task_list"]:
+        assert "docs_link" not in task.keys()
+
     # SUCCESS: create non-legacy manifest
     manifest = create_manifest(
         raw_package_name="fake-tasks",
