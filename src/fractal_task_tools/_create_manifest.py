@@ -86,6 +86,12 @@ def create_manifest(
     # Load DOCS_LINK
     try:
         DOCS_LINK = getattr(task_list_module, "DOCS_LINK")
+        # Transform empty string into None
+        if DOCS_LINK == "":
+            DOCS_LINK = None
+            logging.warning(
+                "`DOCS_LINK=" "` transformed into `DOCS_LINK=None`."
+            )
     except AttributeError:
         DOCS_LINK = None
         logging.warning("No `DOCS_LINK` found in task_list module.")
