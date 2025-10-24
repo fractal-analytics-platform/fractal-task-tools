@@ -21,7 +21,6 @@ def create_manifest(
     *,
     raw_package_name: str,
     task_list_path: str,
-    fractal_server_2_13: bool = False,
 ) -> dict[str, Any]:
     """
     Create the package manifest based on a `task_list.py` module
@@ -32,11 +31,7 @@ def create_manifest(
             (after normalization).
         task_list_path:
             Relative path to the `task_list.py` module, with respect to the
-            package root (example `dev.task_list`).
-        fractal_server_2_13:
-            If set, produce a manifest which is compatible with
-            fractal-server<2.14 (that is, exclude tasks' `type`s from manifest
-            and forbid converter types."
+            package root (example `dev.task_list`)."
 
     Returns:
         Task-package manifest.
@@ -109,16 +104,6 @@ def create_manifest(
             },
             exclude_unset=True,
         )
-        if fractal_server_2_13 and task_obj.type in [
-            "converter_compound",
-            "converter_non_parallel",
-        ]:
-            raise ValueError(
-                f"Invalid task type {task_obj.type} "
-                f"(with {fractal_server_2_13=})."
-            )
-        if not fractal_server_2_13:
-            task_dict["type"] = task_obj.type
 
         # Copy some properties from `task_obj` to `task_dict`
         if task_obj.executable_non_parallel is not None:
