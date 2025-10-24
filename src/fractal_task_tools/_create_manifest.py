@@ -104,6 +104,7 @@ def create_manifest(
             },
             exclude_unset=True,
         )
+        task_dict["type"] = task_obj.type
 
         # Copy some properties from `task_obj` to `task_dict`
         if task_obj.executable_non_parallel is not None:
