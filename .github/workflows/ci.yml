@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
-        pydantic-version: ["2.8.2", "2.9.2", "2.10.6", "2.11.7"]
+        pydantic-version: ["2.8.2", "2.9.2", "2.10.6", "2.12.3"]
 
     steps:
 
