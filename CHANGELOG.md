@@ -1,3 +1,7 @@
+# 0.1.0
+
+Deprecate `--fractal-server-2-13` option (\#45).
+
 # 0.0.14
 
 * Replace `DOCS_LINK=""` with `DOCS_LINK=None` (\#42).
