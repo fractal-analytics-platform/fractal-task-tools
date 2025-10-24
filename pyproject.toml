@@ -23,13 +23,13 @@ dev = [
     "requests >2.32.0,<2.33.0",
 ]
 docs = [
-    "mkdocs >=1.6.0,<1.7.0",
-    "mkdocs-material >=9.6.0,<9.7.0",
-    "mkdocs-literate-nav >=0.6.2,<0.7.0",
-    "mkdocs-gen-files >=0.5.0,<0.6.0",
-    "mkdocs-section-index >=0.3.9,<0.4.0",
-    "mkdocstrings[python] >=0.29.0,<0.30.0",
-    "mkdocs-include-markdown-plugin >=7.0.0,<8.0.0",
+    "mkdocs==1.6.1",
+    "mkdocstrings[python]==0.30.0",
+    "mkdocs-material==9.6.15",
+    "mkdocs-gen-files==0.5.0",
+    "mkdocs-literate-nav==0.6.2",
+    "mkdocs-section-index==0.3.10",
+    "mkdocs-include-markdown-plugin==7.1.8",
 ]
 
 [project.urls]
