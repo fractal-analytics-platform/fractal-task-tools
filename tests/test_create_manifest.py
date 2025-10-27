@@ -24,23 +24,6 @@ def test_create_manifest(tmp_path: Path, caplog):
 
     import fake_tasks
 
-    # FAILURE: create legacy manifest with converter tasks
-    with pytest.raises(ValueError, match="Invalid task type"):
-        create_manifest(
-            raw_package_name="fake-tasks",
-            task_list_path="task_list_with_converter",
-            fractal_server_2_13=True,
-        )
-
-    # SUCCESS: create legacy manifest
-    manifest = create_manifest(
-        raw_package_name="fake-tasks",
-        task_list_path="task_list",
-        fractal_server_2_13=True,
-    )
-    for task in manifest["task_list"]:
-        assert "type" not in task.keys()
-
     # SUCCESS: create manifest with `DOCS_LINK=""` transformed into `None`
     manifest = create_manifest(
         raw_package_name="fake-tasks",
