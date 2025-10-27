@@ -31,7 +31,7 @@ def create_manifest(
             (after normalization).
         task_list_path:
             Relative path to the `task_list.py` module, with respect to the
-            package root (example `dev.task_list`)."
+            package root (example `dev.task_list`).
 
     Returns:
         Task-package manifest.
