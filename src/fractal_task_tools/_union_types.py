@@ -2,7 +2,7 @@ import sys
 import types
 import typing
 
-if sys.version_info >= (3, 10) and sys.version_info <:
+if sys.version_info >= (3, 10):
     _UNION_TYPES = {typing.Union, types.UnionType}
 else:
     _UNION_TYPES = {typing.Union}
@@ -25,7 +25,7 @@ def is_union(_type) -> bool:
     )
     if result != alternative_result:
         raise ValueError(
-            f"Could not determine wether {_type} is a union. Please report "
+            f"Could not determine whether {_type} is a union. Please report "
             "this at https://github.com/fractal-analytics-platform/"
             "fractal-task-tools/issues."
         )
