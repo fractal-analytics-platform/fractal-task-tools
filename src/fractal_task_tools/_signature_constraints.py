@@ -1,5 +1,7 @@
 import inspect
 import logging
+import types
+import typing
 from importlib import import_module
 from inspect import signature
 from pathlib import Path
@@ -8,6 +10,8 @@ from pydantic.v1.decorator import ALT_V_ARGS
 from pydantic.v1.decorator import ALT_V_KWARGS
 from pydantic.v1.decorator import V_DUPLICATE_KWARGS
 from pydantic.v1.decorator import V_POSITIONAL_ONLY_NAME
+
+from ._union_types import is_union
 
 FORBIDDEN_PARAM_NAMES = (
     "args",
@@ -76,13 +80,26 @@ def _validate_function_signature(function: callable):
                 f"Function {function} has argument with name {param.name}"
             )
 
+        from devtools import debug
+
+        debug(
+            param.name,
+            param.annotation,
+            is_union(param.annotation),
+        )
         # CASE 2: Raise an error for unions
         if str(param.annotation).startswith(("typing.Union[", "Union[")):
             raise ValueError("typing.Union is not supported")
 
         # CASE 3: Raise an error for "|"
-        if "|" in str(param.annotation):
-            raise ValueError('Use of "|" in type hints is not supported')
+        if (
+            str(param.annotation).count("|") > 1
+            or str(param.annotation).count("|") == 1
+            and "None" not in str(param.annotation)
+        ):
+            raise ValueError(
+                'Use of "|" in type hints is only supported for `param: something | None`'
+            )
 
         # CASE 4: Raise an error for optional parameter with given (non-None)
         # default, e.g. Optional[str] = "asd"
