@@ -24,6 +24,7 @@ def is_union(_type) -> bool:
         or "|" in str(_type)
     )
     if result != alternative_result:
+        # This is a safety check, which is meant to be unreachable
         raise ValueError(
             f"Could not determine whether {_type} is a union. Please report "
             "this at https://github.com/fractal-analytics-platform/"

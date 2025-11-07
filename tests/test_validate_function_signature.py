@@ -8,131 +8,137 @@ from fractal_task_tools._signature_constraints import (
 )
 
 
-def get_valid_functions() -> list[callable]:
-    def valid0(x1_str: str, x2_int: int):
-        pass
-
-    def valid1(x1_optional_str: typing.Optional[str]):
-        pass
-
-    def valid2(x1_optional_str: typing.Optional[str] = None):
-        pass
-
-    def valid3(x1_optional_str: Optional[str]):
-        pass
-
-    def valid4(x1_optional_str: Optional[str] = None):
-        pass
-
-    def valid5(x1_optional_str: str | None):
-        pass
-
-    def valid6(x1_optional_str: str | None = None):
-        pass
-
-    def valid7(x1_optional_str: None | str):
-        pass
-
-    def valid8(x1_optional_str: None | str = None):
-        pass
-
-    def valid9(x1_int_or_int: int | int):
-        pass
-
-    return (
-        valid0,
-        valid1,
-        valid2,
-        valid3,
-        valid4,
-        valid5,
-        valid6,
-        valid7,
-        valid8,
-        valid9,
-    )
+def valid_0(x1_str: str, x2_int: int):
+    pass
 
 
-def get_invalid_functions() -> list[callable]:
-    def invalid1(args: list[str]):
-        pass
+def valid_1(x1_optional_str: typing.Optional[str]):
+    pass
 
-    def invalid2(kwargs: list[str]):
-        pass
 
-    def invalid3(x1_int_or_str: typing.Union[int, str]):
-        pass
+def valid_2(x1_optional_str: typing.Optional[str] = None):
+    pass
 
-    def invalid4(x1_int_or_str: Union[int, str]):
-        pass
 
-    def invalid5(x1_int_or_str: int | str):
-        pass
+def valid_3(x1_optional_str: Optional[str]):
+    pass
 
-    def invalid6(x1_optional_int_wrong_defailt: Optional[int] = 1):
-        pass
 
-    def invalid7(x1_optional_int_wrong_defailt: typing.Optional[int] = 1):
-        pass
+def valid_4(x1_optional_str: Optional[str] = None):
+    pass
 
-    def invalid8(x1_optional_int_wrong_defailt: int | None = 1):
-        pass
 
-    def invalid9(x1_optional_int_wrong_defailt: None | int = 1):
-        pass
+def valid_5(x1_optional_str: str | None):
+    pass
 
-    def invalid10(x1_int_or_none_or_float: int | None | str):
-        pass
 
-    return (
-        invalid1,
-        invalid2,
-        invalid3,
-        invalid4,
-        invalid5,
-        invalid6,
-        invalid7,
-        invalid8,
-        invalid9,
-        invalid10,
-    )
+def valid_6(x1_optional_str: str | None = None):
+    pass
+
+
+def valid_7(x1_optional_str: None | str):
+    pass
+
+
+def valid_8(x1_optional_str: None | str = None):
+    pass
+
+
+def valid_9(x1_int_or_int: int | int):
+    pass
+
+
+def invalid_forbidden_1(args: list[str]):
+    pass
+
+
+def invalid_forbidden_2(kwargs: list[str]):
+    pass
+
+
+def invalid_union_of_three_1(x1_int_or_none_or_float: int | None | float):
+    pass
+
+
+def invalid_union_of_three_2(x1_int_or_str_or_float: int | str | float):
+    pass
+
+
+def invalid_no_none_1(x1_int_or_str: typing.Union[int, str]):
+    pass
+
+
+def invalid_no_none_2(x1_int_or_str: Union[int, str]):
+    pass
+
+
+def invalid_no_none_3(x1_int_or_str: int | str):
+    pass
+
+
+def invalid_default_1(x1_optional_int_wrong_defailt: Optional[int] = 1):
+    pass
+
+
+def invalid_default_2(x1_optional_int_wrong_defailt: typing.Optional[int] = 1):
+    pass
+
+
+def invalid_default_3(x1_optional_int_wrong_defailt: int | None = 1):
+    pass
+
+
+def invalid_default_4(x1_optional_int_wrong_defailt: None | int = 1):
+    pass
 
 
 def test_validate_function_signature():
-    for valid_fun in get_valid_functions():
-        _validate_function_signature(function=valid_fun)
+    for valid_function in (
+        valid_0,
+        valid_1,
+        valid_2,
+        valid_3,
+        valid_4,
+        valid_5,
+        valid_6,
+        valid_7,
+        valid_8,
+        valid_9,
+    ):
+        _validate_function_signature(function=valid_function)
 
-    # for invalid_fun in get_invalid_functions():
-    #     with pytest.raises(ValueError):
-    #         _validate_function_signature(function=invalid_fun)
+    for invalid_fun in (
+        invalid_forbidden_1,
+        invalid_forbidden_2,
+    ):
+        with pytest.raises(ValueError) as exc_info:
+            _validate_function_signature(function=invalid_fun)
+        assert "forbidden name" in str(exc_info.value)
 
+    for invalid_fun in (
+        invalid_union_of_three_1,
+        invalid_union_of_three_2,
+    ):
+        with pytest.raises(ValueError) as exc_info:
+            _validate_function_signature(function=invalid_fun)
+        assert "Only unions of two elements are supported" in str(
+            exc_info.value
+        )
 
-#         match="argument with name args",
-#     ):
-#         _validate_function_signature(function=fun1)
-
-#     with pytest.raises(
-#         ValueError,
-#         match="typing.Union is not supported",
-#     ):
-#         _validate_function_signature(function=fun2)
-
-#     with pytest.raises(
-#         ValueError,
-#         match='Use of "|',
-#     ):
-#         _validate_function_signature(function=fun3)
-
-#     with pytest.raises(
-#         ValueError,
-#         match='Use of "|',
-#     ):
-#         _validate_function_signature(function=fun4)
-
-#     with pytest.raises(
-#         ValueError,
-#         match="Optional parameter has non-None default value",
-#     ):
-#         _validate_function_signature(function=fun5)
-
-#     _validate_function_signature(function=fun6)
+    for invalid_fun in (
+        invalid_no_none_1,
+        invalid_no_none_2,
+        invalid_no_none_3,
+    ):
+        with pytest.raises(ValueError) as exc_info:
+            _validate_function_signature(function=invalid_fun)
+        assert "One union element must be None" in str(exc_info.value)
+    for invalid_fun in (
+        invalid_default_1,
+        invalid_default_2,
+        invalid_default_3,
+        invalid_default_4,
+    ):
+        with pytest.raises(ValueError) as exc_info:
+            _validate_function_signature(function=invalid_fun)
+        assert "Non-None default not supported" in str(exc_info.value)

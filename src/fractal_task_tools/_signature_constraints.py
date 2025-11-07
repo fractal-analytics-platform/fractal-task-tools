@@ -1,7 +1,5 @@
 import inspect
 import logging
-import types
-import typing
 from importlib import import_module
 from inspect import signature
 from pathlib import Path
@@ -77,40 +75,36 @@ def _validate_function_signature(function: callable):
         # CASE 1: Check that name is not forbidden
         if param.name in FORBIDDEN_PARAM_NAMES:
             raise ValueError(
-                f"Function {function} has argument with name {param.name}"
+                f"Function {function} has argument with forbidden "
+                f"name '{param.name}'"
             )
 
-        from devtools import debug
-
-        debug(
-            param.name,
-            param.annotation,
-            is_union(param.annotation),
-        )
-        # CASE 2: Raise an error for unions
-        if str(param.annotation).startswith(("typing.Union[", "Union[")):
-            raise ValueError("typing.Union is not supported")
-
-        # CASE 3: Raise an error for "|"
-        if (
-            str(param.annotation).count("|") > 1
-            or str(param.annotation).count("|") == 1
-            and "None" not in str(param.annotation)
-        ):
-            raise ValueError(
-                'Use of "|" in type hints is only supported for `param: something | None`'
-            )
-
-        # CASE 4: Raise an error for optional parameter with given (non-None)
-        # default, e.g. Optional[str] = "asd"
-        is_annotation_optional = str(param.annotation).startswith(
-            ("typing.Optional[", "Optional[")
-        )
-        default_given = (param.default is not None) and (
+        annotation_is_union = is_union(param.annotation)
+        annotation_str = str(param.annotation)
+        annotation_has_default = (param.default is not None) and (
             param.default != inspect._empty
         )
-        if default_given and is_annotation_optional:
-            raise ValueError("Optional parameter has non-None default value")
+
+        if annotation_is_union:
+            if annotation_str.count("|") > 1 or annotation_str.count(",") > 1:
+                raise ValueError(
+                    "Only unions of two elements are supported, but parameter "
+                    f"'{param.name}' has type hint '{annotation_str}'."
+                )
+            elif (
+                "None" not in annotation_str
+                and "Optional[" not in annotation_str
+            ):
+                raise ValueError(
+                    "One union element must be None, but parameter "
+                    f"'{param.name}' has type hint '{annotation_str}'."
+                )
+            elif annotation_has_default:
+                raise ValueError(
+                    "Non-None default not supported, but parameter "
+                    f"'{param.name}' has type hint '{annotation_str}' "
+                    f"and default {param.default}."
+                )
 
     logging.info("[_validate_function_signature] END")
     return sig
