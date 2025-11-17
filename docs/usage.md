@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
 # Migrate from `fractal-tasks-core`
 
-1. Add `fractal_task_tools` as a required dependency for your task package.
+1. Add `fractal-task-tools` as a required dependency for your task package.
 2. In the `task_list.py` file of your package, import task models from `fractal_task_tools.task_models` (rather than `fractal_tasks_core.dev.task_models`), as in
 ```python
 from fractal_task_tools.task_models import CompoundTask
