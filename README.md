@@ -5,7 +5,7 @@
 | Name                                                       |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | src/fractal\_task\_tools/\_\_init\_\_.py                   |        3 |        0 |        0 |        0 |    100% |           |
-| src/fractal\_task\_tools/\_args\_schemas.py                |       94 |        3 |       34 |        3 |     95% |57, 185->196, 216-217 |
+| src/fractal\_task\_tools/\_args\_schemas.py                |       98 |        3 |       34 |        3 |     95% |57, 194->205, 225-226 |
 | src/fractal\_task\_tools/\_cli.py                          |       26 |        8 |        8 |        1 |     62% | 71, 77-93 |
 | src/fractal\_task\_tools/\_cli\_tools.py                   |       43 |        0 |        2 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_create\_manifest.py             |       67 |       13 |       26 |        7 |     76% |42, 69-71, 78-79, 90-92, 110->114, 115, 116->118, 119, 149-150, 154->158 |
@@ -20,7 +20,7 @@
 | src/fractal\_task\_tools/\_union\_types.py                 |       12 |        2 |        4 |        2 |     75% |     8, 28 |
 | src/fractal\_task\_tools/task\_models.py                   |       99 |        4 |        0 |        0 |     96% |26, 30, 34, 38 |
 | src/fractal\_task\_tools/task\_wrapper.py                  |       27 |        0 |        4 |        0 |    100% |           |
-|                                                  **TOTAL** |  **655** |   **56** |  **200** |   **29** | **89%** |           |
+|                                                  **TOTAL** |  **659** |   **56** |  **200** |   **29** | **89%** |           |
 
 
 ## Setup coverage badge
