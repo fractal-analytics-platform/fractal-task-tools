@@ -67,12 +67,21 @@ def _create_schema_for_function(function: Callable) -> _Schema:
     if parse(pydantic.__version__) >= parse("2.11.0"):
         from pydantic.experimental.arguments_schema import (
             generate_arguments_schema,
-        )  # noqa
+        )
+        from pydantic import ConfigDict
+        from pydantic.fields import FieldInfo, ComputedFieldInfo
+
+        # NOTE: v2.12.0 modified the generated field titles. The function
+        # `make_title` restores the `<2.12.0` behavior
+        def make_title(name: str, info: FieldInfo | ComputedFieldInfo):
+            return name.title().replace("_", " ").strip()
 
         core_schema = generate_arguments_schema(
             function,
             schema_type="arguments",
+            config=ConfigDict(field_title_generator=make_title),
         )
+
     elif parse(pydantic.__version__) >= parse("2.9.0"):
         from pydantic._internal._config import ConfigWrapper  # noqa
         from pydantic._internal import _generate_schema  # noqa
