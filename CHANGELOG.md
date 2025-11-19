@@ -1,4 +1,4 @@
-# 0.1.0 (unreleased)
+# 0.1.0
 
 * Deprecate `--fractal-server-2-13` option (\#45).
 * Broader support for unions of type and `None` (\#53).
