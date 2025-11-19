@@ -2,6 +2,7 @@
 
 * Deprecate `--fractal-server-2-13` option (\#45).
 * Broader support for unions of type and `None` (\#53).
+* Support pydantic v2.12 (\#55).
 
 # 0.0.14
 
