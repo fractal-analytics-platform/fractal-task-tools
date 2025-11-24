@@ -4,12 +4,15 @@ from importlib import import_module
 from inspect import signature
 from pathlib import Path
 
-from pydantic.v1.decorator import ALT_V_ARGS
-from pydantic.v1.decorator import ALT_V_KWARGS
-from pydantic.v1.decorator import V_DUPLICATE_KWARGS
-from pydantic.v1.decorator import V_POSITIONAL_ONLY_NAME
-
 from ._union_types import is_union
+
+
+# The following variables are copied from `pydantic.v1.decorator`
+# (for pydantic v2.11.10)
+ALT_V_ARGS = "v__args"
+ALT_V_KWARGS = "v__kwargs"
+V_DUPLICATE_KWARGS = "v__duplicate_kwargs"
+V_POSITIONAL_ONLY_NAME = "v__positional_only"
 
 FORBIDDEN_PARAM_NAMES = (
     "args",
