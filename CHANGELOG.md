@@ -1,3 +1,7 @@
+# 0.1.1
+
+* Support Python3.14 (\#57).
+
 # 0.1.0
 
 * Deprecate `--fractal-server-2-13` option (\#45).
