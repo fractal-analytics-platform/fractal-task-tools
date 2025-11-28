@@ -1,3 +1,7 @@
+# Unreleased
+
+* Add `operetta-compose` to external-packages tests (\#58).
+
 # 0.1.1
 
 * Support Python3.14 (\#57).
