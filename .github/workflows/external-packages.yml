@@ -42,10 +42,10 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
-          # - package: operetta-compose
-          #   github_repo: https://github.com/leukemia-kispi/operetta-compose
-          #   github_branch: main
-          #   cmd_install: 'python -m pip install -e .'
+          - package: operetta-compose
+            github_repo: leukemia-kispi/operetta-compose
+            github_branch: main
+            cmd_install: 'python -m pip install -e .'
 
           # - package: scMultipleX
           #   github_repo: xxxxxxxxxxxxxxxxxx/gliberal-scMultipleX
