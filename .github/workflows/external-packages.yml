@@ -57,10 +57,10 @@ jobs:
           #   github_branch: main
           #   cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics]'
 
-          # - package: APx_fractal_task_collection
-          #   github_repo: xxxxxxxxxxx/APx_fractal_task_collection
-          #   github_branch: main
-          #   cmd_install: 'python -m pip install -e .'
+          - package: APx_fractal_task_collection
+            github_repo: Apricot-Therapeutics/APx_fractal_task_collection
+            github_branch: main
+            cmd_install: 'python -m pip install -e .'
 
         exclude:
           - package: skip

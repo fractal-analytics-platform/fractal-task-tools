@@ -1,6 +1,7 @@
 # Unreleased
 
 * Add `operetta-compose` to external-packages tests (\#58).
+* Add `APx_fractal_task_collection` to external-packages tests (\#61).
 
 # 0.1.1
 
