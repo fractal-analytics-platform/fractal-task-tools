@@ -20,7 +20,7 @@
 | src/fractal\_task\_tools/\_union\_types.py                 |       12 |        2 |        4 |        2 |     75% |     8, 28 |
 | src/fractal\_task\_tools/task\_models.py                   |       99 |        4 |        0 |        0 |     96% |26, 30, 34, 38 |
 | src/fractal\_task\_tools/task\_wrapper.py                  |       27 |        0 |        4 |        0 |    100% |           |
-|                                                  **TOTAL** |  **659** |   **56** |  **200** |   **29** | **89%** |           |
+| **TOTAL**                                                  |  **659** |   **56** |  **200** |   **29** | **89%** |           |
 
 
 ## Setup coverage badge
