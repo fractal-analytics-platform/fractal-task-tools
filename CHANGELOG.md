@@ -1,5 +1,6 @@
 # Unreleased
 
+* Add `fractal-ome-zarr-hcs-stitching` to external-packages tests (\#64).
 * Add `operetta-compose` to external-packages tests (\#58).
 * Add `APx_fractal_task_collection` to external-packages tests (\#61).
 * Add `zmb-fractal-tasks` to external-packages tests (\#60).

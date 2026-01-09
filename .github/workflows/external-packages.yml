@@ -62,6 +62,11 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
+          - package: fractal-ome-zarr-hcs-stitching
+            github_repo: m-albert/fractal-ome-zarr-hcs-stitching
+            github_branch: main
+            cmd_install: 'python -m pip install -e .'
+
         exclude:
           - package: skip
             github_repo: skip
