@@ -86,24 +86,25 @@ def _validate_plain_union(
             `param.annotation` or to `param.annotation.__origin__` (when the
             original `param.annotation` is an `Annotated` union).
     """
-
-    # FIXME: make checks more robust, without relying on `str` casting
-
-    annotation_str = str(_type)
-    if annotation_str.count("|") > 1 or annotation_str.count(",") > 1:
+    args = _type.__args__
+    if len(args) != 2:
         raise ValueError(
             "Only unions of two elements are supported, but parameter "
-            f"'{param.name}' has type hint '{annotation_str}'."
+            f"'{param.name}' has type hint '{_type}'."
         )
-    elif "None" not in annotation_str and "Optional[" not in annotation_str:
+    elif not any(
+        args_item is type(None) for args_item in args
+    ) and "Optional[" not in str(
+        _type
+    ):  # FIXME: do not use string casting
         raise ValueError(
             "One union element must be None, but parameter "
-            f"'{param.name}' has type hint '{annotation_str}'."
+            f"'{param.name}' has type hint '{_type}'."
         )
     elif (param.default is not None) and (param.default != inspect._empty):
         raise ValueError(
             "Non-None default not supported, but parameter "
-            f"'{param.name}' has type hint '{annotation_str}' "
+            f"'{param.name}' has type hint '{_type}' "
             f"and default {param.default}."
         )
 
