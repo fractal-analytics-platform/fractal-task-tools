@@ -116,31 +116,21 @@ def _validate_function_signature(function: callable):
         # CASE 1: Check that name is not forbidden
         if param.name in FORBIDDEN_PARAM_NAMES:
             raise ValueError(
-                f"Function {function} has argument with "
-                f"forbidden name '{param.name}'"
+                f"Function {function} has argument with forbidden "
+                "name '{param.name}'"
             )
 
         if is_union(param.annotation):
-            what_kind_of_union = UnionCases.PLAIN_UNION
+            validate_plain_union(
+                _type=param.annotation,
+                param=param,
+            )
         elif is_annotated_union(param.annotation):
-            if is_tagged(param.annotation):
-                what_kind_of_union = UnionCases.TAGGED_ANNOTATED_UNION
-            else:
-                what_kind_of_union = UnionCases.NON_TAGGED_ANNOTATED_UNION
-        else:
-            what_kind_of_union = UnionCases.NON_UNION
-
-        match what_kind_of_union:
-            case UnionCases.PLAIN_UNION:
-                validate_plain_union(_type=param.annotation, param=param)
-            case UnionCases.NON_TAGGED_ANNOTATED_UNION:
+            if not is_tagged(param.annotation):
                 validate_plain_union(
-                    _type=param.annotation.__origin__, param=param
+                    _type=param.annotation.__origin__,
+                    param=param,
                 )
-            case UnionCases.TAGGED_ANNOTATED_UNION:
-                pass
-            case UnionCases.NON_UNION:
-                pass
 
     logging.info("[_validate_function_signature] END")
     return sig
