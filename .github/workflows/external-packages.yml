@@ -52,10 +52,10 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
-          # - package: scMultipleX
-          #   github_repo: xxxxxxxxxxxxxxxxxx/gliberal-scMultipleX
-          #   github_branch: main
-          #   cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics]'
+          - package: fractal-cellpose-sam-task
+            github_repo: fractal-analytics-platform/fractal-cellpose-sam-task
+            github_branch: main
+            cmd_install: 'python -m pip install -e .'
 
           - package: APx_fractal_task_collection
             github_repo: Apricot-Therapeutics/APx_fractal_task_collection
