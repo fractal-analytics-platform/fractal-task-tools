@@ -92,11 +92,10 @@ def _validate_plain_union(
             "Only unions of two elements are supported, but parameter "
             f"'{param.name}' has type hint '{_type}'."
         )
-    elif not any(
-        args_item is type(None) for args_item in args
-    ) and "Optional[" not in str(
+    elif not any(arg is type(None) for arg in args) and "Optional[" not in str(
         _type
-    ):  # FIXME: do not use string casting
+    ):
+        # FIXME: do not use string casting
         raise ValueError(
             "One union element must be None, but parameter "
             f"'{param.name}' has type hint '{_type}'."
