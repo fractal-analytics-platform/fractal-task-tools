@@ -12,17 +12,17 @@ from pydantic import Field
 
 
 class Model1(BaseModel):
-    label: Literal["label1"]
-    field1: int
+    label: Literal["label1"] = "label1"
+    field1: int = 1
 
 
 class Model2(BaseModel):
-    label: Literal["label2"]
+    label: Literal["label2"] = "label2"
     field2: int
 
 
 class Model3(BaseModel):
-    label: Literal["label3"]
+    label: Literal["label3"] = "label3"
     field3: str
 
 
@@ -49,6 +49,25 @@ def fun_plain_union_valid_5(arg: Optional[None] = None):
 def fun_tagged_union_valid_1(
     arg: Annotated[Model1 | Model2 | Model3, Field(discriminator="label")],
 ):
+    pass
+
+
+AnyModel = Annotated[Model1 | Model2 | Model3, Field(discriminator="label")]
+
+
+class NestedModel(BaseModel):
+    arg: AnyModel
+
+
+class NestedModelWithDefault(BaseModel):
+    arg: AnyModel = Model1()
+
+
+def fun_nested_tagged_union_valid_1(arg: NestedModel):
+    pass
+
+
+def fun_nested_tagged_union_valid_2(arg: NestedModelWithDefault):
     pass
 
 
@@ -88,6 +107,8 @@ def test_validate_function_signature():
         fun_tagged_union_valid_1,
         fun_non_tagged_union_valid_1,
         fun_non_tagged_union_valid_2,
+        fun_nested_tagged_union_valid_1,
+        fun_nested_tagged_union_valid_2,
     ):
         _validate_function_signature(function=valid_function)
 
