@@ -8,7 +8,7 @@ _UNION_TYPES = {typing.Union, types.UnionType}
 
 def is_union(_type) -> bool:
     """
-    Determine whether _type is a union.
+    Determine whether `_type` is a union.
 
     Based on
     https://docs.python.org/3/library/typing.html#typing.Union
@@ -30,14 +30,25 @@ def is_union(_type) -> bool:
 
 
 def is_annotated_union(_type) -> bool:
-    # FIXME https://docs.python.org/3/library/typing.html#typing.Annotated
+    """
+    Determine whether `_type` is `Annotated` and its wrapped type is a union.
+
+    See https://docs.python.org/3/library/typing.html#typing.Annotated
+    """
     return typing.get_origin(_type) is typing.Annotated and is_union(
         _type.__origin__
     )
 
 
 def is_tagged(_type) -> bool:
-    # FIXME https://docs.python.org/3/library/typing.html#typing.Annotated
+    """
+    Determine whether annotations make an `Annotated` type a tagged union.
+
+    Note that this function only gets called after `is_annotated_union(_type)`
+    returned `True`.
+
+    See https://docs.python.org/3/library/typing.html#typing.Annotated
+    """
     return any(
         isinstance(_item, FieldInfo) and _item.discriminator is not None
         for _item in _type.__metadata__
