@@ -30,12 +30,10 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks]'
 
-
           - package: fractal-helper-tasks
             github_repo: fractal-analytics-platform/fractal-helper-tasks
             github_branch: main
             cmd_install: 'python -m pip install -e .'
-
 
           - package: fractal-uzh-converters
             github_repo: fractal-analytics-platform/fractal-uzh-converters
