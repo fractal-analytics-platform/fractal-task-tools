@@ -4,6 +4,7 @@ from typing import Optional
 from typing import Union
 
 import pytest
+from devtools import debug
 from fractal_task_tools._signature_constraints import (
     _validate_function_signature,
 )
@@ -91,6 +92,14 @@ def fun_plain_union_invalid_2(arg: int | None = 123):
     pass
 
 
+def fun_plain_union_invalid_3(arg: int | list[Union[int, None]]):
+    pass
+
+
+def fun_plain_union_invalid_4(arg: int | list[Optional[int]]):
+    pass
+
+
 def fun_non_tagged_union_invalid_1(arg: Annotated[int | str, "comment"]):
     pass
 
@@ -115,13 +124,17 @@ def test_validate_function_signature():
         fun_nested_tagged_union_valid_1,
         fun_nested_tagged_union_valid_2,
     ):
+        debug(valid_function)
         _validate_function_signature(function=valid_function)
 
-    for valid_function in (
+    for invalid_function in (
         fun_plain_union_invalid_1,
         fun_plain_union_invalid_2,
+        fun_plain_union_invalid_3,
+        fun_plain_union_invalid_4,
         fun_non_tagged_union_invalid_1,
         fun_non_tagged_union_invalid_2,
     ):
+        debug(invalid_function)
         with pytest.raises(ValueError):
-            _validate_function_signature(function=valid_function)
+            _validate_function_signature(function=invalid_function)
