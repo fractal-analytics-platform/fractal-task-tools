@@ -5,6 +5,7 @@ from inspect import Parameter
 from inspect import Signature
 from inspect import signature
 from pathlib import Path
+from typing import Any
 
 from ._union_types import is_annotated_union
 from ._union_types import is_tagged
@@ -69,7 +70,7 @@ def _extract_function(
 def _validate_plain_union(
     *,
     param: Parameter,
-    _type,
+    _type: Any,
 ) -> None:
     """
     Fail for known cases of invalid plain-union types.
