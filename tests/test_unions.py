@@ -46,6 +46,10 @@ def fun_plain_union_valid_5(arg: Optional[None] = None):
     pass
 
 
+def fun_plain_union_valid_6(arg: tuple[int, int, int] | None = None):
+    pass
+
+
 def fun_tagged_union_valid_1(
     arg: Annotated[Model1 | Model2 | Model3, Field(discriminator="label")],
 ):
@@ -104,6 +108,7 @@ def test_validate_function_signature():
         fun_plain_union_valid_3,
         fun_plain_union_valid_4,
         fun_plain_union_valid_5,
+        fun_plain_union_valid_6,
         fun_tagged_union_valid_1,
         fun_non_tagged_union_valid_1,
         fun_non_tagged_union_valid_2,
