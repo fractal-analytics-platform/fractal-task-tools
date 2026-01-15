@@ -1,8 +1,8 @@
 import inspect
 import logging
-from enum import Enum
 from importlib import import_module
 from inspect import Parameter
+from inspect import Signature
 from inspect import signature
 from pathlib import Path
 
@@ -66,20 +66,29 @@ def _extract_function(
     return task_function
 
 
-class UnionCases(str, Enum):
-    NON_UNION = "non_union"
-    PLAIN_UNION = "plain_union"
-    TAGGED_ANNOTATED_UNION = "tagged_annotated_union"
-    NON_TAGGED_ANNOTATED_UNION = "non_tagged_annotated_union"
-
-
-def validate_plain_union(
+def _validate_plain_union(
     *,
-    _type,
     param: Parameter,
+    _type,
 ) -> None:
+    """
+    Fail for known cases of invalid plain-union types.
+
+    A plain union annotation is (by construction) one for which
+    `is_union(_type) = True`. The only supported forms of plain unions
+    are `X | None` or `X | None = None` (or equivalent forms).
+
+    Args:
+        param: The full `inspect.Parameter` object.
+        _type:
+            The type annotation to review. Note that this may be equal to
+            `param.annotation` or to `param.annotation.__origin__` (when the
+            original `param.annotation` is an `Annotated` union).
+    """
+
+    # FIXME: make checks more robust, without relying on `str` casting
+
     annotation_str = str(_type)
-    # FIXME: could we avoid annotation_str and be more precise?
     if annotation_str.count("|") > 1 or annotation_str.count(",") > 1:
         raise ValueError(
             "Only unions of two elements are supported, but parameter "
@@ -98,39 +107,36 @@ def validate_plain_union(
         )
 
 
-def _validate_function_signature(function: callable):
+def _validate_function_signature(function: callable) -> Signature:
     """
-    Validate the function signature.
+    Validate the function signature of a task.
 
     Implement a set of checks for type hints that do not play well with the
-    creation of JSON Schema, see
-    https://github.com/fractal-analytics-platform/fractal-tasks-core/issues/399.
-    and
-    https://github.com/fractal-analytics-platform/fractal-task-tools/issues/65
+    creation of JSON Schema, see issue 399 in `fractal-tasks-core` and issue
+    65 in `fractal-task-tools`.
 
     Args:
-        function: TBD
+        function: A callable function.
     """
     sig = signature(function)
     for param in sig.parameters.values():
-        # CASE 1: Check that name is not forbidden
+        # Check that name is not forbidden
         if param.name in FORBIDDEN_PARAM_NAMES:
             raise ValueError(
                 f"Function {function} has argument with forbidden "
-                "name '{param.name}'"
+                "name '{{param.name}}'"
             )
-
+        # Validate plain unions or non-tagged annotated unions
         if is_union(param.annotation):
-            validate_plain_union(
+            _validate_plain_union(
                 _type=param.annotation,
                 param=param,
             )
         elif is_annotated_union(param.annotation):
             if not is_tagged(param.annotation):
-                validate_plain_union(
+                _validate_plain_union(
                     _type=param.annotation.__origin__,
                     param=param,
                 )
-
     logging.info("[_validate_function_signature] END")
     return sig
