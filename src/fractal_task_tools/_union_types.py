@@ -1,11 +1,9 @@
-import sys
 import types
 import typing
 
-if sys.version_info >= (3, 10):
-    _UNION_TYPES = {typing.Union, types.UnionType}
-else:
-    _UNION_TYPES = {typing.Union}
+from pydantic.fields import FieldInfo
+
+_UNION_TYPES = {typing.Union, types.UnionType}
 
 
 def is_union(_type) -> bool:
@@ -20,8 +18,6 @@ def is_union(_type) -> bool:
     alternative_result = (
         type(_type) is typing._UnionGenericAlias
         or type(_type) is types.UnionType
-        or "Union[" in str(_type)
-        or "|" in str(_type)
     )
     if result != alternative_result:
         # This is a safety check, which is meant to be unreachable
@@ -31,3 +27,18 @@ def is_union(_type) -> bool:
             "fractal-task-tools/issues."
         )
     return result
+
+
+def is_annotated_union(_type) -> bool:
+    # FIXME https://docs.python.org/3/library/typing.html#typing.Annotated
+    return typing.get_origin(_type) is typing.Annotated and is_union(
+        _type.__origin__
+    )
+
+
+def is_tagged(_type) -> bool:
+    # FIXME https://docs.python.org/3/library/typing.html#typing.Annotated
+    return any(
+        isinstance(_item, FieldInfo) and _item.discriminator is not None
+        for _item in _type.__metadata__
+    )
