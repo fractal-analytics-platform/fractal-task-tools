@@ -26,7 +26,7 @@ class Model3(BaseModel):
     field3: str
 
 
-def fun_plain_union_valid_1(arg: Union[int | None]):
+def fun_plain_union_valid_1(arg: Union[int, None]):
     pass
 
 
