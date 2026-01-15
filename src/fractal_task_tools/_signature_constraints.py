@@ -79,6 +79,9 @@ def _validate_plain_union(
     `is_union(_type) = True`. The only supported forms of plain unions
     are `X | None` or `X | None = None` (or equivalent forms).
 
+    Note that `Optional[X]` is equivalent to `X | None` and thus it also gets
+    validated through this function.
+
     Args:
         param: The full `inspect.Parameter` object.
         _type:
@@ -92,10 +95,7 @@ def _validate_plain_union(
             "Only unions of two elements are supported, but parameter "
             f"'{param.name}' has type hint '{_type}'."
         )
-    elif not any(arg is type(None) for arg in args) and "Optional[" not in str(
-        _type
-    ):
-        # FIXME: do not use string casting
+    elif not any(arg is type(None) for arg in args):
         raise ValueError(
             "One union element must be None, but parameter "
             f"'{param.name}' has type hint '{_type}'."
