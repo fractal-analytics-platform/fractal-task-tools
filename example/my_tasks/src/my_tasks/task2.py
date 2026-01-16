@@ -14,10 +14,10 @@ def task2(
     optional_tuple_arg: tuple[int, int, int] | None = None,
 ):
     """
-    Short description
+    Short description of task2
 
-    Long description of this wonderful task that is called `task_function` and
-    actually only represents a mock task for testing.
+    Long description of this wonderful task that actually only represents a
+    mock task for testing.
 
     Args:
         list_arg: An arbitrary-size array of integers.

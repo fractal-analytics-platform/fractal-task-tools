@@ -33,10 +33,10 @@ def task1(
     literal_2: Literal["a", "b", "c"] = "a",
 ):
     """
-    Short description
+    Short description of task1
 
-    Long description of this wonderful task that is called `task_function` and
-    actually only represents a mock task for testing.
+    Long description of this wonderful task that actually only represents a
+    mock task for testing.
 
     Args:
         int_1: Integer argument.

@@ -6,20 +6,9 @@ readme = "README.md"
 authors = [
     { name = "Your Name", email = "first.last@example.com" },
 ]
-requires-python = ">=3.11"
-dependencies = ["pydantic>=2", "fractal-task-tools==0.1.1"]
-
-[project.optional-dependencies]
-dev = ["devtools", "build"]
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2"]
 
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["fractal_tasks_mock"]
-
-# Always include the __FRACTAL_MANIFEST__.json file in the package
-[tool.setuptools.package-data]
-"*" = ["__FRACTAL_MANIFEST__.json"]

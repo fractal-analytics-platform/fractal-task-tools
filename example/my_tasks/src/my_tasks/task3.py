@@ -9,18 +9,18 @@ def task3(
     zarr_dir: str,
     # Task-specific arguments
     object_arg: dict[int, bool],
-    nested_object_arg: dict[str, dict[str, str]],
     optional_object_arg: dict[int, bool] | None = None,
+    nested_object_arg: dict[str, dict[str, str]],
 ):
     """
-    Short description
+    Short description of task3
 
-    Long description of this wonderful task that is called `task_function` and
-    actually only represents a mock task for testing.
+    Long description of this wonderful task that actually only represents a
+    mock task for testing.
 
     Args:
-        object_arg: FIXME
-        nested_object_arg: FIXME
-        optional_object_arg: FIXME
+        object_arg: Object argument.
+        optional_object_arg: Optional object argument.
+        nested_object_arg: Nested object argument.
     """
     pass
