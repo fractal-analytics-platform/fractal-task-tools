@@ -30,12 +30,10 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks]'
 
-
           - package: fractal-helper-tasks
             github_repo: fractal-analytics-platform/fractal-helper-tasks
             github_branch: main
             cmd_install: 'python -m pip install -e .'
-
 
           - package: fractal-uzh-converters
             github_repo: fractal-analytics-platform/fractal-uzh-converters
@@ -50,12 +48,12 @@ jobs:
           - package: zmb-fractal-tasks
             github_repo: ZMB-UZH/zmb-fractal-tasks
             github_branch: main
-            cmd_install: 'python -m pip install -e .[dev]'
+            cmd_install: 'python -m pip install -e .'
 
-          # - package: scMultipleX
-          #   github_repo: xxxxxxxxxxxxxxxxxx/gliberal-scMultipleX
-          #   github_branch: main
-          #   cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics]'
+          - package: fractal-cellpose-sam-task
+            github_repo: fractal-analytics-platform/fractal-cellpose-sam-task
+            github_branch: main
+            cmd_install: 'python -m pip install -e .'
 
           - package: APx_fractal_task_collection
             github_repo: Apricot-Therapeutics/APx_fractal_task_collection
