@@ -24,7 +24,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - run: cd examples/my_tasks
+      - run: cd example/my_tasks
 
       - name: Install my-tasks
         run: pip install -e .
