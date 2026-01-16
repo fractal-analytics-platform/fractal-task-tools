@@ -1,0 +1,36 @@
+name: External packages
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+
+jobs:
+  test-manifest:
+    runs-on: ubuntu-24.04
+
+    steps:
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Update pip
+        run:  python -m pip install --upgrade pip
+
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - run: cd examples/my_tasks
+
+      - name: Install my-tasks
+        run: pip install -e .
+
+      - name: Install current frcatal-task-tools
+        run: pip install -e ../..
+
+      - name: Check manifest
+        run: fractal-manifest check --package my-tasks
