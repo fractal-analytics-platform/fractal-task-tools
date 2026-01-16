@@ -1,4 +1,4 @@
-name: External packages
+name: Example manifest
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  test-manifest:
+  example-manifest:
     runs-on: ubuntu-24.04
 
     steps:
