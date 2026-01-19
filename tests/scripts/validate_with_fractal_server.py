@@ -27,7 +27,7 @@ if __name__ == "__main__":
     ]
     if len(manifest_files) != 1:
         raise ValueError(
-            "ERROR: There must only be a single manifest file "
+            "ERROR: There must only be a one and only one manifest file "
             f"(found: {manifest_files=})."
         )
     with open(manifest_files[0]) as fp:
