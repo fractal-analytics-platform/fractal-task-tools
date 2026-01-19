@@ -1,5 +1,5 @@
 [project]
-name = "my-tasks"
+name = "example-tasks"
 version = "0.0.1"
 description = "Fake tasks package"
 readme = "README.md"

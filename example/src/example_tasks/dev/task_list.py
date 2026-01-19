@@ -11,9 +11,9 @@ TASK_LIST = [
 PACKAGE = "my-tasks"
 AUTHORS = "Your Name"
 INPUT_MODELS = [
-    ("my_tasks", "task4.py", "ModelAllOptional"),
-    ("my_tasks", "task4.py", "ModelSomeRequired"),
-    ("my_tasks", "task4.py", "InternalModel1"),
-    ("my_tasks", "task4.py", "InternalModel2"),
-    ("my_tasks", "task4.py", "InternalModel3"),
+    ("example_tasks", "task4.py", "ModelAllOptional"),
+    ("example_tasks", "task4.py", "ModelSomeRequired"),
+    ("example_tasks", "task4.py", "InternalModel1"),
+    ("example_tasks", "task4.py", "InternalModel2"),
+    ("example_tasks", "task4.py", "InternalModel3"),
 ]

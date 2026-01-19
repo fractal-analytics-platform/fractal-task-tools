@@ -65,6 +65,11 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
+          - package: example-tasks
+            github_repo: fractal-analytics-platform/fractal-task-tools
+            github_branch: main
+            cmd_install: 'python -m pip install -e example'
+
         exclude:
           - package: skip
             github_repo: skip

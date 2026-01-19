@@ -11,10 +11,10 @@ fi
 ./venv/bin/python -m pip install -e "."
 
 # Install the current version of fractal-task-tools
-./venv/bin/python -m pip install -e "../.."
+./venv/bin/python -m pip install -e ".."
 
 # Create manifest
-./venv/bin/fractal-manifest create --package my-tasks
+./venv/bin/fractal-manifest create --package example-tasks
 
 # Cleanup
 rm -r venv
