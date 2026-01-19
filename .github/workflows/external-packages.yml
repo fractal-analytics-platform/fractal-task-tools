@@ -30,12 +30,10 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .[fractal-tasks]'
 
-
           - package: fractal-helper-tasks
             github_repo: fractal-analytics-platform/fractal-helper-tasks
             github_branch: main
             cmd_install: 'python -m pip install -e .'
-
 
           - package: fractal-uzh-converters
             github_repo: fractal-analytics-platform/fractal-uzh-converters
@@ -50,12 +48,12 @@ jobs:
           - package: zmb-fractal-tasks
             github_repo: ZMB-UZH/zmb-fractal-tasks
             github_branch: main
-            cmd_install: 'python -m pip install -e .[dev]'
+            cmd_install: 'python -m pip install -e .'
 
-          # - package: scMultipleX
-          #   github_repo: xxxxxxxxxxxxxxxxxx/gliberal-scMultipleX
-          #   github_branch: main
-          #   cmd_install: 'python -m pip install -e .[fractal-tasks,spherical-harmonics]'
+          - package: fractal-cellpose-sam-task
+            github_repo: fractal-analytics-platform/fractal-cellpose-sam-task
+            github_branch: main
+            cmd_install: 'python -m pip install -e .'
 
           - package: APx_fractal_task_collection
             github_repo: Apricot-Therapeutics/APx_fractal_task_collection
@@ -64,6 +62,11 @@ jobs:
 
           - package: fractal-ome-zarr-hcs-stitching
             github_repo: m-albert/fractal-ome-zarr-hcs-stitching
+            github_branch: main
+            cmd_install: 'python -m pip install -e .'
+
+          - package: example-tasks
+            github_repo: fractal-analytics-platform/example-fractal-task-arguments
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
@@ -110,8 +113,8 @@ jobs:
       - name: Install  current version of `fractal-task-tools` with `dev` extra
         run: python -m pip install ./fractal-task-tools[dev]
 
-      - name: Run script to look at manifest with different JSON Schema drafts
+      - name: Validate manifest with different JSON Schema drafts
         run: python ./fractal-task-tools/tests/scripts/validate_multi_draft.py
 
-      - name: Run script to validate manifest against fractal-server schema
+      - name: Validate manifest against fractal-server schema
         run: python ./fractal-task-tools/tests/scripts/validate_with_fractal_server.py

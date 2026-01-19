@@ -1,9 +1,14 @@
 import inspect
 import logging
 from importlib import import_module
+from inspect import Parameter
+from inspect import Signature
 from inspect import signature
 from pathlib import Path
+from typing import Any
 
+from ._union_types import is_annotated_union
+from ._union_types import is_tagged
 from ._union_types import is_union
 
 
@@ -62,52 +67,77 @@ def _extract_function(
     return task_function
 
 
-def _validate_function_signature(function: callable):
+def _validate_plain_union(
+    *,
+    param: Parameter,
+    _type: Any,
+) -> None:
     """
-    Validate the function signature.
+    Fail for known cases of invalid plain-union types.
 
-    Implement a set of checks for type hints that do not play well with the
-    creation of JSON Schema, see
-    https://github.com/fractal-analytics-platform/fractal-tasks-core/issues/399.
+    A plain union annotation is (by construction) one for which
+    `is_union(_type) = True`. The only supported forms of plain unions
+    are `X | None` or `X | None = None` (or equivalent forms).
+
+    Note that `Optional[X]` is equivalent to `X | None` and thus it also gets
+    validated through this function.
 
     Args:
-        function: TBD
+        param: The full `inspect.Parameter` object.
+        _type:
+            The type annotation to review. Note that this may be equal to
+            `param.annotation` or to `param.annotation.__origin__` (when the
+            original `param.annotation` is an `Annotated` union).
+    """
+    args = _type.__args__
+    if len(args) != 2:
+        raise ValueError(
+            "Only unions of two elements are supported, but parameter "
+            f"'{param.name}' has type hint '{_type}'."
+        )
+    elif not any(arg is type(None) for arg in args):
+        raise ValueError(
+            "One union element must be None, but parameter "
+            f"'{param.name}' has type hint '{_type}'."
+        )
+    elif (param.default is not None) and (param.default != inspect._empty):
+        raise ValueError(
+            "Non-None default not supported, but parameter "
+            f"'{param.name}' has type hint '{_type}' "
+            f"and default {param.default}."
+        )
+
+
+def _validate_function_signature(function: callable) -> Signature:
+    """
+    Validate the function signature of a task.
+
+    Implement a set of checks for type hints that do not play well with the
+    creation of JSON Schema, see issue 399 in `fractal-tasks-core` and issue
+    65 in `fractal-task-tools`.
+
+    Args:
+        function: A callable function.
     """
     sig = signature(function)
     for param in sig.parameters.values():
-        # CASE 1: Check that name is not forbidden
+        # Check that name is not forbidden
         if param.name in FORBIDDEN_PARAM_NAMES:
             raise ValueError(
                 f"Function {function} has argument with forbidden "
                 f"name '{param.name}'"
             )
-
-        annotation_is_union = is_union(param.annotation)
-        annotation_str = str(param.annotation)
-        annotation_has_default = (param.default is not None) and (
-            param.default != inspect._empty
-        )
-
-        if annotation_is_union:
-            if annotation_str.count("|") > 1 or annotation_str.count(",") > 1:
-                raise ValueError(
-                    "Only unions of two elements are supported, but parameter "
-                    f"'{param.name}' has type hint '{annotation_str}'."
+        # Validate plain unions or non-tagged annotated unions
+        if is_union(param.annotation):
+            _validate_plain_union(
+                _type=param.annotation,
+                param=param,
+            )
+        elif is_annotated_union(param.annotation):
+            if not is_tagged(param.annotation):
+                _validate_plain_union(
+                    _type=param.annotation.__origin__,
+                    param=param,
                 )
-            elif (
-                "None" not in annotation_str
-                and "Optional[" not in annotation_str
-            ):
-                raise ValueError(
-                    "One union element must be None, but parameter "
-                    f"'{param.name}' has type hint '{annotation_str}'."
-                )
-            elif annotation_has_default:
-                raise ValueError(
-                    "Non-None default not supported, but parameter "
-                    f"'{param.name}' has type hint '{annotation_str}' "
-                    f"and default {param.default}."
-                )
-
     logging.info("[_validate_function_signature] END")
     return sig
