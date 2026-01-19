@@ -101,11 +101,6 @@ jobs:
           path: fractal-task-tools
           persist-credentials: false
 
-      - name: Debug
-        run: |
-          ls -lh ./
-          ls -lh ./*/
-
       - name: Install package
         run: ${{ matrix.cmd_install }}
 
