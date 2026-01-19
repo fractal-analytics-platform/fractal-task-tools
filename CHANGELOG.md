@@ -6,6 +6,8 @@
     * Add `operetta-compose` to external-packages tests (\#58).
     * Add `APx_fractal_task_collection` to external-packages tests (\#61).
     * Add `zmb-fractal-tasks` to external-packages tests (\#60).
+    * Add `example-tasks` to external-packages tests (\#68).
+    * Add `fractal-cellpose-sam-task` to external-packages tests (\#68).
 
 # 0.1.1
 
