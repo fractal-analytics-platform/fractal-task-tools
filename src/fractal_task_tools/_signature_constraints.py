@@ -125,7 +125,7 @@ def _validate_function_signature(function: callable) -> Signature:
         if param.name in FORBIDDEN_PARAM_NAMES:
             raise ValueError(
                 f"Function {function} has argument with forbidden "
-                "name '{{param.name}}'"
+                f"name '{param.name}'"
             )
         # Validate plain unions or non-tagged annotated unions
         if is_union(param.annotation):
