@@ -12,11 +12,6 @@ VALIDATORS = (
 )
 
 
-EXAMPLE_MANIFEST_PATH = (
-    "./fractal-task-tools/example/src/example_tasks/__FRACTAL_MANIFEST__.json"
-)
-
-
 if __name__ == "__main__":
     manifest_files = [
         f
@@ -25,17 +20,14 @@ if __name__ == "__main__":
             recursive=True,
         )
         if (
-            (
-                "tests" not in f
-                and "cache" not in f
-                and "fractal-task-tools" not in f
-            )
-            or f == EXAMPLE_MANIFEST_PATH
+            "tests" not in f
+            and "cache" not in f
+            and "fractal-task-tools" not in f
         )
     ]
     if len(manifest_files) != 1:
         raise ValueError(
-            "ERROR: There must only be a one and only one manifest file "
+            "ERROR: There must only be a single manifest file "
             f"(found: {manifest_files=})."
         )
     with open(manifest_files[0]) as fp:
