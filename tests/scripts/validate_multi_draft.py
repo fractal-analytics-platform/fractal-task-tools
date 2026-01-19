@@ -12,6 +12,11 @@ VALIDATORS = (
 )
 
 
+EXAMPLE_MANIFEST_PATH = (
+    "./fractal-task-tools/example/src/example_tasks/__FRACTAL_MANIFEST__.json"
+)
+
+
 if __name__ == "__main__":
     manifest_files = [
         f
@@ -20,9 +25,12 @@ if __name__ == "__main__":
             recursive=True,
         )
         if (
-            "tests" not in f
-            and "cache" not in f
-            and "fractal-task-tools" not in f
+            (
+                "tests" not in f
+                and "cache" not in f
+                and "fractal-task-tools" not in f
+            )
+            or f == EXAMPLE_MANIFEST_PATH
         )
     ]
     if len(manifest_files) != 1:
