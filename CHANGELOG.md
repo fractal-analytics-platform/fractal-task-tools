@@ -1,9 +1,11 @@
-# Unreleased
+# 0.2.0 (unreleased)
 
-* Add `fractal-ome-zarr-hcs-stitching` to external-packages tests (\#64).
-* Add `operetta-compose` to external-packages tests (\#58).
-* Add `APx_fractal_task_collection` to external-packages tests (\#61).
-* Add `zmb-fractal-tasks` to external-packages tests (\#60).
+* Improve support for tagged/non-tagged union arguments (\#68).
+* Testing:
+    * Add `fractal-ome-zarr-hcs-stitching` to external-packages tests (\#64).
+    * Add `operetta-compose` to external-packages tests (\#58).
+    * Add `APx_fractal_task_collection` to external-packages tests (\#61).
+    * Add `zmb-fractal-tasks` to external-packages tests (\#60).
 
 # 0.1.1
 
