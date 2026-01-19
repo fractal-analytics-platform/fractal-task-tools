@@ -118,8 +118,8 @@ jobs:
       - name: Install  current version of `fractal-task-tools` with `dev` extra
         run: python -m pip install ./fractal-task-tools[dev]
 
-      - name: Run script to look at manifest with different JSON Schema drafts
+      - name: Validate manifest with different JSON Schema drafts
         run: python ./fractal-task-tools/tests/scripts/validate_multi_draft.py
 
-      - name: Run script to validate manifest against fractal-server schema
+      - name: Validate manifest against fractal-server schema
         run: python ./fractal-task-tools/tests/scripts/validate_with_fractal_server.py
