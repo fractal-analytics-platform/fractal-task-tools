@@ -1,4 +1,4 @@
-# 0.2.0 (unreleased)
+# 0.2.1
 
 * Improve support for tagged/non-tagged union arguments (\#68).
 * Testing:
@@ -8,6 +8,10 @@
     * Add `zmb-fractal-tasks` to external-packages tests (\#60).
     * Add `example-tasks` to external-packages tests (\#68).
     * Add `fractal-cellpose-sam-task` to external-packages tests (\#68).
+
+# 0.2.0
+
+[yanked due to a mistake upon release]
 
 # 0.1.1
 
