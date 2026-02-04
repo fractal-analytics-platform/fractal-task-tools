@@ -8,6 +8,8 @@ from json import JSONEncoder
 from pathlib import Path
 from typing import Optional
 
+from .logging_config import setup_logging_config
+
 
 class TaskParameterEncoder(JSONEncoder):
     """
@@ -46,6 +48,8 @@ def run_fractal_task(
         required=True,
     )
     parsed_args = parser.parse_args()
+
+    setup_logging_config()
 
     # Set logger
     logger = logging.getLogger(logger_name)
