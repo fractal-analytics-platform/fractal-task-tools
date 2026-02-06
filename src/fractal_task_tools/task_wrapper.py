@@ -3,11 +3,12 @@ Standard input/output interface for tasks.
 """
 import json
 import logging
+import os
 from argparse import ArgumentParser
 from json import JSONEncoder
 from pathlib import Path
-from typing import Optional
 
+from .logging_config import get_logging_level
 from .logging_config import setup_logging_config
 
 
@@ -27,7 +28,8 @@ class TaskParameterEncoder(JSONEncoder):
 def run_fractal_task(
     *,
     task_function: callable,
-    logger_name: Optional[str] = None,
+    logger_name: str | None = None,
+    skip_logging_configuration: bool = False,
 ):
     """
     Implement standard task interface and call task_function.
@@ -49,14 +51,31 @@ def run_fractal_task(
     )
     parsed_args = parser.parse_args()
 
-    setup_logging_config()
+    # Configure logging
+    if not (
+        skip_logging_configuration
+        or os.getenv(
+            "FRACTAL_TASK_SKIP_LOG_CONFIG",
+            False,
+        )
+    ):
+        setup_logging_config()
 
     # Set logger
+
+    logger_name = logger_name or getattr(task_function, "__name__", "root")
     logger = logging.getLogger(logger_name)
+    logger.setLevel(get_logging_level())
+    from devtools import debug
+
+    debug(logger, logger.handlers)
 
     # Preliminary check
     if Path(parsed_args.out_json).exists():
         logger.error(
+            f"Output file {parsed_args.out_json} already exists. Terminating"
+        )
+        debug(
             f"Output file {parsed_args.out_json} already exists. Terminating"
         )
         exit(1)
