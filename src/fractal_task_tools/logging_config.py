@@ -16,7 +16,10 @@ def setup_logging_config():
     """
     FIXME
     """
-    FRACTAL_TASK_LOG_LEVEL = (os.getenv("FRACTAL_TASK_LOG_LEVEL", None),)
+    FRACTAL_TASK_LOG_LEVEL = os.getenv(
+        "FRACTAL_TASK_LOG_LEVEL",
+        None,
+    )
     # Capture both `None` and `""`.
     FRACTAL_TASK_LOG_LEVEL = FRACTAL_TASK_LOG_LEVEL or DEFAULT_LOG_LEVEL
     if FRACTAL_TASK_LOG_LEVEL not in ALLOWED_LOGGING_LEVELS:
