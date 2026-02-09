@@ -28,7 +28,7 @@ class TaskParameterEncoder(JSONEncoder):
 def run_fractal_task(
     *,
     task_function: callable,
-    logger_name: str | None = None,
+    logger_name: str,
     skip_logging_configuration: bool = False,
 ):
     """
@@ -64,6 +64,9 @@ def run_fractal_task(
     # Set name for task logger
     # FIXME/NOTE: do not set any other logger attribute here, so that they are
     # inherited from the root logger
+    from devtools import debug
+
+    debug(getattr(task_function, "__name__", None))
     logger_name = logger_name or getattr(task_function, "__name__", None)
     logger = logging.getLogger(logger_name)
 
