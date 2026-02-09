@@ -17,6 +17,7 @@ def get_logging_format() -> str:
     # Use default values if env variables are unset or set to an empty string
     log_format = os.getenv("FRACTAL_TASK_LOG_FORMAT", None)
     log_format = log_format or DEFAULT_LOG_FORMAT
+    logging.PercentStyle(fmt=log_format).validate()
     return log_format
 
 
