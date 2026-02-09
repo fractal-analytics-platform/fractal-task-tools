@@ -4,11 +4,11 @@ Standard input/output interface for tasks.
 import json
 import logging
 import os
+import sys
 from argparse import ArgumentParser
 from json import JSONEncoder
 from pathlib import Path
 
-from .logging_config import get_logging_level
 from .logging_config import setup_logging_config
 
 
@@ -61,24 +61,17 @@ def run_fractal_task(
     ):
         setup_logging_config()
 
-    # Set logger
-
-    logger_name = logger_name or getattr(task_function, "__name__", "root")
+    # Set name for task logger
+    # FIXME/NOTE: do not set any other logger attribute here, so that they are
+    # inherited from the root logger
+    logger_name = logger_name or getattr(task_function, "__name__", None)
     logger = logging.getLogger(logger_name)
-    logger.setLevel(get_logging_level())
-    from devtools import debug
-
-    debug(logger, logger.handlers)
 
     # Preliminary check
     if Path(parsed_args.out_json).exists():
-        logger.error(
-            f"Output file {parsed_args.out_json} already exists. Terminating"
-        )
-        debug(
-            f"Output file {parsed_args.out_json} already exists. Terminating"
-        )
-        exit(1)
+        msg = f"Output file {parsed_args.out_json} already exists. Terminating"
+        logger.error(msg)
+        sys.exit(msg)
 
     # Read parameters dictionary
     with open(parsed_args.args_json, "r") as f:
