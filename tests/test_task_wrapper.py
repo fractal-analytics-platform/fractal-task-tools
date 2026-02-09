@@ -28,7 +28,7 @@ def fake_task_invalid_output(zarr_url: str, parameter: float):
     return dict(non_json_serializable=datetime.now())
 
 
-def test_run_fractal_task(tmp_path, monkeypatch, caplog):
+def test_run_fractal_task(tmp_path, monkeypatch):
     ARGS_PATH = tmp_path / "args.json"
     METADIFF_PATH = tmp_path / "metadiff.json"
 
@@ -63,10 +63,8 @@ def test_run_fractal_task(tmp_path, monkeypatch, caplog):
     assert task_output == SERIALIZED_TASK_OUTPUT
 
     # Failure (metadiff file already exists)
-    caplog.clear()
-    with pytest.raises(SystemExit):
+    with pytest.raises(SystemExit, match="already exists"):
         run_fractal_task(task_function=fake_task)
-    assert "already exists" in caplog.text
 
     # Failure (invalid output)
     METADIFF_PATH.unlink()
