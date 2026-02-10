@@ -99,7 +99,7 @@ def test_xxx(monkeypatch, tmp_path):
             capture_output=True,
             encoding="utf-8",
         )
-        assert "root; DEBUG; Logging level" in res.stderr
+        assert "run_fractal_task; DEBUG; Logging level" in res.stderr
         assert "task1; DEBUG; DEBUG from task" in res.stderr
 
         res = subprocess.run(
