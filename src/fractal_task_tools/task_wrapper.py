@@ -56,8 +56,6 @@ def run_fractal_task(
             Deprecated argument (will be removed in a future version)
     """
 
-    _check_deprecated_argument(logger_name)
-
     # Parse `--args-json` and `--out-json` CLI arguments
     parser = ArgumentParser()
     parser.add_argument(
@@ -83,6 +81,8 @@ def run_fractal_task(
         )
     ):
         setup_logging_config()
+
+    _check_deprecated_argument(logger_name)
 
     # Preliminary check
     if Path(parsed_args.out_json).exists():
