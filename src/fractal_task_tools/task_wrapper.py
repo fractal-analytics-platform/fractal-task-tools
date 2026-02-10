@@ -7,8 +7,9 @@ from json import JSONEncoder
 from pathlib import Path
 
 from .logging_config import setup_logging_config
+from .logging_config import WRAPPER_LOGGER_NAME
 
-task_wrapper_logger = logging.getLogger("run_fractal_task")
+task_wrapper_logger = logging.getLogger(WRAPPER_LOGGER_NAME)
 
 
 class TaskParameterEncoder(JSONEncoder):
