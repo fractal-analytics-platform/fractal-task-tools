@@ -1,6 +1,3 @@
-"""
-Standard input/output interface for tasks.
-"""
 import json
 import logging
 import os
@@ -28,30 +25,49 @@ class TaskParameterEncoder(JSONEncoder):
 def run_fractal_task(
     *,
     task_function: callable,
-    logger_name: str,
     skip_logging_configuration: bool = False,
-):
+    logger_name: str | None = None,
+) -> None:
     """
     Implement standard task interface and call task_function.
 
     Args:
-        task_function: the callable function that runs the task.
-        logger_name: TBD
+        task_function:
+            Callable function that runs the task.
+        skip_logging_configuration:
+            If `True`, do not call `setup_logging_config`.
+        logger_name:
+            Deprecated argument (will be removed in a future version)
     """
 
-    # Parse `-j` and `--metadata-out` arguments
+    # Define `run_fractal_task` logger
+    task_wrapper_logger = logging.getLogger("run_fractal_task")
+
+    if logger_name is not None:
+        task_wrapper_logger.warning(
+            (
+                "`logger_name` function argument is deprecated. "
+                f"The value provided ({logger_name}) will be ignored."
+            )
+        )
+
+    # Parse `--args-json` and `--out-json` CLI arguments
     parser = ArgumentParser()
     parser.add_argument(
-        "--args-json", help="Read parameters from json file", required=True
+        "--args-json",
+        help="Read parameters from json file",
+        required=True,
+        type=str,
     )
     parser.add_argument(
         "--out-json",
         help="Output file to redirect serialised returned data",
         required=True,
+        type=str,
     )
     parsed_args = parser.parse_args()
 
-    # Configure logging
+    # Configure root logger
     if not (
         skip_logging_configuration
         or os.getenv(
@@ -61,19 +77,10 @@ def run_fractal_task(
     ):
         setup_logging_config()
 
-    # Set name for task logger
-    # FIXME/NOTE: do not set any other logger attribute here, so that they are
-    # inherited from the root logger
-    from devtools import debug
-
-    debug(getattr(task_function, "__name__", None))
-    logger_name = logger_name or getattr(task_function, "__name__", None)
-    logger = logging.getLogger(logger_name)
-
     # Preliminary check
     if Path(parsed_args.out_json).exists():
         msg = f"Output file {parsed_args.out_json} already exists. Terminating"
-        logger.error(msg)
+        task_wrapper_logger.error(msg)
         sys.exit(msg)
 
     # Read parameters dictionary
@@ -81,10 +88,15 @@ def run_fractal_task(
         pars = json.load(f)
 
     # Run task
-    logger.info(f"START {task_function.__name__} task")
+    task_wrapper_logger.info(f"START {task_function.__name__} task")
     metadata_update = task_function(**pars)
-    logger.info(f"END {task_function.__name__} task")
+    task_wrapper_logger.info(f"END {task_function.__name__} task")
 
     # Write output metadata to file, with custom JSON encoder
     with open(parsed_args.out_json, "w") as fout:
-        json.dump(metadata_update, fout, cls=TaskParameterEncoder, indent=2)
+        json.dump(
+            metadata_update,
+            fout,
+            cls=TaskParameterEncoder,
+            indent=2,
+        )
