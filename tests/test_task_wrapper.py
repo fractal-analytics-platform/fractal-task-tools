@@ -80,9 +80,7 @@ def test_run_fractal_task(tmp_path, monkeypatch):
     args = dict(zarr_url="/somewhere", parameter=None)
     with ARGS_PATH.open("w") as f:
         json.dump(args, f, indent=2)
-    with pytest.raises(
-        ValidationError, match="validation error for fake_task"
-    ):
+    with pytest.raises(ValidationError, match="validation error for fake_task"):
         run_fractal_task(task_function=fake_task)
 
 

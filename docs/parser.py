@@ -9,6 +9,7 @@ The first version of the same module is from sphinx-argparse
 Original Copyright 2013 Aleksandr Rudakov
 License: MIT
 """
+
 import re
 from argparse import _HelpAction
 from argparse import _StoreConstAction
@@ -29,15 +30,12 @@ def parser_navigate(parser_result, path, current_path=None):
         return parser_result
     if "children" not in parser_result:
         raise NavigationException(
-            "Current parser has no child elements.  "
-            f"(path: {' '.join(current_path)})"
+            f"Current parser has no child elements.  (path: {' '.join(current_path)})"
         )
     next_hop = path.pop(0)
     for child in parser_result["children"]:
-        # identifer is only used for aliased subcommands
-        identifier = (
-            child["identifier"] if "identifier" in child else child["name"]
-        )
+        # identifier is only used for aliased subcommands
+        identifier = child["identifier"] if "identifier" in child else child["name"]
         if identifier == next_hop:
             current_path.append(next_hop)
             return parser_navigate(child, path, current_path)
@@ -106,9 +104,7 @@ def parse_parser(parser, data=None, **kwargs):
             subalias = subsection_alias[subaction]
             subaction.prog = f"{parser.prog} {name}"
             subdata = {
-                "name": name
-                if not subalias
-                else f"{name} ({', '.join(subalias)})",
+                "name": name if not subalias else f"{name} ({', '.join(subalias)})",
                 "help": helps.get(name, ""),
                 "usage": subaction.format_usage().strip(),
                 "bare_usage": _format_usage_without_prefix(subaction),
@@ -146,9 +142,7 @@ def parse_parser(parser, data=None, **kwargs):
                 default = f'"{default}"'
 
             # fill in any formatters, like %(default)s
-            format_dict = dict(
-                vars(action), prog=data.get("prog", ""), default=default
-            )
+            format_dict = dict(vars(action), prog=data.get("prog", ""), default=default)
             format_dict["default"] = default
             help_str = action.help or ""  # Ensure we don't print None
             try:
@@ -170,9 +164,7 @@ def parse_parser(parser, data=None, **kwargs):
             if isinstance(action, _StoreConstAction):
                 option = {
                     "name": name,
-                    "default": default
-                    if show_defaults_const
-                    else "==SUPPRESS==",
+                    "default": default if show_defaults_const else "==SUPPRESS==",
                     "help": help_str,
                 }
             else:

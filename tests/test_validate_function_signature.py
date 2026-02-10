@@ -121,9 +121,7 @@ def test_validate_function_signature():
     ):
         with pytest.raises(ValueError) as exc_info:
             _validate_function_signature(function=invalid_fun)
-        assert "Only unions of two elements are supported" in str(
-            exc_info.value
-        )
+        assert "Only unions of two elements are supported" in str(exc_info.value)
 
     for invalid_fun in (
         invalid_no_none_1,

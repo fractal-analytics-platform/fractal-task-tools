@@ -19,11 +19,7 @@ if __name__ == "__main__":
             "./**/__FRACTAL_MANIFEST__.json",
             recursive=True,
         )
-        if (
-            "tests" not in f
-            and "cache" not in f
-            and "fractal-task-tools" not in f
-        )
+        if ("tests" not in f and "cache" not in f and "fractal-task-tools" not in f)
     ]
     if len(manifest_files) != 1:
         raise ValueError(
