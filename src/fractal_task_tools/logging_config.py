@@ -2,6 +2,7 @@ import logging
 import os
 import typing
 
+WRAPPER_LOGGER_NAME = "run_fractal_task"
 
 ValidLoggingLevel = typing.Literal[
     "DEBUG",
@@ -57,5 +58,6 @@ def setup_logging_config() -> None:
         format=FRACTAL_TASK_LOG_FORMAT,
         force=True,
     )
-    logging.debug(f"Logging level: {FRACTAL_TASK_LOG_LEVEL=}")
-    logging.debug(f"Logging format: {FRACTAL_TASK_LOG_FORMAT=}")
+    task_wrapper_logger = logging.getLogger(WRAPPER_LOGGER_NAME)
+    task_wrapper_logger.debug(f"Logging level: {FRACTAL_TASK_LOG_LEVEL=}")
+    task_wrapper_logger.debug(f"Logging format: {FRACTAL_TASK_LOG_FORMAT=}")
