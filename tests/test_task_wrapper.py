@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
+from fractal_task_tools.task_wrapper import _check_deprecated_argument
 from fractal_task_tools.task_wrapper import run_fractal_task
 from pydantic import ValidationError
 from pydantic.validate_call_decorator import validate_call
@@ -28,7 +29,7 @@ def fake_task_invalid_output(zarr_url: str, parameter: float):
     return dict(non_json_serializable=datetime.now())
 
 
-def test_run_fractal_task(tmp_path, monkeypatch, caplog):
+def test_run_fractal_task(tmp_path, monkeypatch):
     ARGS_PATH = tmp_path / "args.json"
     METADIFF_PATH = tmp_path / "metadiff.json"
 
@@ -63,10 +64,8 @@ def test_run_fractal_task(tmp_path, monkeypatch, caplog):
     assert task_output == SERIALIZED_TASK_OUTPUT
 
     # Failure (metadiff file already exists)
-    caplog.clear()
-    with pytest.raises(SystemExit):
+    with pytest.raises(SystemExit, match="already exists"):
         run_fractal_task(task_function=fake_task)
-    assert "already exists" in caplog.text
 
     # Failure (invalid output)
     METADIFF_PATH.unlink()
@@ -85,3 +84,13 @@ def test_run_fractal_task(tmp_path, monkeypatch, caplog):
         ValidationError, match="validation error for fake_task"
     ):
         run_fractal_task(task_function=fake_task)
+
+
+def test_check_deprecated_argument(caplog):
+    caplog.clear()
+    _check_deprecated_argument(logger_name=None)
+    assert caplog.text == ""
+
+    caplog.clear()
+    _check_deprecated_argument(logger_name="something")
+    assert "`logger_name` function argument is deprecated" in caplog.text

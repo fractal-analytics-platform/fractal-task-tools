@@ -1,3 +1,10 @@
+# 0.3.0
+
+See https://fractal-analytics-platform.github.io/fractal-task-tools/usage/run_task/#log-configuration for a description of the new feature.
+
+* Mark `logger_name` argument of `run_fractal_task` as deprecated (\#70).
+* Introduce logging-configuration environment variables (\#70).
+
 # 0.2.1
 
 * Improve support for tagged/non-tagged union arguments (\#68).

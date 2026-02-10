@@ -1,12 +1,14 @@
-"""
-Standard input/output interface for tasks.
-"""
 import json
 import logging
+import os
+import sys
 from argparse import ArgumentParser
 from json import JSONEncoder
 from pathlib import Path
-from typing import Optional
+
+from .logging_config import setup_logging_config
+
+task_wrapper_logger = logging.getLogger("run_fractal_task")
 
 
 class TaskParameterEncoder(JSONEncoder):
@@ -22,50 +24,83 @@ class TaskParameterEncoder(JSONEncoder):
         return super().default(obj)
 
 
+def _check_deprecated_argument(logger_name: str | None = None) -> None:
+    """
+    Emit warning for deprecated argument.
+    """
+    if logger_name is not None:
+        task_wrapper_logger.warning(
+            (
+                "`logger_name` function argument is deprecated. "
+                f"The value provided ({logger_name}) will be ignored."
+            )
+        )
+
+
 def run_fractal_task(
     *,
     task_function: callable,
-    logger_name: Optional[str] = None,
-):
+    skip_logging_configuration: bool = False,
+    logger_name: str | None = None,
+) -> None:
     """
     Implement standard task interface and call task_function.
 
     Args:
-        task_function: the callable function that runs the task.
-        logger_name: TBD
+        task_function:
+            Callable function that runs the task.
+        skip_logging_configuration:
+            If `True`, do not call override logging configuration.
+        logger_name:
+            Deprecated argument (will be removed in a future version)
     """
 
-    # Parse `-j` and `--metadata-out` arguments
+    # Parse `--args-json` and `--out-json` CLI arguments
     parser = ArgumentParser()
     parser.add_argument(
-        "--args-json", help="Read parameters from json file", required=True
+        "--args-json",
+        help="Read parameters from json file",
+        required=True,
+        type=str,
     )
     parser.add_argument(
         "--out-json",
         help="Output file to redirect serialised returned data",
         required=True,
+        type=str,
     )
     parsed_args = parser.parse_args()
 
-    # Set logger
-    logger = logging.getLogger(logger_name)
+    # Configure root logger
+    if not (
+        skip_logging_configuration
+        or os.getenv(
+            "FRACTAL_TASK_SKIP_LOG_CONFIG",
+            False,
+        )
+    ):
+        setup_logging_config()
 
     # Preliminary check
     if Path(parsed_args.out_json).exists():
-        logger.error(
-            f"Output file {parsed_args.out_json} already exists. Terminating"
-        )
-        exit(1)
+        msg = f"Output file {parsed_args.out_json} already exists. Terminating"
+        task_wrapper_logger.error(msg)
+        sys.exit(msg)
 
     # Read parameters dictionary
     with open(parsed_args.args_json, "r") as f:
         pars = json.load(f)
 
     # Run task
-    logger.info(f"START {task_function.__name__} task")
+    task_wrapper_logger.info(f"START {task_function.__name__} task")
     metadata_update = task_function(**pars)
-    logger.info(f"END {task_function.__name__} task")
+    task_wrapper_logger.info(f"END {task_function.__name__} task")
 
     # Write output metadata to file, with custom JSON encoder
     with open(parsed_args.out_json, "w") as fout:
-        json.dump(metadata_update, fout, cls=TaskParameterEncoder, indent=2)
+        json.dump(
+            metadata_update,
+            fout,
+            cls=TaskParameterEncoder,
+            indent=2,
+        )
