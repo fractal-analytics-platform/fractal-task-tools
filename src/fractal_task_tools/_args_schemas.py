@@ -8,16 +8,22 @@ from typing import Optional
 
 import pydantic
 from docstring_parser import parse as docparse
+from packaging.version import parse
 
 from ._descriptions import _get_class_attrs_descriptions
 from ._descriptions import _get_function_args_descriptions
 from ._descriptions import _insert_class_attrs_descriptions
 from ._descriptions import _insert_function_args_descriptions
-from ._pydantic_generatejsonschema import CustomGenerateJsonSchema
 from ._signature_constraints import _extract_function
 from ._signature_constraints import _validate_function_signature
 from ._titles import _include_titles
 
+if parse(pydantic.__version__) >= parse("2.11.0"):
+    from ._pydantic_generatejsonschema import CustomGenerateJsonSchema
+else:
+    from ._pydantic_generatejsonschema import (
+        CustomGenerateJsonSchemaLegacy as CustomGenerateJsonSchema,
+    )
 
 _Schema = dict[str, Any]
 
@@ -62,8 +68,6 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
 
 
 def _create_schema_for_function(function: Callable) -> _Schema:
-    from packaging.version import parse
-
     if parse(pydantic.__version__) >= parse("2.11.0"):
         from pydantic.experimental.arguments_schema import (
             generate_arguments_schema,

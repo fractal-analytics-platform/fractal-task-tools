@@ -5,6 +5,7 @@ from typing import Optional
 import pytest
 from devtools import debug
 from fractal_task_tools._args_schemas import create_schema_for_single_task
+from pydantic import Field
 from pydantic import validate_call
 
 
@@ -246,3 +247,30 @@ def test_tuple_argument():
             "description": "Description of arg_A.",
         },
     }
+
+
+@validate_call
+def task_function_default_factory(
+    arg_1: int = 1,
+    arg_2: int = Field(default_factory=lambda: 1),
+):
+    """
+    Short task description
+
+    Args:
+        arg_1: Description of arg_1.
+        arg_2: Description of arg_2.
+    """
+    pass
+
+
+def test_default_factory():
+    schema = create_schema_for_single_task(
+        task_function=task_function_default_factory,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    properties = schema["properties"]
+    assert properties["arg_1"]["default"] == properties["arg_2"]["default"]
