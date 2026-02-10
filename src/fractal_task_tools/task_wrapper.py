@@ -35,7 +35,7 @@ def run_fractal_task(
         task_function:
             Callable function that runs the task.
         skip_logging_configuration:
-            If `True`, do not call `setup_logging_config`.
+            If `True`, do not call override logging configuration.
         logger_name:
             Deprecated argument (will be removed in a future version)
     """
