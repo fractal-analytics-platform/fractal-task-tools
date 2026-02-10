@@ -8,6 +8,8 @@ from pathlib import Path
 
 from .logging_config import setup_logging_config
 
+task_wrapper_logger = logging.getLogger("run_fractal_task")
+
 
 class TaskParameterEncoder(JSONEncoder):
     """
@@ -20,6 +22,16 @@ class TaskParameterEncoder(JSONEncoder):
         if isinstance(obj, Path):
             return obj.as_posix()
         return super().default(obj)
+
+
+def _check_deprecated_argument(logger_name: str | None = None) -> None:
+    if logger_name is not None:
+        task_wrapper_logger.warning(
+            (
+                "`logger_name` function argument is deprecated. "
+                f"The value provided ({logger_name}) will be ignored."
+            )
+        )
 
 
 def run_fractal_task(
@@ -39,17 +51,6 @@ def run_fractal_task(
         logger_name:
             Deprecated argument (will be removed in a future version)
     """
-
-    # Define `run_fractal_task` logger
-    task_wrapper_logger = logging.getLogger("run_fractal_task")
-
-    if logger_name is not None:
-        task_wrapper_logger.warning(
-            (
-                "`logger_name` function argument is deprecated. "
-                f"The value provided ({logger_name}) will be ignored."
-            )
-        )
 
     # Parse `--args-json` and `--out-json` CLI arguments
     parser = ArgumentParser()

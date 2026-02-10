@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
+from fractal_task_tools.task_wrapper import _check_deprecated_argument
 from fractal_task_tools.task_wrapper import run_fractal_task
 from pydantic import ValidationError
 from pydantic.validate_call_decorator import validate_call
@@ -83,3 +84,13 @@ def test_run_fractal_task(tmp_path, monkeypatch):
         ValidationError, match="validation error for fake_task"
     ):
         run_fractal_task(task_function=fake_task)
+
+
+def test_check_deprecated_argument(caplog):
+    caplog.clear()
+    _check_deprecated_argument(logger_name=None)
+    assert caplog.text == ""
+
+    caplog.clear()
+    _check_deprecated_argument(logger_name="something")
+    assert "`logger_name` function argument is deprecated" in caplog.text
