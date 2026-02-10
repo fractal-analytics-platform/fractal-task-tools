@@ -25,6 +25,9 @@ class TaskParameterEncoder(JSONEncoder):
 
 
 def _check_deprecated_argument(logger_name: str | None = None) -> None:
+    """
+    Emit warning for deprecated argument.
+    """
     if logger_name is not None:
         task_wrapper_logger.warning(
             (
