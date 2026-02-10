@@ -72,7 +72,7 @@ def test_setup_logging_config(monkeypatch):
         assert some_logger.parent == root_logger
 
 
-def test_xxx(monkeypatch, tmp_path):
+def test_task_runner_logging_config(monkeypatch, tmp_path):
     with monkeypatch.context() as mc:
         FRACTAL_TASK_LOG_LEVEL = "DEBUG"
         mc.setenv("FRACTAL_TASK_LOG_LEVEL", FRACTAL_TASK_LOG_LEVEL)
@@ -88,12 +88,13 @@ def test_xxx(monkeypatch, tmp_path):
         out1_option = f"--out-json {out1_file.as_posix()}"
         out2_option = f"--out-json {out2_file.as_posix()}"
 
-        with args1_path.open("w") as f:
-            json.dump(dict(zarr_urls=[], zarr_dir="/fake", arg=1), f)
+        for args_path in (args1_path, args2_path):
+            with args_path.open("w") as f:
+                json.dump(dict(zarr_urls=[], zarr_dir="/fake", arg=1), f)
 
         cmd1 = f"{sys.executable} {task1_path} {args1_option} {out1_option}"
-        cmd2 = f"{sys.executable} {task2_path} {args2_option} {out2_option}"
 
+        # Successful run, with env-variable-based logging configuration
         res = subprocess.run(
             shlex.split(cmd1),
             capture_output=True,
@@ -101,10 +102,33 @@ def test_xxx(monkeypatch, tmp_path):
         )
         assert "run_fractal_task; DEBUG; Logging level" in res.stderr
         assert "task1; DEBUG; DEBUG from task" in res.stderr
+        assert "`logger_name` function argument is deprecated" in res.stderr
 
+        # Failed run, with env-variable-based logging configuration
         res = subprocess.run(
             shlex.split(cmd1),
             capture_output=True,
             encoding="utf-8",
         )
         assert res.returncode == 1
+        assert "run_fractal_task; ERROR; Output file" in res.stderr
+        assert "already exists" in res.stderr
+
+        # Failed run, without logging configuration
+        res = subprocess.run(
+            shlex.split(cmd1),
+            capture_output=True,
+            encoding="utf-8",
+            env=dict(FRACTAL_TASK_SKIP_LOG_CONFIG="set"),
+        )
+        assert res.returncode == 1
+        assert "ERROR:run_fractal_task:Output file" in res.stderr
+
+        # Successful run, without logging configuration
+        cmd2 = f"{sys.executable} {task2_path} {args2_option} {out2_option}"
+        res = subprocess.run(
+            shlex.split(cmd2),
+            capture_output=True,
+            encoding="utf-8",
+        )
+        assert "INFO:run_fractal_task:START" in res.stderr

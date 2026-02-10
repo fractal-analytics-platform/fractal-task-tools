@@ -25,6 +25,5 @@ if __name__ == "__main__":
 
     run_fractal_task(
         task_function=task2,
-        logger_name=logger_name,
         skip_logging_configuration=True,
     )
