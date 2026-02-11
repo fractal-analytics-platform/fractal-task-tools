@@ -1,6 +1,5 @@
 import json
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -69,8 +68,7 @@ def test_create_manifest(tmp_path: Path, caplog):
 
     subprocess.check_call(
         [
-            sys.executable,
-            "-m",
+            "uv",
             "pip",
             "uninstall",
             "fake-tasks",
