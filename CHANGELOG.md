@@ -1,3 +1,8 @@
+# 0.4.0 (unreleased)
+
+* Dependencies:
+    * Support `docstring-parser` v0.17 (\#76).
+
 # 0.3.0
 
 See https://fractal-analytics-platform.github.io/fractal-task-tools/usage/run_task/#log-configuration
