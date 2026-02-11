@@ -5,7 +5,7 @@ See https://fractal-analytics-platform.github.io/fractal-task-tools/usage/run_ta
 * Introduce logging-configuration environment variables (\#70, \#71).
 * Mark `logger_name` argument of `run_fractal_task` as deprecated (\#70).
 * Testing:
-    * Add test with `lowest-direct` resolution scheme (\#74).
+    * Add test with `lowest-direct` resolution scheme for Python3.11 (\#74).
 * Development:
     * Adopt `uv` for development (\#74).
 
