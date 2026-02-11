@@ -5,7 +5,7 @@ from typing import Optional
 import pytest
 from devtools import debug
 from fractal_task_tools._args_schemas import create_schema_for_single_task
-from pydantic import Field
+from pydantic import Field, BaseModel
 from pydantic import validate_call
 
 
@@ -250,7 +250,7 @@ def test_tuple_argument():
 
 
 @validate_call
-def task_function_default_factory(
+def task_function_default_factory_top_level(
     arg_1: int = 1,
     arg_2: int = Field(default_factory=lambda: 1),
 ):
@@ -264,9 +264,27 @@ def task_function_default_factory(
     pass
 
 
+class ModelWithFactory(BaseModel):
+    attr_1: int = 1
+    attr_2: int = Field(default_factory=lambda: 1)
+
+
+@validate_call
+def task_function_default_factory_nested(
+    arg: ModelWithFactory = Field(default_factory=ModelWithFactory),
+):
+    """
+    Short task description
+
+    Args:
+        arg: Description of arg.
+    """
+    pass
+
+
 def test_default_factory():
     schema = create_schema_for_single_task(
-        task_function=task_function_default_factory,
+        task_function=task_function_default_factory_top_level,
         executable=__file__,
         package=None,
         verbose=True,
@@ -274,3 +292,17 @@ def test_default_factory():
     debug(schema)
     properties = schema["properties"]
     assert properties["arg_1"]["default"] == properties["arg_2"]["default"]
+
+    schema = create_schema_for_single_task(
+        task_function=task_function_default_factory_nested,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    properties = schema["properties"]
+    assert properties["arg"]["default"] == {"attr_1": 1, "attr_2": 1}
+    nested_properties = schema["$defs"]["ModelWithFactory"]["properties"]
+    assert (
+        nested_properties["attr_1"]["default"] == nested_properties["attr_2"]["default"]
+    )
