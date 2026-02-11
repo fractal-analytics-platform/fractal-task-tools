@@ -7,7 +7,7 @@ See https://fractal-analytics-platform.github.io/fractal-task-tools/usage/run_ta
 * Dependencies:
     * Bump pydantic requirement to `>=2.6.0,<=2.13.0` (\#74).
 * Testing:
-    * Add test with `lowest-direct` resolution scheme for Python3.11 (\#74).
+    * Add test with `lowest-direct` resolution scheme for Python 3.11 and 3.12 (\#74).
 * Development:
     * Adopt `uv` for development (\#74).
 
