@@ -6,7 +6,7 @@
 FIXME
 
 ```bash
-uv venv --seed
+uv venv
 uv sync --all-extras
 ```
 
