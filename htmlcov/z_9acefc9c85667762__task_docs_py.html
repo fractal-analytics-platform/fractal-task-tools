@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_9acefc9c85667762__titles_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-02-10 11:06 +0000
+            created at 2026-02-11 13:53 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -179,18 +179,16 @@
     <p class="mis show_mis"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="key">raise</span> <span class="nam">ValueError</span><span class="op">(</span><span class="fst">f"</span><span class="fst">Invalid docs_info='</span><span class="op">{</span><span class="nam">docs_info</span><span class="op">}</span><span class="fst">'.</span><span class="fst">"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">    <span class="nam">relative_path</span> <span class="op">=</span> <span class="nam">Path</span><span class="op">(</span><span class="nam">docs_info</span><span class="op">[</span><span class="num">5</span><span class="op">:</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">    <span class="key">if</span> <span class="nam">relative_path</span><span class="op">.</span><span class="nam">is_absolute</span><span class="op">(</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">        <span class="key">raise</span> <span class="nam">ValueError</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis mis2 show_mis"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">            <span class="fst">f"</span><span class="fst">Invalid docs_info='</span><span class="op">{</span><span class="nam">docs_info</span><span class="op">}</span><span class="fst">' (path must be relative).</span><span class="fst">"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis mis2 show_mis"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">    <span class="nam">base_path</span> <span class="op">=</span> <span class="nam">Path</span><span class="op">(</span><span class="nam">task_list_path</span><span class="op">)</span><span class="op">.</span><span class="nam">parent</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">    <span class="nam">docs_path</span> <span class="op">=</span> <span class="op">(</span><span class="nam">base_path</span> <span class="op">/</span> <span class="nam">relative_path</span><span class="op">)</span><span class="op">.</span><span class="nam">as_posix</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="fst">f"</span><span class="fst">[read_docs_info_from_file] Reading docs from </span><span class="op">{</span><span class="nam">docs_path</span><span class="op">}</span><span class="fst">"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">    <span class="key">with</span> <span class="nam">open</span><span class="op">(</span><span class="nam">docs_path</span><span class="op">,</span> <span class="str">"r"</span><span class="op">)</span> <span class="key">as</span> <span class="nam">f</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">        <span class="nam">docs_info</span> <span class="op">=</span> <span class="nam">f</span><span class="op">.</span><span class="nam">read</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="str">"[read_docs_info_from_file] END"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t108" href="#t108">108</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">    <span class="key">return</span> <span class="nam">docs_info</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">        <span class="key">raise</span> <span class="nam">ValueError</span><span class="op">(</span><span class="fst">f"</span><span class="fst">Invalid docs_info='</span><span class="op">{</span><span class="nam">docs_info</span><span class="op">}</span><span class="fst">' (path must be relative).</span><span class="fst">"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">    <span class="nam">base_path</span> <span class="op">=</span> <span class="nam">Path</span><span class="op">(</span><span class="nam">task_list_path</span><span class="op">)</span><span class="op">.</span><span class="nam">parent</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">    <span class="nam">docs_path</span> <span class="op">=</span> <span class="op">(</span><span class="nam">base_path</span> <span class="op">/</span> <span class="nam">relative_path</span><span class="op">)</span><span class="op">.</span><span class="nam">as_posix</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="fst">f"</span><span class="fst">[read_docs_info_from_file] Reading docs from </span><span class="op">{</span><span class="nam">docs_path</span><span class="op">}</span><span class="fst">"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">    <span class="key">with</span> <span class="nam">open</span><span class="op">(</span><span class="nam">docs_path</span><span class="op">,</span> <span class="str">"r"</span><span class="op">)</span> <span class="key">as</span> <span class="nam">f</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">        <span class="nam">docs_info</span> <span class="op">=</span> <span class="nam">f</span><span class="op">.</span><span class="nam">read</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="str">"[read_docs_info_from_file] END"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">    <span class="key">return</span> <span class="nam">docs_info</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -200,7 +198,7 @@
             <a class="nav" href="z_9acefc9c85667762__titles_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-02-10 11:06 +0000
+            created at 2026-02-11 13:53 +0000
         </p>
     </div>
 </footer>
