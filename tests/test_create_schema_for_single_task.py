@@ -191,7 +191,7 @@ def test_optional_argument():
     Note: future versions of fractal-tasks-core may change this behavior.
     """
     schema = create_schema_for_single_task(
-        task_function=validate_call(task_function_with_optional),
+        task_function=task_function_with_optional,
         executable=__file__,
         package=None,
         verbose=True,

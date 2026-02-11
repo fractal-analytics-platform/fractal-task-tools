@@ -1,6 +1,7 @@
 """
 Generate JSON schemas for task arguments and combine them into a manifest.
 """
+
 import logging
 from importlib import import_module
 from typing import Any
@@ -39,9 +40,7 @@ def create_manifest(
 
     # Preliminary validation
     if "/" in task_list_path or task_list_path.endswith(".py"):
-        raise ValueError(
-            f"Invalid {task_list_path=} (valid example: `dev.task_list`)."
-        )
+        raise ValueError(f"Invalid {task_list_path=} (valid example: `dev.task_list`).")
 
     # Normalize package name
     package_name = normalize_package_name(raw_package_name)
@@ -84,9 +83,7 @@ def create_manifest(
         # Transform empty string into None
         if DOCS_LINK == "":
             DOCS_LINK = None
-            logging.warning(
-                "`DOCS_LINK=" "` transformed into `DOCS_LINK=None`."
-            )
+            logging.warning("`DOCS_LINK=` transformed into `DOCS_LINK=None`.")
     except AttributeError:
         DOCS_LINK = None
         logging.warning("No `DOCS_LINK` found in task_list module.")
@@ -108,9 +105,7 @@ def create_manifest(
 
         # Copy some properties from `task_obj` to `task_dict`
         if task_obj.executable_non_parallel is not None:
-            task_dict[
-                "executable_non_parallel"
-            ] = task_obj.executable_non_parallel
+            task_dict["executable_non_parallel"] = task_obj.executable_non_parallel
         if task_obj.executable_parallel is not None:
             task_dict["executable_parallel"] = task_obj.executable_parallel
         if task_obj.meta_non_parallel is not None:

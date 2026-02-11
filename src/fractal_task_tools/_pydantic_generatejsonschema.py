@@ -8,6 +8,7 @@ This is not always the required behavior, see e.g.
 * https://github.com/pydantic/pydantic/issues/7161
 * https://github.com/pydantic/pydantic/issues/8394
 """
+
 import logging
 from typing import Any
 
@@ -16,7 +17,6 @@ from pydantic.json_schema import GenerateJsonSchema
 from pydantic.json_schema import JsonSchemaValue
 from pydantic.json_schema import NoDefault
 from pydantic_core import core_schema
-from pydantic_core.core_schema import WithDefaultSchema
 
 logger = logging.getLogger("CustomGenerateJsonSchema")
 
@@ -26,17 +26,13 @@ class _CustomGenerateJsonSchema(GenerateJsonSchema):
     FIXME
     """
 
-    def get_flattened_anyof(
-        self, schemas: list[JsonSchemaValue]
-    ) -> JsonSchemaValue:
+    def get_flattened_anyof(self, schemas: list[JsonSchemaValue]) -> JsonSchemaValue:
         """
         FIXME
         """
         null_schema = {"type": "null"}
         if null_schema in schemas:
-            logger.warning(
-                "Drop `null_schema` before calling `get_flattened_anyof`"
-            )
+            logger.warning("Drop `null_schema` before calling `get_flattened_anyof`")
             schemas.pop(schemas.index(null_schema))
         return super().get_flattened_anyof(schemas)
 
@@ -46,9 +42,7 @@ class CustomGenerateJsonSchemaLegacy(_CustomGenerateJsonSchema):
     FIXME
     """
 
-    def default_schema(
-        self, schema: core_schema.WithDefaultSchema
-    ) -> JsonSchemaValue:
+    def default_schema(self, schema: core_schema.WithDefaultSchema) -> JsonSchemaValue:
         """Generates a JSON schema that matches a schema with a default value.
 
         Args:
@@ -80,8 +74,7 @@ class CustomGenerateJsonSchemaLegacy(_CustomGenerateJsonSchema):
             and not ser_schema.get("info_arg")
             and not (
                 default is None
-                and ser_schema.get("when_used")
-                in ("unless-none", "json-unless-none")
+                and ser_schema.get("when_used") in ("unless-none", "json-unless-none")
             )
         ):
             try:

@@ -48,9 +48,7 @@ def validate_arguments(
 
     schema_properties = set(schema["properties"].keys())
 
-    logging.info(
-        f"[validate_arguments] Task has arguments: {schema_properties}"
-    )
+    logging.info(f"[validate_arguments] Task has arguments: {schema_properties}")
     logging.info(f"[validate_arguments] Required arguments: {required_args}")
     logging.info(f"[validate_arguments] Forbidden arguments: {forbidden_args}")
 

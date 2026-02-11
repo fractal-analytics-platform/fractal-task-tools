@@ -108,9 +108,7 @@ def fun_non_tagged_union_invalid_1(arg: Annotated[int | str, "comment"]):
     pass
 
 
-def fun_non_tagged_union_invalid_2(
-    arg: Annotated[int | None, "comment"] = 123
-):
+def fun_non_tagged_union_invalid_2(arg: Annotated[int | None, "comment"] = 123):
     pass
 
 

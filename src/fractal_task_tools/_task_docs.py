@@ -95,9 +95,7 @@ def read_docs_info_from_file(
         raise ValueError(f"Invalid docs_info='{docs_info}'.")
     relative_path = Path(docs_info[5:])
     if relative_path.is_absolute():
-        raise ValueError(
-            f"Invalid docs_info='{docs_info}' (path must be relative)."
-        )
+        raise ValueError(f"Invalid docs_info='{docs_info}' (path must be relative).")
 
     base_path = Path(task_list_path).parent
     docs_path = (base_path / relative_path).as_posix()
