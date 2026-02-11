@@ -4,6 +4,8 @@ See https://fractal-analytics-platform.github.io/fractal-task-tools/usage/run_ta
 
 * Introduce logging-configuration environment variables (\#70, \#71).
 * Mark `logger_name` argument of `run_fractal_task` as deprecated (\#70).
+* Dependencies:
+    * Bump pydantic requirement to `>=2.6.0,<=2.13.0` (\#74).
 * Testing:
     * Add test with `lowest-direct` resolution scheme for Python3.11 (\#74).
 * Development:
