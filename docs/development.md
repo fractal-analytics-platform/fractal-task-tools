@@ -27,15 +27,15 @@ pre-commit install
 ## Make a release
 
 ```
-uv run --frozen bumpver update --patch --dry
+uv run --no-sync --frozen bumpver update --patch --dry
 ```
 
 ## Tests
 
 Run e.g. one of these commands
 ```
-uv run --frozen pytest
-uv run --frozen pytest -s -vvv --log-cli-level info --full-trace
+uv run--no-sync --frozen pytest
+uv run --no-sync --frozen pytest -s -vvv --log-cli-level info --full-trace
 ```
 
 ## Documentation
@@ -46,7 +46,7 @@ our needs.
 
 To build or server the documentation locally run
 ```
-uv run --frozen mkdocs serve --config-file mkdocs.yml  # serves the docs at http://127.0.0.1:8000
+uv run --no-sync --frozen mkdocs serve --config-file mkdocs.yml  # serves the docs at http://127.0.0.1:8000
 
-uv run --frozen mkdocs build --config-file mkdocs.yml  # creates a build in the `site` folder
+uv run --no-sync --frozen mkdocs build --config-file mkdocs.yml  # creates a build in the `site` folder
 ```
