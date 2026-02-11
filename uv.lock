@@ -346,7 +346,7 @@ requires-dist = [
     { name = "mkdocs-section-index", marker = "extra == 'docs'", specifier = "==0.3.10" },
     { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=1.0.2,<1.1.0" },
     { name = "packaging", specifier = ">=26.0" },
-    { name = "pydantic", specifier = ">=2.0.0,<=2.13.0" },
+    { name = "pydantic", specifier = ">=2.1.0,<=2.13.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.0,<9.0.0" },
     { name = "requests", marker = "extra == 'dev'", specifier = ">2.32.0,<2.33.0" },
 ]
