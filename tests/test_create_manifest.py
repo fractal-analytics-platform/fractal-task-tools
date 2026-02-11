@@ -72,6 +72,5 @@ def test_create_manifest(tmp_path: Path, caplog):
             "pip",
             "uninstall",
             "fake-tasks",
-            "--yes",
         ]
     )
