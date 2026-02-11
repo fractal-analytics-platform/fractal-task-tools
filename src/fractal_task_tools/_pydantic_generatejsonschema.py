@@ -65,6 +65,7 @@ class CustomGenerateJsonSchemaLegacy(_CustomGenerateJsonSchema):
         if "default" in schema:
             if schema["default"] is None:
                 logger.warning(f"Ignore `None` default value from {schema=}")
+                return json_schema
             else:
                 default = schema["default"]
         elif "default_factory" in schema:
