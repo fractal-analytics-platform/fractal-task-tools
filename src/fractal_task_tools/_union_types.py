@@ -16,8 +16,7 @@ def is_union(_type) -> bool:
     """
     result = typing.get_origin(_type) in _UNION_TYPES
     alternative_result = (
-        type(_type) is typing._UnionGenericAlias
-        or type(_type) is types.UnionType
+        type(_type) is typing._UnionGenericAlias or type(_type) is types.UnionType
     )
     if result != alternative_result:
         # This is a safety check, which is meant to be unreachable
@@ -35,9 +34,7 @@ def is_annotated_union(_type) -> bool:
 
     See https://docs.python.org/3/library/typing.html#typing.Annotated
     """
-    return typing.get_origin(_type) is typing.Annotated and is_union(
-        _type.__origin__
-    )
+    return typing.get_origin(_type) is typing.Annotated and is_union(_type.__origin__)
 
 
 def is_tagged(_type) -> bool:

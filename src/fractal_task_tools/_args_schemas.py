@@ -45,18 +45,16 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
         for name, definition in new_schema["$defs"].items():
             if "description" in definition.keys():
                 parsed_docstring = docparse(definition["description"])
-                new_schema["$defs"][name][
-                    "description"
-                ] = parsed_docstring.short_description
+                new_schema["$defs"][name]["description"] = (
+                    parsed_docstring.short_description
+                )
             elif "title" in definition.keys():
                 title = definition["title"]
-                new_schema["$defs"][name][
-                    "description"
-                ] = f"Missing description for {title}."
+                new_schema["$defs"][name]["description"] = (
+                    f"Missing description for {title}."
+                )
             else:
-                new_schema["$defs"][name][
-                    "description"
-                ] = "Missing description"
+                new_schema["$defs"][name]["description"] = "Missing description"
     logging.info("[_remove_attributes_from_descriptions] END")
     return new_schema
 
@@ -186,17 +184,13 @@ def create_schema_for_single_task(
     schema = _remove_attributes_from_descriptions(schema)
 
     # Include titles for custom-model-typed arguments
-    schema = _include_titles(
-        schema, definitions_key=DEFINITIONS_KEY, verbose=verbose
-    )
+    schema = _include_titles(schema, definitions_key=DEFINITIONS_KEY, verbose=verbose)
 
     # Include main title
     if schema.get("title") is None:
 
         def to_camel_case(snake_str):
-            return "".join(
-                x.capitalize() for x in snake_str.lower().split("_")
-            )
+            return "".join(x.capitalize() for x in snake_str.lower().split("_"))
 
         schema["title"] = to_camel_case(task_function.__name__)
 
@@ -217,9 +211,7 @@ def create_schema_for_single_task(
         # Check that model names are unique
         pydantic_models_names = [item[2] for item in pydantic_models]
         duplicate_class_names = [
-            name
-            for name, count in Counter(pydantic_models_names).items()
-            if count > 1
+            name for name, count in Counter(pydantic_models_names).items() if count > 1
         ]
         if duplicate_class_names:
             pydantic_models_str = "  " + "\n  ".join(map(str, pydantic_models))

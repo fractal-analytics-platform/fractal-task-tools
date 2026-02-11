@@ -204,8 +204,7 @@ def _insert_function_args_descriptions(
             new_properties[key] = value
             if verbose:
                 logging.info(
-                    "[_insert_function_args_descriptions] "
-                    f"Add {key=}, {value=}"
+                    f"[_insert_function_args_descriptions] Add {key=}, {value=}"
                 )
     new_schema["properties"] = new_properties
     logging.info("[_insert_function_args_descriptions] END")
@@ -240,13 +239,11 @@ def _insert_class_attrs_descriptions(
         if name == class_name:
             for prop in definition["properties"]:
                 if "description" in new_definitions[name]["properties"][prop]:
-                    raise ValueError(
-                        f"Property {name}.{prop} already has description"
-                    )
+                    raise ValueError(f"Property {name}.{prop} already has description")
                 else:
-                    new_definitions[name]["properties"][prop][
-                        "description"
-                    ] = descriptions[prop]
+                    new_definitions[name]["properties"][prop]["description"] = (
+                        descriptions[prop]
+                    )
     new_schema[definition_key] = new_definitions
     logging.info("[_insert_class_attrs_descriptions] END")
     return new_schema

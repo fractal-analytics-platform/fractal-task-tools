@@ -10,6 +10,7 @@ This is not always the required behavior, see e.g.
 
 Here we list some alternative ways of reverting this change.
 """
+
 import logging
 
 from pydantic.json_schema import GenerateJsonSchema
@@ -20,14 +21,10 @@ logger = logging.getLogger("CustomGenerateJsonSchema")
 
 
 class CustomGenerateJsonSchema(GenerateJsonSchema):
-    def get_flattened_anyof(
-        self, schemas: list[JsonSchemaValue]
-    ) -> JsonSchemaValue:
+    def get_flattened_anyof(self, schemas: list[JsonSchemaValue]) -> JsonSchemaValue:
         null_schema = {"type": "null"}
         if null_schema in schemas:
-            logger.warning(
-                "Drop `null_schema` before calling `get_flattened_anyof`"
-            )
+            logger.warning("Drop `null_schema` before calling `get_flattened_anyof`")
             schemas.pop(schemas.index(null_schema))
         return super().get_flattened_anyof(schemas)
 

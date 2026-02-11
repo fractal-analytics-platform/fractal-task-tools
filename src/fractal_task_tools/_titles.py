@@ -21,8 +21,7 @@ def _include_titles_for_properties(
     """
     if verbose:
         logging.info(
-            f"[_include_titles_for_properties] Original properties:\n"
-            f"{properties}"
+            f"[_include_titles_for_properties] Original properties:\n{properties}"
         )
 
     new_properties = properties.copy()
@@ -33,8 +32,7 @@ def _include_titles_for_properties(
             new_properties[prop_name] = new_prop
     if verbose:
         logging.info(
-            f"[_include_titles_for_properties] New properties:\n"
-            f"{new_properties}"
+            f"[_include_titles_for_properties] New properties:\n{new_properties}"
         )
     return new_properties
 
@@ -82,8 +80,7 @@ def _include_titles(
             if "properties" not in def_schema.keys():
                 if verbose:
                     logging.info(
-                        f"Definition schema {def_name} has no 'properties' "
-                        "key. Skip."
+                        f"Definition schema {def_name} has no 'properties' key. Skip."
                     )
             else:
                 new_properties = _include_titles_for_properties(

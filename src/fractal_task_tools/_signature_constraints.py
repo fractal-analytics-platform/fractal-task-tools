@@ -46,18 +46,14 @@ def _extract_function(
     """
     if not module_relative_path.endswith(".py"):
         raise ValueError(f"{module_relative_path=} must end with '.py'")
-    module_relative_path_no_py = str(
-        Path(module_relative_path).with_suffix("")
-    )
+    module_relative_path_no_py = str(Path(module_relative_path).with_suffix(""))
     module_relative_path_dots = module_relative_path_no_py.replace("/", ".")
     if verbose:
         logging.info(
             f"Now calling `import_module` for "
             f"{package_name}.{module_relative_path_dots}"
         )
-    imported_module = import_module(
-        f"{package_name}.{module_relative_path_dots}"
-    )
+    imported_module = import_module(f"{package_name}.{module_relative_path_dots}")
     if verbose:
         logging.info(
             f"Now getting attribute {function_name} from "
@@ -124,8 +120,7 @@ def _validate_function_signature(function: callable) -> Signature:
         # Check that name is not forbidden
         if param.name in FORBIDDEN_PARAM_NAMES:
             raise ValueError(
-                f"Function {function} has argument with forbidden "
-                f"name '{param.name}'"
+                f"Function {function} has argument with forbidden name '{param.name}'"
             )
         # Validate plain unions or non-tagged annotated unions
         if is_union(param.annotation):

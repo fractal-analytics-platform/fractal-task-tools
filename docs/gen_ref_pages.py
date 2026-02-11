@@ -136,9 +136,7 @@ with mkdocs_gen_files.open("reference/fractal-manifest/index.md", "w") as f:
 for child in main["children"]:
     name = child["name"]
     nav[["fractal-manifest", name]] = f"fractal-manifest/{name}/index.md"
-    with mkdocs_gen_files.open(
-        f"reference/fractal-manifest/{name}/index.md", "w"
-    ) as f:
+    with mkdocs_gen_files.open(f"reference/fractal-manifest/{name}/index.md", "w") as f:
         f.write(to_markdown(child, level=0))
 
 
