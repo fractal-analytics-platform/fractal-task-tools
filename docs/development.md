@@ -3,10 +3,13 @@
 
 ## Setup environment
 
-FIXME
-
+We use [uv](https://docs.astral.sh/uv/) to manage the development environment and the dependencies - see https://docs.astral.sh/uv/getting-started/installation/ for methods to install it.
+From the `fractal-task-tools` root folder, you can get started through
 ```bash
+# Create a new virtual environment in `.venv`
 uv venv
+
+# Install both the required dependencies and the optional dev/docs dependencies
 uv sync --all-extras
 ```
 
