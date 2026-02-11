@@ -1,6 +1,8 @@
 """
 Custom Pydantic v2 JSON Schema generation tools.
 
+
+
 As of Pydantic V2, the JSON Schema representation of model attributes marked
 as `Optional` changed, and the new behavior consists in marking the
 corresponding properties as an `anyOf` of either a `null` or the actual type.
@@ -35,7 +37,7 @@ class _CustomGenerateJsonSchema(GenerateJsonSchema):
 
     def get_flattened_anyof(self, schemas: list[JsonSchemaValue]) -> JsonSchemaValue:
         """
-        FIXME
+        https://github.com/pydantic/pydantic/issues/7161
         """
         null_schema = {"type": "null"}
         if null_schema in schemas:
