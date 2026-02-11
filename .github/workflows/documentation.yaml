@@ -27,7 +27,7 @@ jobs:
           version: "0.10.2"
           enable-cache: true
 
-      - run: uv sync --frozen --group docs
+      - run: uv sync --frozen --extra docs
 
       - run: uv run --frozen mkdocs gh-deploy --config-file mkdocs.yml --force --verbose
         env:
@@ -52,6 +52,6 @@ jobs:
           version: "0.10.2"
           enable-cache: true
 
-      - run: uv sync --frozen --group docs
+      - run: uv sync --frozen --extra docs
 
       - run: uv run --frozen mkdocs build --config-file mkdocs.yml --strict
