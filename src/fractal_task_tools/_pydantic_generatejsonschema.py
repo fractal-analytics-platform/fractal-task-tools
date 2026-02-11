@@ -63,10 +63,10 @@ class CustomGenerateJsonSchemaLegacy(_CustomGenerateJsonSchema):
         json_schema = self.generate_inner(schema["schema"])
 
         if "default" in schema:
-            default = schema["default"]
-            if default is None:
-                logger.warning(f"Pop `None` default value from {schema=}")
-                json_schema.pop("default")
+            if schema["default"] is None:
+                logger.warning(f"Ignore `None` default value from {schema=}")
+            else:
+                default = schema["default"]
         elif "default_factory" in schema:
             default = schema["default_factory"]()
         else:
