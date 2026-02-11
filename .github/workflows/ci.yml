@@ -87,8 +87,6 @@ jobs:
 
       - run: uv sync --frozen --extra dev
 
-      - run: uv add pip  # needed to install the `fake-tasks` package in tests
-
       - name: Test with pytest
         env:
           COVERAGE_FILE: coverage-data-${{ matrix.python-version }}-lowed
@@ -119,8 +117,6 @@ jobs:
           enable-cache: true
 
       - run: uv sync --frozen --extra dev
-
-      - run: uv add pip  # needed to install the `fake-tasks` package in tests
 
       - name: Download data
         uses: actions/download-artifact@v4
