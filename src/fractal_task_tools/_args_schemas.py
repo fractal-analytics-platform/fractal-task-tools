@@ -1,4 +1,5 @@
 import logging
+from copy import deepcopy
 import os
 from collections import Counter
 from pathlib import Path
@@ -111,6 +112,29 @@ def _create_schema_for_function(function: Callable) -> _Schema:
     return json_schema
 
 
+def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
+    """
+    Transform `"allOf": [{"$ref": X}]` into `"$ref": X`
+    """
+    old_schema = deepcopy(schema)
+    for arg_name, old_arg_schema in old_schema["properties"].items():
+        if (
+            "allOf" in old_arg_schema.keys()
+            and isinstance(old_arg_schema["allOf"], list)
+            and len(old_arg_schema["allOf"]) == 1
+            and isinstance(old_arg_schema["allOf"][0], dict)
+            and list(old_arg_schema["allOf"][0].keys()) == ["$ref"]
+            and "$ref" not in old_arg_schema.keys()
+        ):
+            new_arg_schema: dict[str, Any] = deepcopy(old_arg_schema)
+            key_value = new_arg_schema.pop("allOf")[0]
+            new_arg_schema.update(key_value)
+            schema["properties"][arg_name] = new_arg_schema
+            logging.debug(f"Replaced single-item allOf with {key_value} ")
+            raise RuntimeError("gotcha")
+    return schema
+
+
 def create_schema_for_single_task(
     executable: str,
     package: Optional[str] = None,
@@ -186,6 +210,7 @@ def create_schema_for_single_task(
     # Create and clean up schema
     schema = _create_schema_for_function(task_function)
     schema = _remove_attributes_from_descriptions(schema)
+    schema = _remove_top_level_single_element_allof(schema)
 
     # Include titles for custom-model-typed arguments
     schema = _include_titles(schema, definitions_key=DEFINITIONS_KEY, verbose=verbose)
