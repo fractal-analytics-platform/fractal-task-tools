@@ -59,6 +59,14 @@ check_manifest_parser.add_argument(
     required=False,
 )
 
+check_manifest_parser.add_argument(
+    "--verbose",
+    type=bool,
+    help="Make logs more verbose (default value: False).",
+    default=False,
+    required=False,
+)
+
 
 def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
     """
@@ -94,4 +102,5 @@ def main():
             raw_package_name=args.package,
             manifest=manifest,
             ignore_keys_order=args.ignore_keys_order,
+            verbose=args.verbose,
         )
