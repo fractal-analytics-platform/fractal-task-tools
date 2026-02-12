@@ -84,5 +84,14 @@ def check_manifest(
         except ValueError as e:
             logging.error(str(e))
             sys.exit("New/old manifests differ")
+        from ._deepdiff import ERRORS
 
+        if ERRORS:
+            for error in ERRORS:
+                old_object, new_object, msg = error
+                print(msg)
+                if verbose:
+                    print(f"OLD:\n{json.dumps(old_object)}")
+                    print(f"NEW:\n{json.dumps(new_object)}")
+            sys.exit("New/old manifests differ")
     logging.info("[check_manifest] END")
