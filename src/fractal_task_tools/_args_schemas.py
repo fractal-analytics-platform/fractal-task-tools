@@ -131,7 +131,6 @@ def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
             new_arg_schema.update(key_value)
             schema["properties"][arg_name] = new_arg_schema
             logging.debug(f"Replaced single-item allOf with {key_value} ")
-            raise RuntimeError("gotcha")
     return schema
 
 
