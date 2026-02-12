@@ -1,5 +1,8 @@
 from devtools import debug
-from fractal_task_tools._args_schemas import create_schema_for_single_task
+from fractal_task_tools._args_schemas import (
+    create_schema_for_single_task,
+    _remove_top_level_single_element_allof,
+)
 from pydantic import validate_call
 from enum import Enum
 
@@ -39,3 +42,11 @@ def test_create_schema_with_field():
         },
     }
     assert target_properties == schema["properties"]
+
+
+def test_unit_remove_top_level_single_element_allof():
+    VALUE = "#/$defs/Something"
+    old_schema = dict(properties=dict(arg={"allOf": [{"$ref": VALUE}]}))
+    new_schema = _remove_top_level_single_element_allof(old_schema)
+    debug(new_schema)
+    assert new_schema == {"properties": {"arg": {"$ref": VALUE}}}
