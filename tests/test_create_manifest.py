@@ -48,6 +48,7 @@ def test_create_manifest(tmp_path: Path, caplog):
         raw_package_name="fake-tasks",
         manifest=manifest,
         ignore_keys_order=False,
+        verbose=True,
     )
 
     MANIFEST_PATH = Path(fake_tasks.__file__).parent / MANIFEST_FILENAME
@@ -60,6 +61,7 @@ def test_create_manifest(tmp_path: Path, caplog):
             raw_package_name="fake-tasks",
             manifest=manifest,
             ignore_keys_order=False,
+            verbose=True,
         )
     assert "On-disk manifest is not up to date." in caplog.text
 
