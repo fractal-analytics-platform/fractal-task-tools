@@ -14,7 +14,6 @@ This is not always the required behavior, see e.g.
 import logging
 from typing import Any
 
-import pydantic_core
 from pydantic.json_schema import GenerateJsonSchema
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema
@@ -60,59 +59,15 @@ class CustomGenerateJsonSchemaLegacy(_CustomGenerateJsonSchema):
         Returns:
             The generated JSON schema.
         """
-        json_schema = self.generate_inner(schema["schema"])
+        # Pre-compute `default_factory` value
 
-        if "default" in schema:
-            if schema["default"] is None:
-                logger.warning(f"Ignore `None` default value from {schema=}")
-                return json_schema
-            else:
-                default = schema["default"]
-        elif "default_factory" in schema:
-            default = schema["default_factory"]()
-        else:
-            return json_schema
+        if "default_factory" in schema and not schema.get("default_factory_takes_data"):
+            schema["default"] = schema["default_factory"]()
 
-        # we reflect the application of custom plain, no-info serializers to defaults for
-        # JSON Schemas viewed in serialization mode:
-        # TODO: improvements along with https://github.com/pydantic/pydantic/issues/8208
-        if (
-            self.mode == "serialization"
-            and (ser_schema := schema["schema"].get("serialization"))
-            and (ser_func := ser_schema.get("function"))
-            and ser_schema.get("type") == "function-plain"
-            and not ser_schema.get("info_arg")
-            and not (
-                default is None
-                and ser_schema.get("when_used") in ("unless-none", "json-unless-none")
-            )
-        ):
-            try:
-                default = ser_func(default)  # type: ignore
-            except Exception:
-                # It might be that the provided default needs to be validated (read: parsed) first
-                # (assuming `validate_default` is enabled). However, we can't perform
-                # such validation during JSON Schema generation so we don't support
-                # this pattern for now.
-                # (One example is when using `foo: ByteSize = '1MB'`, which validates and
-                # serializes as an int. In this case, `ser_func` is `int` and `int('1MB')` fails).
-                self.emit_warning(
-                    "non-serializable-default",
-                    f"Unable to serialize value {default!r} with the plain serializer; excluding default from JSON schema",
-                )
-                return json_schema
-
-        try:
-            encoded_default = self.encode_default(default)
-        except pydantic_core.PydanticSerializationError:
-            self.emit_warning(
-                "non-serializable-default",
-                f"Default value {default} is not JSON serializable; excluding default from JSON schema",
-            )
-            # Return the inner schema, as though there was no default
-            return json_schema
-
-        json_schema["default"] = encoded_default
+        json_schema = super().default_schema(schema)
+        if "default" in json_schema.keys() and json_schema["default"] is None:
+            logger.warning(f"Pop `None` default value from {json_schema=}")
+            json_schema.pop("default")
         return json_schema
 
 
