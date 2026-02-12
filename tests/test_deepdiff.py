@@ -16,6 +16,7 @@ def test_recursion_level():
             ignore_keys_order=True,
             path="base",
             recursion_level=19,
+            verbose=True,
         )
 
 
@@ -31,6 +32,7 @@ def test_ignore_keys_order():
             new_object=new_obj,
             ignore_keys_order=False,
             path="base",
+            verbose=True,
         )
 
     deepdiff(
@@ -38,6 +40,7 @@ def test_ignore_keys_order():
         new_object=new_obj,
         ignore_keys_order=True,
         path="base",
+        verbose=True,
     )
 
 
@@ -51,6 +54,7 @@ def test_list_length():
             new_object=[2, 3],
             ignore_keys_order=False,
             path="base",
+            verbose=True,
         )
 
 
@@ -63,6 +67,7 @@ def test_path():
             new_object=new_obj,
             ignore_keys_order=False,
             path="base",
+            verbose=True,
         )
     assert "base['mykey1'][4]['mykey2']" in str(exc_info.value)
 
@@ -82,6 +87,7 @@ def test_type_diff(old_obj, new_obj):
             new_object=new_obj,
             ignore_keys_order=False,
             path="base",
+            verbose=True,
         )
 
 
@@ -92,6 +98,7 @@ def test_invalid_type():
             new_object=datetime.now(),
             ignore_keys_order=False,
             path="base",
+            verbose=True,
         )
 
 
@@ -102,4 +109,5 @@ def test_success():
         new_object=old_obj,
         ignore_keys_order=False,
         path="base",
+        verbose=True,
     )

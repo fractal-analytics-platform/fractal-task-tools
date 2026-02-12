@@ -108,7 +108,7 @@ jobs:
         run: python -m pip install ./fractal-task-tools
 
       - name: Check manifest
-        run: fractal-manifest check --package ${{ matrix.package }}
+        run: fractal-manifest check --package ${{ matrix.package }} --verbose
 
       - name: Install  current version of `fractal-task-tools` with `dev` extra
         run: python -m pip install ./fractal-task-tools[dev]

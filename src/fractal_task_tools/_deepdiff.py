@@ -1,4 +1,5 @@
 from typing import Union
+import json
 
 
 ValidType = Union[list, dict, str, int, float, bool, None]
@@ -13,8 +14,12 @@ def deepdiff(
     path: str,
     ignore_keys_order: bool,
     recursion_level: int = 1,
+    verbose: bool = False,
 ):
     if type(old_object) is not type(new_object):
+        if verbose:
+            print(f"OLD:\n{json.dumps(old_object)}")
+            print(f"NEW:\n{json.dumps(new_object)}")
         raise ValueError(
             f"[{path}] Type difference:\n"
             f"\tOld: {type(old_object)}\n\tNew: {type(new_object)}"
@@ -33,6 +38,9 @@ def deepdiff(
             old_keys = sorted(old_keys)
             new_keys = sorted(new_keys)
         if old_keys != new_keys:
+            if verbose:
+                print(f"OLD:\n{json.dumps(old_object)}")
+                print(f"NEW:\n{json.dumps(new_object)}")
             raise ValueError(
                 f"[{path}] Dictionaries have different keys:\n"
                 f"\tOld: {old_keys}\n\tNew: {new_keys}"
@@ -45,9 +53,13 @@ def deepdiff(
                 path=f"{path}['{key}']",
                 ignore_keys_order=ignore_keys_order,
                 recursion_level=recursion_level + 1,
+                verbose=verbose,
             )
     elif type(old_object) is list:
         if len(old_object) != len(new_object):
+            if verbose:
+                print(f"OLD:\n{json.dumps(old_object)}")
+                print(f"NEW:\n{json.dumps(new_object)}")
             raise ValueError(
                 f"{path} Lists have different lengths:\n"
                 f"\tOld:{len(old_object)}\n\tNew: {len(new_object)}"
@@ -59,9 +71,13 @@ def deepdiff(
                 path=f"{path}[{ind}]",
                 ignore_keys_order=ignore_keys_order,
                 recursion_level=recursion_level + 1,
+                verbose=verbose,
             )
     else:
         if old_object != new_object:
+            if verbose:
+                print(f"OLD:\n{json.dumps(old_object)}")
+                print(f"NEW:\n{json.dumps(new_object)}")
             raise ValueError(
                 f"{path} Values are different:\n"
                 f"\tOld: '{old_object}'\n\tNew: '{new_object}'"

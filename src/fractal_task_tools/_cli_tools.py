@@ -46,6 +46,7 @@ def check_manifest(
     raw_package_name: str,
     manifest: str,
     ignore_keys_order: bool,
+    verbose: bool,
 ) -> None:
     """
     Write manifest to file.
@@ -78,6 +79,7 @@ def check_manifest(
                 new_object=manifest,
                 path="manifest",
                 ignore_keys_order=ignore_keys_order,
+                verbose=verbose,
             )
         except ValueError as e:
             logging.error(str(e))
