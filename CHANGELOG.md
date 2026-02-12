@@ -1,5 +1,7 @@
 # 0.4.0 (unreleased)
 
+* Commands:
+    * Add `--verbose` option for `fractal-manifest check` (\#75).
 * Dependencies:
     * Support `docstring-parser` v0.17 (\#76).
 
