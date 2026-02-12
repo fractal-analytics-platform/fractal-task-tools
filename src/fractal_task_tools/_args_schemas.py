@@ -19,9 +19,9 @@ from ._signature_constraints import _validate_function_signature
 from ._titles import _include_titles
 
 if parse(pydantic.__version__) >= parse("2.11.0"):
-    from ._pydantic_generatejsonschema import CustomGenerateJsonSchema
+    from ._generatejsonschema import CustomGenerateJsonSchema
 else:
-    from ._pydantic_generatejsonschema import (
+    from ._generatejsonschema import (
         CustomGenerateJsonSchemaLegacy as CustomGenerateJsonSchema,
     )
 
