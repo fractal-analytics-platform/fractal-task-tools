@@ -205,7 +205,7 @@ def create_schema_for_single_task(
     # Create and clean up schema
     schema = _create_schema_for_function(task_function)
     schema = _remove_attributes_from_descriptions(schema)
-    # schema = _remove_top_level_single_element_allof(schema)  # FIXME
+    schema = _remove_top_level_single_element_allof(schema)
 
     # Include titles for custom-model-typed arguments
     schema = _include_titles(schema, definitions_key=DEFINITIONS_KEY, verbose=verbose)
