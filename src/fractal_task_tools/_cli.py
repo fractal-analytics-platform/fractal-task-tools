@@ -61,10 +61,9 @@ check_manifest_parser.add_argument(
 
 check_manifest_parser.add_argument(
     "--verbose",
-    type=bool,
     help="Make logs more verbose (default value: False).",
-    default=False,
     action="store_true",
+    default=False,
     required=False,
 )
 
