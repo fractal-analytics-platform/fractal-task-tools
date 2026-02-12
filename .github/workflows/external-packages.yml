@@ -45,10 +45,11 @@ jobs:
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
-          - package: zmb-fractal-tasks
-            github_repo: ZMB-UZH/zmb-fractal-tasks
-            github_branch: main
-            cmd_install: 'python -m pip install -e .'
+          # FIXME: Re-include
+          # - package: zmb-fractal-tasks
+          #   github_repo: ZMB-UZH/zmb-fractal-tasks
+          #   github_branch: main
+          #   cmd_install: 'python -m pip install -e .'
 
           - package: fractal-cellpose-sam-task
             github_repo: fractal-analytics-platform/fractal-cellpose-sam-task
