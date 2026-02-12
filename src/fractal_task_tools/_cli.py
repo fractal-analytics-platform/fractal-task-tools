@@ -64,6 +64,7 @@ check_manifest_parser.add_argument(
     type=bool,
     help="Make logs more verbose (default value: False).",
     default=False,
+    action="store_true",
     required=False,
 )
 
