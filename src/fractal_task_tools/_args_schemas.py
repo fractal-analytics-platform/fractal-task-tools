@@ -66,7 +66,7 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
 
 
 def _create_schema_for_function(function: Callable) -> _Schema:
-    if parse(pydantic.__version__) >= parse("2.11.0"):
+    if parse(pydantic.__version__) >= parse("2.12.0"):
         from pydantic.experimental.arguments_schema import (
             generate_arguments_schema,
         )
