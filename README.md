@@ -7,9 +7,9 @@
 | src/fractal\_task\_tools/\_\_init\_\_.py                   |        3 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_args\_schemas.py                |       98 |       16 |       34 |        4 |     83% |57, 83-103, 190->199, 217-218 |
 | src/fractal\_task\_tools/\_cli.py                          |       27 |        8 |        8 |        1 |     63% |79, 85-101 |
-| src/fractal\_task\_tools/\_cli\_tools.py                   |       43 |        0 |        2 |        0 |    100% |           |
+| src/fractal\_task\_tools/\_cli\_tools.py                   |       48 |        0 |        8 |        2 |     96% |85->93, 89->87 |
 | src/fractal\_task\_tools/\_create\_manifest.py             |       67 |       13 |       26 |        7 |     76% |43, 68-70, 77-78, 87-89, 107->109, 110, 111->113, 114, 144-145, 149->153 |
-| src/fractal\_task\_tools/\_deepdiff.py                     |       40 |        0 |       30 |        4 |     94% |20->23, 41->44, 60->63, 78->81 |
+| src/fractal\_task\_tools/\_deepdiff.py                     |       49 |        0 |       22 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_descriptions.py                 |       84 |        8 |       34 |        9 |     86% |27, 52, 57, 65, 198, 206, 234, 239->238, 242 |
 | src/fractal\_task\_tools/\_package\_name\_tools.py         |        5 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_pydantic\_generatejsonschema.py |       18 |        0 |        4 |        1 |     95% |    26->29 |
@@ -21,7 +21,7 @@
 | src/fractal\_task\_tools/logging\_config.py                |       24 |        0 |        2 |        0 |    100% |           |
 | src/fractal\_task\_tools/task\_models.py                   |       99 |        4 |        0 |        0 |     96% |26, 30, 34, 38 |
 | src/fractal\_task\_tools/task\_wrapper.py                  |       37 |        0 |        8 |        1 |     98% |    76->85 |
-| **TOTAL**                                                  |  **717** |   **68** |  **216** |   **34** | **88%** |           |
+| **TOTAL**                                                  |  **731** |   **68** |  **214** |   **32** | **88%** |           |
 
 
 ## Setup coverage badge
