@@ -1,6 +1,7 @@
 # 0.4.0 (unreleased)
 
 * Schema generation:
+    * Compute defaults specified in `default_factory` (\#75).
     * Transform single-element `"allOf": [{"$ref": X}]` arrays into single `"$ref": X` key-value pair (\#79).
 * CLI commands:
     * Add `--verbose` option to `fractal-manifest check` (\#80).
