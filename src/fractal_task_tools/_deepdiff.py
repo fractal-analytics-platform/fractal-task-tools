@@ -1,16 +1,51 @@
-from typing import Union
+from typing import Self, TypeAlias
 
 
-ValidType = Union[list, dict, str, int, float, bool, None]
+JSONType: TypeAlias = (
+    dict[str, "JSONType"] | list["JSONType"] | str | int | float | bool | None
+)
 
 MAX_RECURSION_LEVEL = 20
 ERRORS = []
 
 
+class Errors:
+    """
+    An item of `self._data` is made of the old JSON object, the new JSON object
+    and the error message.
+    """
+
+    _data: list[tuple[JSONType, JSONType, str]]
+
+    def __init__(self):
+        self._data = []
+
+    def reset_state(self):
+        self._data = []
+
+    def append(self: Self, item: tuple[JSONType, JSONType, str]):
+        self._data.append(item)
+
+    @property
+    def tot_errors(self: Self) -> int:
+        return len(self._data)
+
+    @property
+    def messages_str(self: Self) -> str:
+        return str([item[2] for item in self._data])
+
+    @property
+    def data(self: Self) -> list[tuple[JSONType, JSONType, str]]:
+        return self._data
+
+
+ERRORS = Errors()
+
+
 def deepdiff(
     *,
-    old_object: ValidType,
-    new_object: ValidType,
+    old_object: JSONType,
+    new_object: JSONType,
     path: str,
     ignore_keys_order: bool,
     recursion_level: int = 1,
@@ -21,7 +56,7 @@ def deepdiff(
             (
                 old_object,
                 new_object,
-                f"[path] Type difference:\n"
+                f"[{path}] Type difference:\n"
                 f"\tOld: {type(old_object)}\n\tNew: {type(new_object)}",
             )
         )
@@ -44,7 +79,7 @@ def deepdiff(
                 (
                     old_object,
                     new_object,
-                    f"[path] Dictionaries have different keys:\n"
+                    f"[{path}] Dictionaries have different keys:\n"
                     f"\tOld: {old_keys}\n\tNew: {new_keys}",
                 )
             )
@@ -65,7 +100,7 @@ def deepdiff(
                 (
                     old_object,
                     new_object,
-                    f"[path] Lists have different lengths:\n"
+                    f"[{path}] Lists have different lengths:\n"
                     f"\tOld:{len(old_object)}\n\tNew: {len(new_object)}",
                 )
             )
@@ -86,7 +121,7 @@ def deepdiff(
                 (
                     old_object,
                     new_object,
-                    f"[path] Values are different:\n"
+                    f"[{path}] Values are different:\n"
                     f"\tOld: '{old_object}'\n\tNew: '{new_object}'",
                 )
             )
