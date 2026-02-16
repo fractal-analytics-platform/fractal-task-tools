@@ -89,5 +89,6 @@ def check_manifest(
                 if verbose:
                     print(f"OLD:\n{json.dumps(old_object)}")
                     print(f"NEW:\n{json.dumps(new_object)}")
+                    print()
             sys.exit("New/old manifests differ")
     logging.info("[check_manifest] END")
