@@ -195,12 +195,10 @@ def _insert_function_args_descriptions(
     new_properties = schema["properties"].copy()
     for key, value in schema["properties"].items():
         if "description" in value:
-            raise ValueError("Property already has description")
+            # This branch covers e.g. the `Field(description="...")` case
+            pass
         else:
-            if key in descriptions:
-                value["description"] = descriptions[key]
-            else:
-                value["description"] = "Missing description"
+            value["description"] = descriptions.get(key, "Missing description")
             new_properties[key] = value
             if verbose:
                 logging.info(
@@ -239,7 +237,8 @@ def _insert_class_attrs_descriptions(
         if name == class_name:
             for prop in definition["properties"]:
                 if "description" in new_definitions[name]["properties"][prop]:
-                    raise ValueError(f"Property {name}.{prop} already has description")
+                    # This branch covers e.g. the `Field(description="...")` case
+                    pass
                 else:
                     new_definitions[name]["properties"][prop]["description"] = (
                         descriptions[prop]
