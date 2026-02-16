@@ -2,6 +2,7 @@
 
 * CLI commands:
     * Add `--verbose` option to `fractal-manifest check` (\#80).
+    * In `fractal-manifest check`, display all manifest mismatches rather than the first one only (\#88).
 * Dependencies:
     * Support `docstring-parser` v0.17 (\#76).
 
