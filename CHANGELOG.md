@@ -1,7 +1,10 @@
 # 0.4.0 (unreleased)
 
-* Commands:
-    * Add `--verbose` option for `fractal-manifest check` (\#75).
+* Schema generation:
+    * Transform single-element `"allOf": [{"$ref": X}]` arrays into single `"$ref": X` key-value pair (\#79).
+* CLI commands:
+    * Add `--verbose` option to `fractal-manifest check` (\#80).
+    * In `fractal-manifest check`, display all manifest mismatches rather than the first one only (\#88).
 * Dependencies:
     * Support `docstring-parser` v0.17 (\#76).
 

@@ -5,6 +5,7 @@ import sys
 from importlib import import_module
 from pathlib import Path
 
+from fractal_task_tools._deepdiff import ERRORS
 from fractal_task_tools._create_manifest import MANIFEST_FILENAME
 from fractal_task_tools._deepdiff import deepdiff
 from fractal_task_tools._package_name_tools import normalize_package_name
@@ -69,20 +70,25 @@ def check_manifest(
 
     with open(manifest_path, "r") as f:
         old_manifest = json.load(f)
+
     if manifest == old_manifest:
         logging.info("[check_manifest] On-disk manifest is up to date.")
     else:
         logging.error("[check_manifest] On-disk manifest is not up to date.")
-        try:
-            deepdiff(
-                old_object=old_manifest,
-                new_object=manifest,
-                path="manifest",
-                ignore_keys_order=ignore_keys_order,
-                verbose=verbose,
-            )
-        except ValueError as e:
-            logging.error(str(e))
+        deepdiff(
+            old_object=old_manifest,
+            new_object=manifest,
+            path="manifest",
+            ignore_keys_order=ignore_keys_order,
+            verbose=verbose,
+        )
+        if ERRORS.tot_errors > 0:
+            logging.error(f"[check_manifest] Found {ERRORS.tot_errors} errors.")
+            for old_object, new_object, msg in ERRORS.data:
+                print(msg)
+                if verbose:
+                    print(f"OLD:\n{json.dumps(old_object)}")
+                    print(f"NEW:\n{json.dumps(new_object)}")
+                    print()
             sys.exit("New/old manifests differ")
-
     logging.info("[check_manifest] END")

@@ -1,7 +1,24 @@
 from datetime import datetime
 
 import pytest
-from fractal_task_tools._deepdiff import deepdiff
+from fractal_task_tools._deepdiff import deepdiff, ERRORS, Errors
+
+
+def test_Errors():
+    E = Errors()
+    assert E._data == []
+    assert E.data == []
+    assert E.messages_str == "[]"
+    assert E.tot_errors == 0
+    E.append((1, 1, "msg1"))
+    E.append((2, 2, "msg2"))
+    assert E.messages_str == "['msg1', 'msg2']"
+    assert E.tot_errors == 2
+    E.reset_state()
+    assert E._data == []
+    assert E.data == []
+    assert E.messages_str == "[]"
+    assert E.tot_errors == 0
 
 
 def test_recursion_level():
@@ -16,55 +33,62 @@ def test_recursion_level():
             ignore_keys_order=True,
             path="base",
             recursion_level=19,
+            verbose=True,
         )
 
 
-def test_ignore_keys_order():
-    old_obj = dict(key1=1, key2=2)
-    new_obj = dict(key2=2, key1=1)
-    with pytest.raises(
-        ValueError,
-        match="Dictionaries have different keys",
-    ):
+def test_invalid_type():
+    with pytest.raises(ValueError, match="Invalid type"):
         deepdiff(
-            old_object=old_obj,
-            new_object=new_obj,
+            old_object=datetime.now(),
+            new_object=datetime.now(),
             ignore_keys_order=False,
             path="base",
+            verbose=True,
         )
 
+
+@pytest.mark.parametrize("ignore_keys_order", (True, False))
+def test_ignore_keys_order(ignore_keys_order):
+    old_obj = dict(key1=1, key2=2)
+    new_obj = dict(key2=2, key1=1)
     deepdiff(
         old_object=old_obj,
         new_object=new_obj,
-        ignore_keys_order=True,
+        ignore_keys_order=ignore_keys_order,
         path="base",
+        verbose=True,
     )
+    if ignore_keys_order:
+        assert ERRORS.tot_errors == 0
+    else:
+        assert ERRORS.tot_errors == 1
+        assert "Dictionaries have different keys" in ERRORS.messages_str
 
 
 def test_list_length():
-    with pytest.raises(
-        ValueError,
-        match="Lists have different lengths",
-    ):
-        deepdiff(
-            old_object=[1],
-            new_object=[2, 3],
-            ignore_keys_order=False,
-            path="base",
-        )
+    deepdiff(
+        old_object=[1],
+        new_object=[2, 3],
+        ignore_keys_order=False,
+        path="base",
+        verbose=True,
+    )
+    assert ERRORS.tot_errors == 1
+    assert "Lists have different lengths" in ERRORS.messages_str
 
 
 def test_path():
     old_obj = {"mykey1": [1, 2.0, "a", None, {"mykey2": 1}]}
     new_obj = {"mykey1": [1, 2.0, "a", None, {"mykey2": 2}]}
-    with pytest.raises(ValueError) as exc_info:
-        deepdiff(
-            old_object=old_obj,
-            new_object=new_obj,
-            ignore_keys_order=False,
-            path="base",
-        )
-    assert "base['mykey1'][4]['mykey2']" in str(exc_info.value)
+    deepdiff(
+        old_object=old_obj,
+        new_object=new_obj,
+        ignore_keys_order=False,
+        path="base",
+        verbose=True,
+    )
+    assert "base['mykey1'][4]['mykey2']" in ERRORS.messages_str
 
 
 @pytest.mark.parametrize(
@@ -76,23 +100,15 @@ def test_path():
     ],
 )
 def test_type_diff(old_obj, new_obj):
-    with pytest.raises(ValueError, match="Type difference"):
-        deepdiff(
-            old_object=old_obj,
-            new_object=new_obj,
-            ignore_keys_order=False,
-            path="base",
-        )
-
-
-def test_invalid_type():
-    with pytest.raises(ValueError, match="Invalid type"):
-        deepdiff(
-            old_object=datetime.now(),
-            new_object=datetime.now(),
-            ignore_keys_order=False,
-            path="base",
-        )
+    deepdiff(
+        old_object=old_obj,
+        new_object=new_obj,
+        ignore_keys_order=False,
+        path="base",
+        verbose=True,
+    )
+    assert ERRORS.tot_errors == 1
+    assert "Type difference" in ERRORS.messages_str
 
 
 def test_success():
@@ -102,4 +118,6 @@ def test_success():
         new_object=old_obj,
         ignore_keys_order=False,
         path="base",
+        verbose=True,
     )
+    assert ERRORS.tot_errors == 0
