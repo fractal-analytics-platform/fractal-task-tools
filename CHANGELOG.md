@@ -6,8 +6,8 @@
     * Add `--verbose` option to `fractal-manifest check` (\#80).
     * In `fractal-manifest check`, display all manifest mismatches rather than the first one only (\#88).
 * Dependencies:
-    * Drop support for `python<3.11` (\#XXX).
-    * Drop support for `pydantic<2.11.0` (\#XXX).
+    * Drop support for `python<3.11` (\#92).
+    * Drop support for `pydantic<2.11.0` (\#92).
     * Support `docstring-parser` v0.17 (\#76).
 
 # 0.3.0
