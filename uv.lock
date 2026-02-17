@@ -265,7 +265,7 @@ wheels = [
 
 [[package]]
 name = "fractal-task-tools"
-version = "0.4.0a0"
+version = "0.4.0a1"
 source = { editable = "." }
 dependencies = [
     { name = "docstring-parser" },
