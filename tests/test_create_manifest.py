@@ -46,6 +46,12 @@ def test_create_manifest(tmp_path: Path, caplog):
         ]["inner_arg"]["description"]
         == "Description from field"
     )
+    assert (
+        manifest["task_list"][0]["args_schema_non_parallel"]["$defs"]["MyModel"][
+            "properties"
+        ]["another_arg"]["description"]
+        == "Description from docstring"
+    )
 
     write_manifest_to_file(
         raw_package_name="fake-tasks",

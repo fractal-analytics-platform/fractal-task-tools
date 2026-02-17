@@ -7,9 +7,11 @@ class MyModel(BaseModel):
 
     Attributes:
         inner_arg: Description from docstring
+        another_arg: Description from docstring
     """
 
     inner_arg: int = Field(description="Description from field")
+    another_arg: int
 
 
 def task1(
