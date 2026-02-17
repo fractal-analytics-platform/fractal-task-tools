@@ -13,7 +13,6 @@ This is not always the required behavior, see e.g.
 
 import logging
 from typing import Any
-
 from pydantic.json_schema import GenerateJsonSchema
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema
@@ -43,7 +42,6 @@ class CustomGenerateJsonSchema(GenerateJsonSchema):
     def get_default_value(self, schema: core_schema.WithDefaultSchema) -> Any:
         """
         FIXME
-        Requires `pydantic>=2.11.0`
         See https://github.com/pydantic/pydantic/issues/11622#issuecomment-2757419692
         """
         if "default" in schema:
@@ -51,8 +49,14 @@ class CustomGenerateJsonSchema(GenerateJsonSchema):
                 logger.warning(f"Ignore `None` default value from {schema=}")
                 return NoDefault
             return schema["default"]
-        elif "default_factory" in schema and not schema.get(
-            "default_factory_takes_data"
-        ):
-            return schema["default_factory"]()
-        return NoDefault
+        elif "default_factory" in schema:
+            if schema.get("default_factory_takes_data"):
+                logger.warning(
+                    "Cannot populate defaults based on "
+                    f"default_factory={schema['default_factory']}, "
+                    f'since {schema["default_factory_takes_data"]=}.'
+                )
+            else:
+                return schema["default_factory"]()
+        else:
+            return NoDefault
