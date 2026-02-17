@@ -39,6 +39,14 @@ def test_create_manifest(tmp_path: Path, caplog):
         assert "type" in task.keys()
     debug(manifest)
 
+    # Assertion related to https://github.com/fractal-analytics-platform/fractal-task-tools/issues/87
+    assert (
+        manifest["task_list"][0]["args_schema_non_parallel"]["$defs"]["MyModel"][
+            "properties"
+        ]["inner_arg"]["description"]
+        == "Description from field"
+    )
+
     write_manifest_to_file(
         raw_package_name="fake-tasks",
         manifest=manifest,
