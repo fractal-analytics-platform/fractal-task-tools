@@ -354,3 +354,29 @@ def test_descriptions():
     assert (
         schema["properties"]["arg2"]["description"] == "Docstring-based description 2"
     )
+
+
+class ModelWithDefaultNone(BaseModel):
+    x: str | None = None
+    y: str | None = Field(default=None)
+
+
+@validate_call
+def task_function_with_default_none(
+    *,
+    arg1: str | None = None,
+    arg2: str | None = Field(default=None),
+    arg3: ModelWithDefaultNone,
+):
+    pass
+
+
+def test_default_none():
+    schema = create_schema_for_single_task(
+        task_function=task_function_with_default_none,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    assert "default" not in json.dumps(schema)
