@@ -56,6 +56,7 @@ class CustomGenerateJsonSchema(GenerateJsonSchema):
                     f"default_factory={schema['default_factory']}, "
                     f'since {schema["default_factory_takes_data"]=}.'
                 )
+                return NoDefault
             else:
                 return schema["default_factory"]()
         else:

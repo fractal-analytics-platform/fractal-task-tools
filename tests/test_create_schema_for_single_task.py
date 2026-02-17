@@ -271,14 +271,23 @@ class ModelWithFactory(BaseModel):
 
 @validate_call
 def task_function_default_factory_nested(
-    arg: ModelWithFactory = Field(default_factory=ModelWithFactory),
+    arg_1: ModelWithFactory = Field(default_factory=ModelWithFactory),
 ):
     """
     Short task description
 
     Args:
-        arg: Description of arg.
+        arg_1: Description of arg.
     """
+    pass
+
+
+@validate_call
+def task_function_default_factory_needs_data(
+    # This factory requires data, and therefore it does not
+    # produce any default value
+    arg_1: int = Field(default_factory=lambda data: 123),
+):
     pass
 
 
@@ -301,11 +310,20 @@ def test_default_factory():
     )
     debug(schema)
     properties = schema["properties"]
-    assert properties["arg"]["default"] == {"attr_1": 1, "attr_2": 1}
+    assert properties["arg_1"]["default"] == {"attr_1": 1, "attr_2": 1}
     nested_properties = schema["$defs"]["ModelWithFactory"]["properties"]
     assert (
         nested_properties["attr_1"]["default"] == nested_properties["attr_2"]["default"]
     )
+
+    schema = create_schema_for_single_task(
+        task_function=task_function_default_factory_needs_data,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    property = schema["properties"]["arg_1"]
+    assert "default" not in property.keys()
 
 
 @validate_call
