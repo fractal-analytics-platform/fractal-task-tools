@@ -18,12 +18,8 @@ from pydantic.json_schema import GenerateJsonSchema
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema
 
-import pydantic
-from packaging.version import parse
 
-
-if parse(pydantic.__version__) >= parse("2.11.0"):
-    from pydantic.json_schema import NoDefault
+from pydantic.json_schema import NoDefault
 
 
 logger = logging.getLogger("CustomGenerateJsonSchema")
