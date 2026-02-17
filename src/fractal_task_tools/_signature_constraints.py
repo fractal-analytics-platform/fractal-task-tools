@@ -6,7 +6,7 @@ from inspect import Signature
 from inspect import signature
 from pathlib import Path
 from typing import Any
-
+from pydantic.fields import FieldInfo
 from ._union_types import is_annotated_union
 from ._union_types import is_tagged
 from ._union_types import is_union
@@ -86,6 +86,7 @@ def _validate_plain_union(
             original `param.annotation` is an `Annotated` union).
     """
     args = _type.__args__
+
     if len(args) != 2:
         raise ValueError(
             "Only unions of two elements are supported, but parameter "
@@ -96,12 +97,20 @@ def _validate_plain_union(
             "One union element must be None, but parameter "
             f"'{param.name}' has type hint '{_type}'."
         )
-    elif (param.default is not None) and (param.default != inspect._empty):
-        raise ValueError(
-            "Non-None default not supported, but parameter "
-            f"'{param.name}' has type hint '{_type}' "
-            f"and default {param.default}."
+    else:
+        # Capture default from both `arg: str = "abc"` and
+        # `arg: str = Field(default="abc")`
+        default_value = (
+            param.default
+            if not isinstance(param.default, FieldInfo)
+            else param.default.default
         )
+        if (default_value is not None) and (default_value != inspect._empty):
+            raise ValueError(
+                "Non-None default not supported, but parameter "
+                f"'{param.name}' has type hint '{_type}' "
+                f"and default {param.default}."
+            )
 
 
 def _validate_function_signature(function: callable) -> Signature:
