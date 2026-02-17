@@ -203,7 +203,9 @@ def create_schema_for_single_task(
     )
 
     schema = _insert_function_args_descriptions(
-        schema=schema, descriptions=function_args_descriptions
+        schema=schema,
+        descriptions=function_args_descriptions,
+        verbose=verbose,
     )
 
     if pydantic_models is not None:
