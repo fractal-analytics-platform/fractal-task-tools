@@ -306,3 +306,33 @@ def test_default_factory():
     assert (
         nested_properties["attr_1"]["default"] == nested_properties["attr_2"]["default"]
     )
+
+
+@validate_call
+def task_function_with_description(
+    *,
+    arg1: str = Field(description="Field-based description 1"),
+    arg2: str,
+):
+    """
+    Short task description
+
+    Args:
+        arg1: Docstring-based description 1
+        arg2: Docstring-based description 2
+    """
+    pass
+
+
+def test_descriptions():
+    schema = create_schema_for_single_task(
+        task_function=task_function_with_description,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    assert schema["properties"]["arg1"]["description"] == "Field-based description 1"
+    assert (
+        schema["properties"]["arg2"]["description"] == "Docstring-based description 2"
+    )

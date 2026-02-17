@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class MyModel(BaseModel):
@@ -6,10 +6,12 @@ class MyModel(BaseModel):
     Short description of `MyModel`
 
     Attributes:
-        inner_arg: Something
+        inner_arg: Description from docstring
+        another_arg: Description from docstring
     """
 
-    inner_arg: int
+    inner_arg: int = Field(description="Description from field")
+    another_arg: int
 
 
 def task1(

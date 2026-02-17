@@ -7,9 +7,7 @@ from typing import Any
 from typing import Callable
 from typing import Optional
 
-import pydantic
 from docstring_parser import parse as docparse
-from packaging.version import parse
 
 from ._descriptions import _get_class_attrs_descriptions
 from ._descriptions import _get_function_args_descriptions
@@ -19,12 +17,7 @@ from ._signature_constraints import _extract_function
 from ._signature_constraints import _validate_function_signature
 from ._titles import _include_titles
 
-if parse(pydantic.__version__) >= parse("2.11.0"):
-    from ._generatejsonschema import CustomGenerateJsonSchema
-else:
-    from ._generatejsonschema import (
-        CustomGenerateJsonSchemaLegacy as CustomGenerateJsonSchema,
-    )
+from ._generatejsonschema import CustomGenerateJsonSchema
 
 _Schema = dict[str, Any]
 
@@ -67,45 +60,23 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
 
 
 def _create_schema_for_function(function: Callable) -> _Schema:
-    if parse(pydantic.__version__) >= parse("2.12.0"):
-        from pydantic.experimental.arguments_schema import (
-            generate_arguments_schema,
-        )
-        from pydantic import ConfigDict
-        from pydantic.fields import FieldInfo, ComputedFieldInfo
 
-        # NOTE: v2.12.0 modified the generated field titles. The function
-        # `make_title` restores the `<2.12.0` behavior
-        def make_title(name: str, info: FieldInfo | ComputedFieldInfo):
-            return name.title().replace("_", " ").strip()
+    from pydantic.experimental.arguments_schema import (
+        generate_arguments_schema,
+    )
+    from pydantic import ConfigDict
+    from pydantic.fields import FieldInfo, ComputedFieldInfo
 
-        core_schema = generate_arguments_schema(
-            function,
-            schema_type="arguments",
-            config=ConfigDict(field_title_generator=make_title),
-        )
+    # NOTE: v2.12.0 modified the generated field titles. The function
+    # `make_title` restores the `<2.12.0` behavior
+    def make_title(name: str, info: FieldInfo | ComputedFieldInfo):
+        return name.title().replace("_", " ").strip()
 
-    elif parse(pydantic.__version__) >= parse("2.9.0"):
-        from pydantic._internal._config import ConfigWrapper  # noqa
-        from pydantic._internal import _generate_schema  # noqa
-
-        gen_core_schema = _generate_schema.GenerateSchema(
-            ConfigWrapper(None),
-            None,
-        )
-        core_schema = gen_core_schema.generate_schema(function)
-        core_schema = gen_core_schema.clean_schema(core_schema)
-    else:
-        from pydantic._internal._typing_extra import add_module_globals  # noqa
-        from pydantic._internal import _generate_schema  # noqa
-        from pydantic._internal._config import ConfigWrapper  # noqa
-
-        namespace = add_module_globals(function, None)
-        gen_core_schema = _generate_schema.GenerateSchema(
-            ConfigWrapper(None), namespace
-        )
-        core_schema = gen_core_schema.generate_schema(function)
-        core_schema = gen_core_schema.clean_schema(core_schema)
+    core_schema = generate_arguments_schema(
+        function,
+        schema_type="arguments",
+        config=ConfigDict(field_title_generator=make_title),
+    )
 
     gen_json_schema = CustomGenerateJsonSchema()
     json_schema = gen_json_schema.generate(core_schema, mode="validation")
@@ -232,7 +203,9 @@ def create_schema_for_single_task(
     )
 
     schema = _insert_function_args_descriptions(
-        schema=schema, descriptions=function_args_descriptions
+        schema=schema,
+        descriptions=function_args_descriptions,
+        verbose=verbose,
     )
 
     if pydantic_models is not None:
