@@ -34,7 +34,7 @@ uv run --no-sync --frozen bumpver update --patch --dry
 
 Run e.g. one of these commands
 ```
-uv run--no-sync --frozen pytest
+uv run --no-sync --frozen pytest
 uv run --no-sync --frozen pytest -s -vvv --log-cli-level info --full-trace
 ```
 
