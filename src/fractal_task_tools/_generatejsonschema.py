@@ -29,7 +29,7 @@ if parse(pydantic.__version__) >= parse("2.11.0"):
 logger = logging.getLogger("CustomGenerateJsonSchema")
 
 
-class _CustomGenerateJsonSchema(GenerateJsonSchema):
+class CustomGenerateJsonSchema(GenerateJsonSchema):
     """
     FIXME
     """
@@ -43,38 +43,6 @@ class _CustomGenerateJsonSchema(GenerateJsonSchema):
             logger.warning("Drop `null_schema` before calling `get_flattened_anyof`")
             schemas.pop(schemas.index(null_schema))
         return super().get_flattened_anyof(schemas)
-
-
-class CustomGenerateJsonSchemaLegacy(_CustomGenerateJsonSchema):
-    """
-    FIXME
-    """
-
-    def default_schema(self, schema: core_schema.WithDefaultSchema) -> JsonSchemaValue:
-        """Generates a JSON schema that matches a schema with a default value.
-
-        Args:
-            schema: The core schema.
-
-        Returns:
-            The generated JSON schema.
-        """
-        # Pre-compute `default_factory` value
-
-        if "default_factory" in schema and not schema.get("default_factory_takes_data"):
-            schema["default"] = schema["default_factory"]()
-
-        json_schema = super().default_schema(schema)
-        if "default" in json_schema.keys() and json_schema["default"] is None:
-            logger.warning(f"Pop `None` default value from {json_schema=}")
-            json_schema.pop("default")
-        return json_schema
-
-
-class CustomGenerateJsonSchema(_CustomGenerateJsonSchema):
-    """
-    FIXME
-    """
 
     def get_default_value(self, schema: core_schema.WithDefaultSchema) -> Any:
         """
