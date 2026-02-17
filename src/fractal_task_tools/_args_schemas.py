@@ -7,7 +7,6 @@ from typing import Any
 from typing import Callable
 from typing import Optional
 
-import pydantic
 from docstring_parser import parse as docparse
 
 from ._descriptions import _get_class_attrs_descriptions
@@ -61,47 +60,23 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
 
 
 def _create_schema_for_function(function: Callable) -> _Schema:
-    from packaging.version import parse
 
-    if parse(pydantic.__version__) >= parse("2.11.0"):
-        from pydantic.experimental.arguments_schema import (
-            generate_arguments_schema,
-        )
-        from pydantic import ConfigDict
-        from pydantic.fields import FieldInfo, ComputedFieldInfo
+    from pydantic.experimental.arguments_schema import (
+        generate_arguments_schema,
+    )
+    from pydantic import ConfigDict
+    from pydantic.fields import FieldInfo, ComputedFieldInfo
 
-        # NOTE: v2.12.0 modified the generated field titles. The function
-        # `make_title` restores the `<2.12.0` behavior
-        def make_title(name: str, info: FieldInfo | ComputedFieldInfo):
-            return name.title().replace("_", " ").strip()
+    # NOTE: v2.12.0 modified the generated field titles. The function
+    # `make_title` restores the `<2.12.0` behavior
+    def make_title(name: str, info: FieldInfo | ComputedFieldInfo):
+        return name.title().replace("_", " ").strip()
 
-        core_schema = generate_arguments_schema(
-            function,
-            schema_type="arguments",
-            config=ConfigDict(field_title_generator=make_title),
-        )
-
-    elif parse(pydantic.__version__) >= parse("2.9.0"):
-        from pydantic._internal._config import ConfigWrapper  # noqa
-        from pydantic._internal import _generate_schema  # noqa
-
-        gen_core_schema = _generate_schema.GenerateSchema(
-            ConfigWrapper(None),
-            None,
-        )
-        core_schema = gen_core_schema.generate_schema(function)
-        core_schema = gen_core_schema.clean_schema(core_schema)
-    else:
-        from pydantic._internal._typing_extra import add_module_globals  # noqa
-        from pydantic._internal import _generate_schema  # noqa
-        from pydantic._internal._config import ConfigWrapper  # noqa
-
-        namespace = add_module_globals(function, None)
-        gen_core_schema = _generate_schema.GenerateSchema(
-            ConfigWrapper(None), namespace
-        )
-        core_schema = gen_core_schema.generate_schema(function)
-        core_schema = gen_core_schema.clean_schema(core_schema)
+    core_schema = generate_arguments_schema(
+        function,
+        schema_type="arguments",
+        config=ConfigDict(field_title_generator=make_title),
+    )
 
     gen_json_schema = CustomGenerateJsonSchema()
     json_schema = gen_json_schema.generate(core_schema, mode="validation")
