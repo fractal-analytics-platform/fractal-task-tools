@@ -107,12 +107,10 @@ jobs:
       - name: Install current version of `fractal-task-tools`
         run: python -m pip install ./fractal-task-tools
 
-      - run: python -m pip install devtools # FIXME
-
       - name: Check manifest
         run: fractal-manifest check --package ${{ matrix.package }} --verbose
 
-      - name: Install  current version of `fractal-task-tools` with `dev` extra
+      - name: Install current version of `fractal-task-tools` with `dev` extra
         run: python -m pip install ./fractal-task-tools[dev]
 
       - name: Validate manifest with different JSON Schema drafts
