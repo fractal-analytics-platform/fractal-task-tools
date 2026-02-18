@@ -5,7 +5,8 @@ from typing import Optional
 import pytest
 from devtools import debug
 from fractal_task_tools._args_schemas import create_schema_for_single_task
-from pydantic import validate_call, Field
+from pydantic import Field, BaseModel
+from pydantic import validate_call
 
 
 @validate_call
@@ -246,6 +247,83 @@ def test_tuple_argument():
             "description": "Description of arg_A.",
         },
     }
+
+
+@validate_call
+def task_function_default_factory_top_level(
+    arg_1: int = 1,
+    arg_2: int = Field(default_factory=lambda: 1),
+):
+    """
+    Short task description
+
+    Args:
+        arg_1: Description of arg_1.
+        arg_2: Description of arg_2.
+    """
+    pass
+
+
+class ModelWithFactory(BaseModel):
+    attr_1: int = 1
+    attr_2: int = Field(default_factory=lambda: 1)
+
+
+@validate_call
+def task_function_default_factory_nested(
+    arg_1: ModelWithFactory = Field(default_factory=ModelWithFactory),
+):
+    """
+    Short task description
+
+    Args:
+        arg_1: Description of arg.
+    """
+    pass
+
+
+@validate_call
+def task_function_default_factory_needs_data(
+    # This factory requires data, and therefore it does not
+    # produce any default value
+    arg_1: int = Field(default_factory=lambda data: 123),
+):
+    pass
+
+
+def test_default_factory():
+    schema = create_schema_for_single_task(
+        task_function=task_function_default_factory_top_level,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    properties = schema["properties"]
+    assert properties["arg_1"]["default"] == properties["arg_2"]["default"]
+
+    schema = create_schema_for_single_task(
+        task_function=task_function_default_factory_nested,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    properties = schema["properties"]
+    assert properties["arg_1"]["default"] == {"attr_1": 1, "attr_2": 1}
+    nested_properties = schema["$defs"]["ModelWithFactory"]["properties"]
+    assert (
+        nested_properties["attr_1"]["default"] == nested_properties["attr_2"]["default"]
+    )
+
+    schema = create_schema_for_single_task(
+        task_function=task_function_default_factory_needs_data,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    property = schema["properties"]["arg_1"]
+    assert "default" not in property.keys()
 
 
 @validate_call
