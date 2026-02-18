@@ -13,7 +13,7 @@ from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
 from .task_models import _BaseTask
 
-ARGS_SCHEMA_VERSION = "pydantic_v2"
+ARGS_SCHEMA_VERSION = "pydantic_v2_next"
 MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
 MANIFEST_VERSION = "2"
 
