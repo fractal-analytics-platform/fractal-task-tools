@@ -367,6 +367,7 @@ def task_function_with_default_none(
     arg1: str | None = None,
     arg2: str | None = Field(default=None),
     arg3: ModelWithDefaultNone,
+    arg4: str | None = Field(description="something"),
 ):
     pass
 
