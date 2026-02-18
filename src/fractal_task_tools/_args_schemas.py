@@ -85,7 +85,9 @@ def _create_schema_for_function(function: Callable) -> _Schema:
 
 def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
     """
-    Transform `"allOf": [{"$ref": X}]` into `"$ref": X`
+    Transform `"allOf": [{"$ref": X}]` into `"$ref": X`.
+
+    NOTE: this function is currently not in use.
     """
     old_schema = deepcopy(schema)
     for arg_name, old_arg_schema in old_schema["properties"].items():
@@ -180,7 +182,6 @@ def create_schema_for_single_task(
     # Create and clean up schema
     schema = _create_schema_for_function(task_function)
     schema = _remove_attributes_from_descriptions(schema)
-    schema = _remove_top_level_single_element_allof(schema)
 
     # Include titles for custom-model-typed arguments
     schema = _include_titles(schema, definitions_key=DEFINITIONS_KEY, verbose=verbose)
