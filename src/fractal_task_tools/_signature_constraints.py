@@ -67,13 +67,10 @@ def _extract_function(
     return task_function
 
 
-# FIXME: What is the type hint for an annotation?
-
-
 def _validate_plain_union(
     *,
     name: str,
-    annotation,
+    annotation: Any,  # FIXME type hint
     default_value: Any,
 ) -> None:
     """
@@ -162,7 +159,7 @@ def _extract_default_from_field_info(field_info: FieldInfo) -> Any:
 def _recursive_union_validation(
     *,
     name: str,
-    annotation,
+    annotation: Any,  # FIXME type hint
     default_value: Any,
     recursion_level: int,
 ) -> None:
