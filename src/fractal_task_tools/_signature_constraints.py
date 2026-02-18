@@ -30,7 +30,7 @@ FORBIDDEN_PARAM_NAMES = (
     ALT_V_KWARGS,
 )
 
-MAX_RECURSION_LEVEL = 15
+MAX_RECURSION_LEVEL = 7
 
 
 def _extract_function(
