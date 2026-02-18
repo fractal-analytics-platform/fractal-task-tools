@@ -109,31 +109,11 @@ def _validate_plain_union(
             f"'{name}' has type hint '{annotation}'."
         )
     else:
-        # Compute default for multiple cases
-        if default_value == inspect._empty:
-            # Example: `arg: int | None`
-            _default = None
-        elif not isinstance(default_value, FieldInfo):
-            # Example: `arg: int | None = 1`
-            _default = default_value
-        elif default_value.default is not PydanticUndefined:
-            # Example: `arg: int | None = Field(default=7)``
-            _default = default_value.default
-        elif default_value.default_factory in (PydanticUndefined, None):
-            # Example: `arg: int | None = Field(description="abc")`
-            _default = None
-        elif default_value.default_factory_takes_validated_data:
-            # Example: `arg: int | None = Field(default_factory=lambda _: 7)`
-            _default = None
-        else:
-            # Example: `arg: int | None = Field(default_factory=lambda : 7)`
-            _default = default_value.default_factory()
-
-        if _default is not None:
+        if default_value not in (None, inspect._empty):
             raise ValueError(
                 "Non-None default not supported, but parameter "
                 f"'{name}' has type hint '{annotation}' "
-                f"and default {_default}."
+                f"and default {default_value}."
             )
 
     logger.debug(
@@ -184,6 +164,9 @@ def _recursive_union_validation(
 
     if recursion_level >= MAX_RECURSION_LEVEL:
         raise ValueError(f"{recursion_level=} reached {MAX_RECURSION_LEVEL}.")
+
+    if isinstance(default_value, FieldInfo):
+        default_value = _extract_default_from_field_info(default_value)
 
     # Validate plain unions or non-tagged annotated unions
     if is_union(annotation):
