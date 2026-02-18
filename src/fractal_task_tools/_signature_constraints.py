@@ -6,7 +6,8 @@ from inspect import Signature
 from inspect import signature
 from pathlib import Path
 from typing import Any
-
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 from ._union_types import is_annotated_union
 from ._union_types import is_tagged
 from ._union_types import is_union
@@ -96,12 +97,33 @@ def _validate_plain_union(
             "One union element must be None, but parameter "
             f"'{param.name}' has type hint '{_type}'."
         )
-    elif (param.default is not None) and (param.default != inspect._empty):
-        raise ValueError(
-            "Non-None default not supported, but parameter "
-            f"'{param.name}' has type hint '{_type}' "
-            f"and default {param.default}."
-        )
+    else:
+        # Compute default for multiple cases
+        if param.default == inspect._empty:
+            # Example: `arg: int | None`
+            _default = None
+        elif not isinstance(param.default, FieldInfo):
+            # Example: `arg: int | None = 1`
+            _default = param.default
+        elif param.default.default is not PydanticUndefined:
+            # Example: `arg: int | None = Field(default=7)``
+            _default = param.default.default
+        elif param.default.default_factory in (PydanticUndefined, None):
+            # Example: `arg: int | None = Field(description="abc")`
+            _default = None
+        elif param.default.default_factory_takes_validated_data:
+            # Example: `arg: int | None = Field(default_factory=lambda _: 7)`
+            _default = None
+        else:
+            # Example: `arg: int | None = Field(default_factory=lambda : 7)`
+            _default = param.default.default_factory()
+
+        if _default is not None:
+            raise ValueError(
+                "Non-None default not supported, but parameter "
+                f"'{param.name}' has type hint '{_type}' "
+                f"and default {_default}."
+            )
 
 
 def _validate_function_signature(function: callable) -> Signature:

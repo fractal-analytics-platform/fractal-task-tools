@@ -1,7 +1,8 @@
 # 0.4.0 (unreleased)
 
 * Schema generation:
-    * Compute defaults specified in `default_factory` (\#75).
+    * Compute `default` as specified in `default_factory`, when possible (\#75, \#93).
+    * Take into accounts `default` values set through `Field` (\#93).
     * Transform single-element `"allOf": [{"$ref": X}]` arrays into single `"$ref": X` key-value pair (\#79).
     * Support providing `description` through `Field`, with priority over docstrings (\#89).
 * CLI commands:
