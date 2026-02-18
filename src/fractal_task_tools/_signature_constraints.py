@@ -191,7 +191,9 @@ def _recursive_union_validation(
         for attribute_name, field_info in annotation.model_fields.items():
             _recursive_union_validation(
                 name=f"{name}['{attribute_name}']",
-                annotation=__annotations__.get(attribute_name, field_info.annotation),
+                annotation=annotation.__annotations__.get(
+                    attribute_name, field_info.annotation
+                ),
                 default_value=_extract_default_from_field_info(field_info),
                 recursion_level=(recursion_level + 1),
             )
