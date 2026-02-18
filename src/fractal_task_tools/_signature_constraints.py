@@ -189,6 +189,8 @@ def _recursive_union_validation(
 
     if type(annotation) is type(BaseModel):
         for attribute_name, field_info in annotation.model_fields.items():
+            from devtools import debug
+            debug(field_info, annotation.__annotations__)
             _recursive_union_validation(
                 name=f"{name}['{attribute_name}']",
                 annotation=annotation.__annotations__[attribute_name],
