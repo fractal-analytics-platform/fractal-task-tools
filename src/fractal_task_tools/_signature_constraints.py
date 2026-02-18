@@ -87,7 +87,6 @@ def _validate_plain_union(
             original `param.annotation` is an `Annotated` union).
     """
     args = _type.__args__
-
     if len(args) != 2:
         raise ValueError(
             "Only unions of two elements are supported, but parameter "
