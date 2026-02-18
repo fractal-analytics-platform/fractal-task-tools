@@ -104,6 +104,10 @@ def fun_plain_union_invalid_5(arg: int | list[Optional[int]]):
     pass
 
 
+def fun_plain_union_invalid_6(arg: int | None = Field(default=123)):
+    pass
+
+
 def fun_non_tagged_union_invalid_1(arg: Annotated[int | str, "comment"]):
     pass
 
@@ -135,6 +139,7 @@ def test_validate_function_signature():
         fun_plain_union_invalid_3,
         fun_plain_union_invalid_4,
         fun_plain_union_invalid_5,
+        fun_plain_union_invalid_6,
         fun_non_tagged_union_invalid_1,
         fun_non_tagged_union_invalid_2,
     ):
