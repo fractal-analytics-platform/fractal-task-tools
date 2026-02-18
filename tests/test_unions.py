@@ -126,6 +126,14 @@ def fun_non_tagged_union_invalid_2(arg: Annotated[int | None, "comment"] = 123):
     pass
 
 
+class NestedModelWithOptionalAndDefault(BaseModel):
+    x: int | None = 7
+
+
+def fun_nested_model_invalid_1(arg: NestedModelWithOptionalAndDefault):
+    pass
+
+
 def test_validate_function_signature():
     for valid_function in (
         fun_plain_union_valid_1,
@@ -154,6 +162,7 @@ def test_validate_function_signature():
         fun_plain_union_invalid_7,
         fun_non_tagged_union_invalid_1,
         fun_non_tagged_union_invalid_2,
+        fun_nested_model_invalid_1,
     ):
         debug(invalid_function)
         with pytest.raises(ValueError) as exc_info:
