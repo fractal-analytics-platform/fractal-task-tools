@@ -7,6 +7,7 @@ from inspect import signature
 from pathlib import Path
 from typing import Any
 from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 from ._union_types import is_annotated_union
 from ._union_types import is_tagged
 from ._union_types import is_union
@@ -100,16 +101,24 @@ def _validate_plain_union(
     else:
         # Capture default from both `arg: str = "abc"` and
         # `arg: str = Field(default="abc")`
-        default_value = (
-            param.default
-            if not isinstance(param.default, FieldInfo)
-            else param.default.default
-        )
-        if (default_value is not None) and (default_value != inspect._empty):
+        if param.default == inspect._empty:
+            # Default is not set
+            _default = None
+        elif not isinstance(param.default, FieldInfo):
+            # Default is set directly, and not through `Field(default=123)`
+            _default = param.default
+        elif param.default.default is PydanticUndefined:
+            # `Field` is present, but with no `default`
+            _default = None
+        else:
+            # Field(default=123) case
+            _default = param.default.default
+
+        if _default is not None:
             raise ValueError(
                 "Non-None default not supported, but parameter "
                 f"'{param.name}' has type hint '{_type}' "
-                f"and default {param.default}."
+                f"and default {_default}."
             )
 
 
