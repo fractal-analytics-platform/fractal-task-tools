@@ -99,21 +99,25 @@ def _validate_plain_union(
             f"'{param.name}' has type hint '{_type}'."
         )
     else:
-        # Capture default from both `arg: str = "abc"` and
-        # `arg: str = Field(default="abc")`
+        # Compute default for multiple cases
         if param.default == inspect._empty:
-            # Default is not set
+            # Example: `arg: int | None`
             _default = None
         elif not isinstance(param.default, FieldInfo):
-            # Default is set directly, and not through `Field(default=123)`
+            # Example: `arg: int | None = 1`
             _default = param.default
+        elif param.default.default is not PydanticUndefined:
+            # Example: `arg: int | None = Field(default=7)``
+            _default = param.default.default
+        elif param.default.default_factory in (PydanticUndefined, None):
+            # Example: `arg: int | None = Field(description="abc")`
+            _default = None
+        elif param.default.default_factory_takes_validated_data:
+            # Example: `arg: int | None = Field(default_factory=lambda _: 7)`
+            _default = None
         else:
-            if param.default.default is PydanticUndefined:
-                # `Field` is present, but with no `default`
-                _default = None
-            else:
-                # Field(default=123) case
-                _default = param.default.default
+            # Example: `arg: int | None = Field(default_factory=lambda : 7)`
+            _default = param.default.default_factory()
 
         if _default is not None:
             raise ValueError(
