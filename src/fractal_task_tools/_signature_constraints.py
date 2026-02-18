@@ -107,12 +107,13 @@ def _validate_plain_union(
         elif not isinstance(param.default, FieldInfo):
             # Default is set directly, and not through `Field(default=123)`
             _default = param.default
-        elif param.default.default is PydanticUndefined:
-            # `Field` is present, but with no `default`
-            _default = None
         else:
-            # Field(default=123) case
-            _default = param.default.default
+            if param.default.default is PydanticUndefined:
+                # `Field` is present, but with no `default`
+                _default = None
+            else:
+                # Field(default=123) case
+                _default = param.default.default
 
         if _default is not None:
             raise ValueError(
