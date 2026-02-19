@@ -3,9 +3,8 @@ from typing import Optional
 from typing import Union
 
 import pytest
-from fractal_task_tools._signature_constraints import (
-    _validate_function_signature,
-)
+
+from fractal_task_tools._signature_constraints import _validate_function_signature
 
 
 def valid_0(x1_str: str, x2_int: int):

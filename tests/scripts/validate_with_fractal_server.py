@@ -4,7 +4,6 @@ import json
 import requests
 from jsonschema import validate
 
-
 MANIFEST_SCHEMA_URL = (
     "https://raw.githubusercontent.com/fractal-analytics-platform/"
     "fractal-server/main/"

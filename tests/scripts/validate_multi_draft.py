@@ -1,9 +1,9 @@
 import glob
 import json
 
+from jsonschema.validators import Draft7Validator
 from jsonschema.validators import Draft201909Validator
 from jsonschema.validators import Draft202012Validator
-from jsonschema.validators import Draft7Validator
 
 VALIDATORS = (
     Draft7Validator,

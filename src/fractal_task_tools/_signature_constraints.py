@@ -6,12 +6,13 @@ from inspect import Signature
 from inspect import signature
 from pathlib import Path
 from typing import Any
+
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
+
 from ._union_types import is_annotated_union
 from ._union_types import is_tagged
 from ._union_types import is_union
-
 
 # The following variables are copied from `pydantic.v1.decorator`
 # (for pydantic v2.11.10)
