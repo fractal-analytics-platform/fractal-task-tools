@@ -62,9 +62,7 @@ The following keywords are reserved and cannot be used for a task-argument name:
 
 #### Union types
 
-When top-level task arguments have a *union* type annotation, it must be one of the two supported cases described below
-
-> NOTE: This check currently only applies to type annotations of the task arguments, but it may be extended to nested properties. See https://github.com/fractal-analytics-platform/fractal-task-tools/issues/98.
+When top-level task arguments or nested properties have a *union* type annotation, it must be one of the two supported cases described below
 
 ##### Supported case 1: Plain binary unions with `None`
 
