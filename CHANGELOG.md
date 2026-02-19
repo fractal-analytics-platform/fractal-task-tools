@@ -5,6 +5,7 @@
     * Take into accounts `default` values set through `Field` (\#93).
     * Transform single-element `"allOf": [{"$ref": X}]` arrays into single `"$ref": X` key-value pair (\#79).
     * Support providing `description` through `Field`, with priority over docstrings (\#89).
+    * Propagate checks for forbidden non-`null` defaults of nullable properties to nested properties (\#103).
 * CLI commands:
     * Add `--verbose` option to `fractal-manifest check` (\#80).
     * In `fractal-manifest check`, display all manifest mismatches rather than the first one only (\#88).
