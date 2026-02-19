@@ -43,7 +43,7 @@ Each task listed in the manifest is associated to a JSON Schema that represents 
 
 This kind of schemas are not used at task runtime (where the validity of task arguments is typically enforced by the [`@pydantic.validate_call` decorator](https://docs.pydantic.dev/latest/concepts/validation_decorator)), but they form the basis for constructing the [`fractal-web`](https://github.com/fractal-analytics-platform/fractal-web) user interface that lets a user edit task arguments.
 
-The `args_schema_version` property, which is set at the manifest level, determines a set of constraints on the task-arguments schemas. What is described below applies to the current one as of `fractal-task-tools=0.4.0a2`, named `args_schema_version = "pydantic_v2"`. The discussion about an upcoming specification is tracked at https://github.com/fractal-analytics-platform/fractal-task-tools/issues/97.
+The `args_schema_version` property, which is set at the manifest level, determines a set of constraints on the task-arguments schemas. What is described below applies to the current one as of `fractal-task-tools=0.4.0a3`, named `args_schema_version = "pydantic_v2"`. The discussion about an upcoming specification is tracked at https://github.com/fractal-analytics-platform/fractal-task-tools/issues/97.
 
 ### Restrictions on task functions
 
