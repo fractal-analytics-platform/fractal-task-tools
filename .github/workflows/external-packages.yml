@@ -46,7 +46,7 @@ jobs:
             cmd_install: 'python -m pip install -e .'
 
           - package: zmb-fractal-tasks
-            github_repo: ZMB-UZH/zmb-fractal-tasks
+            github_repo: tcompa/zmb-fractal-tasks
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
