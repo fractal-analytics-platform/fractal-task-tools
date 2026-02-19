@@ -3,10 +3,11 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
-from fractal_task_tools.task_wrapper import _check_deprecated_argument
-from fractal_task_tools.task_wrapper import run_fractal_task
 from pydantic import ValidationError
 from pydantic import validate_call
+
+from fractal_task_tools.task_wrapper import _check_deprecated_argument
+from fractal_task_tools.task_wrapper import run_fractal_task
 
 TASK_OUTPUT = {
     "some": "thing",

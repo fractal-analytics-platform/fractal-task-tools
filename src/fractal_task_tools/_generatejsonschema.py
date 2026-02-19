@@ -1,12 +1,10 @@
 import logging
 from typing import Any
+
 from pydantic.json_schema import GenerateJsonSchema
 from pydantic.json_schema import JsonSchemaValue
-from pydantic_core import core_schema
-
-
 from pydantic.json_schema import NoDefault
-
+from pydantic_core import core_schema
 
 logger = logging.getLogger("CustomGenerateJsonSchema")
 

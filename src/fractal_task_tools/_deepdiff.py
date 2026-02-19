@@ -1,5 +1,5 @@
-from typing import Self, TypeAlias
-
+from typing import Self
+from typing import TypeAlias
 
 JSONType: TypeAlias = (
     dict[str, "JSONType"] | list["JSONType"] | str | int | float | bool | None

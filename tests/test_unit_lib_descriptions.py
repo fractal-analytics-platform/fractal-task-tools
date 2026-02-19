@@ -2,12 +2,11 @@ from pathlib import Path
 
 import pytest
 from devtools import debug
-from fractal_task_tools._descriptions import _get_class_attrs_descriptions
-from fractal_task_tools._descriptions import (
-    _get_class_attrs_descriptions_from_file,
-)
-from fractal_task_tools._descriptions import _get_function_args_descriptions
 from pydantic import BaseModel
+
+from fractal_task_tools._descriptions import _get_class_attrs_descriptions
+from fractal_task_tools._descriptions import _get_class_attrs_descriptions_from_file
+from fractal_task_tools._descriptions import _get_function_args_descriptions
 
 
 class MyClass(BaseModel):

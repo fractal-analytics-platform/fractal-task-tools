@@ -5,7 +5,6 @@ from fractal_task_tools._cli_tools import check_manifest
 from fractal_task_tools._cli_tools import write_manifest_to_file
 from fractal_task_tools._create_manifest import create_manifest
 
-
 main_parser = ap.ArgumentParser(
     description="`fractal-manifest` command-line interface",
     allow_abbrev=False,

@@ -1,4 +1,5 @@
 import pytest
+
 from fractal_task_tools._task_arguments import validate_arguments
 
 
