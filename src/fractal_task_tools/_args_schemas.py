@@ -1,7 +1,7 @@
 import logging
-from copy import deepcopy
 import os
 from collections import Counter
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 from typing import Callable
@@ -13,11 +13,10 @@ from ._descriptions import _get_class_attrs_descriptions
 from ._descriptions import _get_function_args_descriptions
 from ._descriptions import _insert_class_attrs_descriptions
 from ._descriptions import _insert_function_args_descriptions
+from ._generatejsonschema import CustomGenerateJsonSchema
 from ._signature_constraints import _extract_function
 from ._signature_constraints import _validate_function_signature
 from ._titles import _include_titles
-
-from ._generatejsonschema import CustomGenerateJsonSchema
 
 _Schema = dict[str, Any]
 
@@ -61,11 +60,10 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
 
 def _create_schema_for_function(function: Callable) -> _Schema:
 
-    from pydantic.experimental.arguments_schema import (
-        generate_arguments_schema,
-    )
     from pydantic import ConfigDict
-    from pydantic.fields import FieldInfo, ComputedFieldInfo
+    from pydantic.experimental.arguments_schema import generate_arguments_schema
+    from pydantic.fields import ComputedFieldInfo
+    from pydantic.fields import FieldInfo
 
     # NOTE: v2.12.0 modified the generated field titles. The function
     # `make_title` restores the `<2.12.0` behavior

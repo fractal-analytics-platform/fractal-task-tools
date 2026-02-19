@@ -1,4 +1,5 @@
 import pytest
+
 from fractal_task_tools._deepdiff import ERRORS
 
 

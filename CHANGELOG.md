@@ -12,6 +12,8 @@
     * Drop support for `python<3.11` (\#92).
     * Drop support for `pydantic<2.11.0` (\#92).
     * Support `docstring-parser` v0.17 (\#76).
+* Internal:
+    * Update `ruff` configuration (\#106).
 
 # 0.3.0
 

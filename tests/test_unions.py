@@ -5,11 +5,10 @@ from typing import Union
 
 import pytest
 from devtools import debug
-from fractal_task_tools._signature_constraints import (
-    _validate_function_signature,
-)
 from pydantic import BaseModel
 from pydantic import Field
+
+from fractal_task_tools._signature_constraints import _validate_function_signature
 
 
 class Model1(BaseModel):
@@ -120,7 +119,9 @@ def fun_plain_union_invalid_6(arg: int | None = Field(default=123)):
     pass
 
 
-def fun_plain_union_invalid_7(arg: int | None = Field(default_factory=lambda: 123)):
+def fun_plain_union_invalid_7(
+    arg: int | None = Field(default_factory=lambda: 123),
+):
     pass
 
 

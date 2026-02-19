@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import pytest
+
 from fractal_task_tools.logging_config import DEFAULT_LOG_FORMAT
 from fractal_task_tools.logging_config import DEFAULT_LOG_LEVEL
 from fractal_task_tools.logging_config import get_logging_format

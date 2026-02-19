@@ -5,12 +5,14 @@ from inspect import Signature
 from inspect import signature
 from pathlib import Path
 from typing import Any
+
+from pydantic import BaseModel
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
+
 from ._union_types import is_annotated_union
 from ._union_types import is_tagged
 from ._union_types import is_union
-from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
@@ -179,7 +181,8 @@ def _recursive_union_validation(
     elif is_annotated_union(annotation):
         if not is_tagged(annotation):
             logger.debug(
-                f"[_recursive_union_validation] {name=} is a non-tagged annotated union."
+                f"[_recursive_union_validation] {name=} "
+                "is a non-tagged annotated union."
             )
             _validate_plain_union(
                 annotation=annotation.__origin__,
