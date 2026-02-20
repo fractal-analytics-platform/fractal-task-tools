@@ -265,7 +265,7 @@ wheels = [
 
 [[package]]
 name = "fractal-task-tools"
-version = "0.4.0a2"
+version = "0.4.0a3"
 source = { editable = "." }
 dependencies = [
     { name = "docstring-parser" },
@@ -305,7 +305,7 @@ requires-dist = [
     { name = "mkdocs-material", marker = "extra == 'docs'", specifier = "==9.7.1" },
     { name = "mkdocs-section-index", marker = "extra == 'docs'", specifier = "==0.3.10" },
     { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=1.0.2,<1.1.0" },
-    { name = "pydantic", specifier = ">=2.11.0,<=2.13.0" },
+    { name = "pydantic", specifier = ">=2.11.0,<2.13.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.0,<9.0.0" },
     { name = "requests", marker = "extra == 'dev'", specifier = ">2.32.0,<2.33.0" },
 ]
