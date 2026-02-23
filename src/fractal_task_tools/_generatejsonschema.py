@@ -1,10 +1,13 @@
 import logging
 from typing import Any
 
+from pydantic import BaseModel
 from pydantic.json_schema import GenerateJsonSchema
 from pydantic.json_schema import JsonSchemaValue
 from pydantic.json_schema import NoDefault
 from pydantic_core import core_schema
+
+BaseModel.model_config["use_attribute_docstrings"] = True
 
 logger = logging.getLogger("CustomGenerateJsonSchema")
 
