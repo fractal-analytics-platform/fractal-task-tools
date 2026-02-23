@@ -12,16 +12,10 @@ from fractal_task_tools.task_models import ParallelTask
 
 2. If some of your tasks are converters (that is, they create OME-Zarr images but do not take any OME-Zarr image as an input), you can now use one of the new available task types (`ConverterCompoundTask` and `ConverterNonParallelTask`).
 
-3. In the `task_list.py` file of your package, optionally include variables for `AUTHORS`, `DOCS_LINK` and `INPUT_MODELS` (if applicable), as in this example:
+3. In the `task_list.py` file of your package, optionally include variables for `AUTHORS`, `DOCS_LINK` (if applicable), as in this example:
 ```python
 AUTHORS = "Fractal Core Team"
 DOCS_LINK = "https://fractal-analytics-platform.github.io/fractal-tasks-core"
-INPUT_MODELS = [
-    ["fractal_tasks_core", "channels.py", "OmeroChannel"],
-    ["fractal_tasks_core", "channels.py", "Window"],
-    ["fractal_tasks_core", "channels.py", "ChannelInputModel"],
-    ...
-  ]
 ```
 
 4. In order to create the manifest for your package and write it to disk (within the root directory of the installed package), use

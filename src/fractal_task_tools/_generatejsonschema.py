@@ -7,9 +7,9 @@ from pydantic.json_schema import JsonSchemaValue
 from pydantic.json_schema import NoDefault
 from pydantic_core import core_schema
 
-BaseModel.model_config["use_attribute_docstrings"] = True
-
 logger = logging.getLogger("CustomGenerateJsonSchema")
+
+BaseModel.model_config["use_attribute_docstrings"] = True
 
 
 class CustomGenerateJsonSchema(GenerateJsonSchema):

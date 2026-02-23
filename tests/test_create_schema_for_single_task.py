@@ -328,11 +328,19 @@ def test_default_factory():
     assert "default" not in property.keys()
 
 
+class ModelWithDocstrings(BaseModel):
+    x: int
+    """
+    Docstring for `x`
+    """
+
+
 @validate_call
 def task_function_with_description(
     *,
     arg1: str = Field(description="Field-based description 1"),
     arg2: str,
+    arg3: ModelWithDocstrings,
 ):
     """
     Short task description
@@ -340,6 +348,7 @@ def task_function_with_description(
     Args:
         arg1: Docstring-based description 1
         arg2: Docstring-based description 2
+        arg3: Docstring-based description 3
     """
     pass
 

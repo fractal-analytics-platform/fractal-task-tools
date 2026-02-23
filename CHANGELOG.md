@@ -1,5 +1,7 @@
 # 0.4.0 (unreleased)
 
+FIXME: Info about class-attribute docstrings
+
 * Schema generation:
     * Compute `default` as specified in `default_factory`, when possible (\#75, \#93).
     * Take into accounts `default` values set through `Field` (\#93).
