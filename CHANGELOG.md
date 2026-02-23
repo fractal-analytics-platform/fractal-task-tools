@@ -16,6 +16,8 @@
     * Support `docstring-parser` v0.17 (\#76).
 * Internal:
     * Update `ruff` configuration (\#106).
+* Documentation:
+    * Task-types documentation page (\#110).
 
 # 0.3.0
 
