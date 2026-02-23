@@ -3,7 +3,7 @@
 ## Build and check manifest
 
 `fractal-task-tools` includes a set of [task models](../reference/fractal_task_tools/task_models.md), to be used in the `task_list.py` module.
-See the following example from the `fractal-tasks-core` package:
+See the following example from the `fractal-tasks-core` package (or [the task-types page](./task_types.md) for mode details):
 ```python
 from fractal_task_tools.task_models import ConverterCompoundTask
 
@@ -21,6 +21,7 @@ TASK_LIST = [
     ),
 ]
 ```
+
 
 Once the `task_list.py` module is defined, `fractal-task-tools` also includes a command-line interface for creating and checking a manifest file.
 
