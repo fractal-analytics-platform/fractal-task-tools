@@ -71,6 +71,8 @@ def create_manifest(
             "No `INPUT_MODELS` found in task_list module. Setting it to `[]`."
         )
 
+    INPUT_MODELS = []  # FIXME
+
     # Load AUTHORS
     try:
         manifest["authors"] = getattr(task_list_module, "AUTHORS")
