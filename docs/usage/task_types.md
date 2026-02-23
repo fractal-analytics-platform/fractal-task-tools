@@ -4,16 +4,62 @@ This page provides additional details about the task types supported by the [Fra
 
 
 There are five types of Fractal tasks:
-1. _parallel_ tasks,
-2. _non-parallel_ tasks,
-3. _compound_ tasks,
-4. _compound converter_ tasks,
-4. _non-parallel converter_ tasks.
+
+1. [_parallel_ tasks](#parallel-tasks)
+2. [_non-parallel_ tasks](#non-parallel-tasks)
+3. [_compound_ tasks](#compound-tasks)
+4. [_non-parallel converter_ tasks](#non-parallel-converter-tasks)
+5. [_compound converter_ tasks](#compound-converter-tasks)
 
 
-Task types differ in how they are run, and also in what parameters are required.
+Task types differ in what required parameters they need, what kind of metadata they can produce, and how they run in Fractal server.
 
-All parameters mentioned below (`zarr_url`, `zarr_urls`, `zarr_dir`, `init_args`) are reserved keyword arguments: when running tasks through Fractal server, the server takes care to pass the correct value for this arguments, and the user cannot set them directly. On top of them, each task can also take an arbitrary list of parameters that are specific to the task function and that the user can set.
+#### Parameters
+
+Each task type has some required parameters. All required parameters mentioned below (`zarr_url`, `zarr_urls`, `zarr_dir`, `init_args`) are reserved keywords: when running tasks through Fractal server, the server takes care to pass the correct value for this arguments, and the user cannot set them directly. On top of the required parameters, each task also accepts an arbitrary list of other parameters that are specific to the task function and that the user can set.
+
+#### Metadata
+
+Tasks can optionally return updates to [the Fractal image list](https://fractal-analytics-platform.github.io/image_list) (this is true for all tasks except the initialization phase of a compound tasks) or a parallelization list (just the initialization phase of a compound task - see below).
+
+The metadata produced by a task is always a Python dictionary, and **it must be JSON-serializable** (since it will be written to disk so that Fractal server can access it). Examples of
+
+For tasks that create new images or edit relevant image properties, the metadata dictionary must include an `image_list_updates` property so that the Fractal server can update its metadata about that image. Note that if both `image_list_updates` and `image_list_removals` are empty in the task output, then the Fractal server will includes all the filtered image list into `image_list_updates`, so that they are updated with the appropriate `types`.
+
+When a task generates a set of image-list updates, each update must to be for a unique `zarr_url`. Additionally, each update can provide an `origin` key, an `attributes` key and a `types` key. The `origin` key describes the `zarr_url` of another image already in the image list and will take the existing attributes and types from that image. Attributes and types can also be directly set by a task.
+
+Here's an example of `task_output`:
+```python
+{
+	"image_list_updates" = [
+		{
+			"zarr_url": "/path/to/my_zarr.zarr/B/03/0_processed",
+			"origin": "/path/to/origin_zarr.zarr/B/03/0",
+			"attributes": {
+				"plate": "plate_name",
+				"well": "B03"
+			},
+			"types": {
+				"is_3D": True
+			}
+		}
+	]
+}
+```
+
+The init part of a compound task must produe a parallelization lists, with elements having the `zarr_url` property as well as additional arbitrary arguments as an `init_args` dictionary.
+Parallelization lists are provided in the following structure:
+```python
+{
+    "parallelization_list": [
+        {
+            "zarr_url": "/path/to/my_zarr.zarr/B/03/0",
+            "init_args": {"some_arg": "some_value"},
+        }
+    ]
+}
+```
+
 
 
 ## Parallel tasks
