@@ -7,8 +7,6 @@ class MyModel(BaseModel):
     Short description of `MyModel`
     """
 
-    # model_config = ConfigDict(use_attribute_docstrings=True)
-
     inner_arg: int = Field(description="Description from field")
     """
     Description from docstring
