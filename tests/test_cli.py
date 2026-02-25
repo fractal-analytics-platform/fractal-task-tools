@@ -18,5 +18,5 @@ def test_get_args():
 
     args = _parse_arguments(sys_argv=["xxx", "create"])
     assert args.cmd == "create"
-    assert args.package is None
+    assert args.package == "fractal-task-tools"
     assert args.task_list_path == "dev.task_list"

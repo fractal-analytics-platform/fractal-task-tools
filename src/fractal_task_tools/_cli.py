@@ -1,9 +1,11 @@
 import argparse as ap
 import sys
+from pathlib import Path
 
 from fractal_task_tools._cli_tools import check_manifest
 from fractal_task_tools._cli_tools import write_manifest_to_file
 from fractal_task_tools._create_manifest import create_manifest
+from fractal_task_tools._parse_pyproject import _get_package_name_from_pyproject
 
 main_parser = ap.ArgumentParser(
     description="`fractal-manifest` command-line interface",
@@ -80,11 +82,14 @@ def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
     if sys_argv is None:
         sys_argv = sys.argv[:]
     args = main_parser.parse_args(sys_argv[1:])
+    if args.package is None:
+        args.package = _get_package_name_from_pyproject(Path.cwd() / "pyproject.toml")
     return args
 
 
 def main():
     args = _parse_arguments()
+
     if args.cmd == "create":
         manifest = create_manifest(
             raw_package_name=args.package,

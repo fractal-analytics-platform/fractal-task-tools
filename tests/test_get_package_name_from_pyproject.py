@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from devtools import debug
 
-from fractal_task_tools._create_manifest import _get_package_name_from_pyproject
+from fractal_task_tools._parse_pyproject import _get_package_name_from_pyproject
 
 
 def test_get_package_name_from_pyproject():
