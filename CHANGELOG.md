@@ -11,6 +11,7 @@ FIXME: Info about class-attribute docstrings
 * CLI commands:
     * Add `--verbose` option to `fractal-manifest check` (\#80).
     * In `fractal-manifest check`, display all manifest mismatches rather than the first one only (\#88).
+    * Make `--package` optional and read it from local `pyproject.toml` file if missing (\#113).
 * Dependencies:
     * Drop support for `python<3.11` (\#92).
     * Drop support for `pydantic<2.11.0` (\#92).
