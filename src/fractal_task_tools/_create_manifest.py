@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 def _get_package_name_from_pyproject(pyproject_path: Path) -> str:
     """
-    Infer the package name from a local `pyproject.toml`.
+    Get the package name from a local `pyproject.toml`.
 
     Example 1: if the `project` table has `name="xyz"` and
     `import-name=[]`, return `"xyz".
