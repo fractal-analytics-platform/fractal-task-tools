@@ -365,6 +365,13 @@ def test_descriptions():
     assert (
         schema["properties"]["arg2"]["description"] == "Docstring-based description 2"
     )
+    assert (
+        schema["properties"]["arg3"]["description"] == "Docstring-based description 3"
+    )
+    assert (
+        schema["$defs"]["ModelWithDocstrings"]["properties"]["x"]["description"]
+        == "Docstring for `x`"
+    )
 
 
 class ModelWithDefaultNone(BaseModel):
