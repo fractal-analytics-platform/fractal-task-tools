@@ -89,7 +89,6 @@ def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
 
 def main():
     args = _parse_arguments()
-
     if args.cmd == "create":
         manifest = create_manifest(
             raw_package_name=args.package,
