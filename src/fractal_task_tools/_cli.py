@@ -33,8 +33,11 @@ for subparser in (create_manifest_parser, check_manifest_parser):
     subparser.add_argument(
         "--package",
         type=str,
-        help="Example: 'fractal_tasks_core'",
-        required=True,
+        help=(
+            "Example: 'fractal_tasks_core'. If unset, it will be read "
+            "from a current-directory `pyproject.toml`."
+        ),
+        required=False,
     )
     subparser.add_argument(
         "--task-list-path",

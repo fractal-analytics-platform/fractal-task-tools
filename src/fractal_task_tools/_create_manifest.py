@@ -3,7 +3,10 @@ Generate JSON schemas for task arguments and combine them into a manifest.
 """
 
 import logging
+import sys
+import tomllib
 from importlib import import_module
+from pathlib import Path
 from typing import Any
 
 from ._args_schemas import create_schema_for_single_task
@@ -16,6 +19,37 @@ from .task_models import _BaseTask
 ARGS_SCHEMA_VERSION = "pydantic_v2"
 MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
 MANIFEST_VERSION = "2"
+
+
+def _get_package_name_from_pyproject(pyproject_path: Path) -> str:
+    """
+    Infer the package name from a local `pyproject.toml`.
+
+    Example 1: if the `project` table has `name="xyz"` and
+    `import-name=[]`, return `"xyz".
+
+    Example 2: if the `project` table has `name="pillow"` and
+    `import-name=["PIL"]`, return `"PIL"`.
+
+    Example 3: if the `project` table has `name="xyz"` and
+    `import-name=["xyz1", "xyz2]`, return `"xyz"`.
+
+    Reference:
+    https://packaging.python.org/en/latest/specifications/pyproject-toml
+    """
+    try:
+        with Path(pyproject_path).open("rb") as f:
+            pyproject = tomllib.load(f)
+        project_table = pyproject["project"]
+        if "import-names" in project_table and len(project_table["import-names"]) == 1:
+            return project_table["import-names"][0]
+        else:
+            return project_table["name"]
+    except Exception as e:
+        sys.exit(
+            "`--package` was not provided, and discovery based on "
+            f"`pyproject.toml` failed with the following error: {str(e)}"
+        )
 
 
 def create_manifest(
@@ -37,6 +71,11 @@ def create_manifest(
     Returns:
         Task-package manifest.
     """
+
+    if raw_package_name is None:
+        raw_package_name = _get_package_name_from_pyproject(
+            Path.cwd() / "pyproject.toml"
+        )
 
     # Preliminary validation
     if "/" in task_list_path or task_list_path.endswith(".py"):
