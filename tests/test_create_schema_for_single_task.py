@@ -328,10 +328,17 @@ def test_default_factory():
     assert "default" not in property.keys()
 
 
-class ModelWithDocstrings(BaseModel):
+class _ParentModelWithDocstrings(BaseModel):
     x: int
     """
     Docstring for `x`
+    """
+
+
+class ModelWithDocstrings(_ParentModelWithDocstrings):
+    y: int
+    """
+    Docstring for `y`
     """
 
 
@@ -371,6 +378,10 @@ def test_descriptions():
     assert (
         schema["$defs"]["ModelWithDocstrings"]["properties"]["x"]["description"]
         == "Docstring for `x`"
+    )
+    assert (
+        schema["$defs"]["ModelWithDocstrings"]["properties"]["y"]["description"]
+        == "Docstring for `y`"
     )
 
 
