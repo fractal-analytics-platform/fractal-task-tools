@@ -4,6 +4,10 @@ from fractal_task_tools._cli import _parse_arguments
 
 
 def test_get_args():
+
+    with pytest.raises(SystemExit):
+        _parse_arguments(sys_argv=["xxx"])
+
     with pytest.raises(SystemExit):
         _parse_arguments(sys_argv=["xxx", "invalid-cmd"])
 
