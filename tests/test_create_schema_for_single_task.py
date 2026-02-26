@@ -328,11 +328,26 @@ def test_default_factory():
     assert "default" not in property.keys()
 
 
+class _ParentModelWithDocstrings(BaseModel):
+    x: int
+    """
+    Docstring for `x`
+    """
+
+
+class ModelWithDocstrings(_ParentModelWithDocstrings):
+    y: int
+    """
+    Docstring for `y`
+    """
+
+
 @validate_call
 def task_function_with_description(
     *,
     arg1: str = Field(description="Field-based description 1"),
     arg2: str,
+    arg3: ModelWithDocstrings,
 ):
     """
     Short task description
@@ -340,6 +355,7 @@ def task_function_with_description(
     Args:
         arg1: Docstring-based description 1
         arg2: Docstring-based description 2
+        arg3: Docstring-based description 3
     """
     pass
 
@@ -355,6 +371,17 @@ def test_descriptions():
     assert schema["properties"]["arg1"]["description"] == "Field-based description 1"
     assert (
         schema["properties"]["arg2"]["description"] == "Docstring-based description 2"
+    )
+    assert (
+        schema["properties"]["arg3"]["description"] == "Docstring-based description 3"
+    )
+    assert (
+        schema["$defs"]["ModelWithDocstrings"]["properties"]["x"]["description"]
+        == "Docstring for `x`"
+    )
+    assert (
+        schema["$defs"]["ModelWithDocstrings"]["properties"]["y"]["description"]
+        == "Docstring for `y`"
     )
 
 

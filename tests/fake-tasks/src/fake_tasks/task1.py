@@ -1,24 +1,10 @@
-from pydantic import BaseModel
-from pydantic import Field
-
-
-class MyModel(BaseModel):
-    """
-    Short description of `MyModel`
-
-    Attributes:
-        inner_arg: Description from docstring
-        another_arg: Description from docstring
-    """
-
-    inner_arg: int = Field(description="Description from field")
-    another_arg: int
+from .models import ModelMixedDocstrings
 
 
 def task1(
     zarr_urls: list[str],
     zarr_dir: str,
-    arg2: MyModel,
+    arg1: ModelMixedDocstrings,
 ):
     """
     Short description of `task1`.
@@ -28,6 +14,6 @@ def task1(
     Arguments:
         zarr_urls: Default
         zarr_dir: Default
-        arg2: A `MyModel` object
+        arg1: A `ModelMixedDocstrings` object
     """
     pass

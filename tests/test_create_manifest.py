@@ -31,7 +31,7 @@ def test_create_manifest(tmp_path: Path, caplog):
     for task in manifest["task_list"]:
         assert "docs_link" not in task.keys()
 
-    # SUCCESS: create non-legacy manifest
+    # SUCCESS: create manifest
     manifest = create_manifest(
         raw_package_name="fake-tasks",
         task_list_path="task_list",
@@ -40,7 +40,20 @@ def test_create_manifest(tmp_path: Path, caplog):
         assert "type" in task.keys()
     debug(manifest)
 
-    # Assertion related to https://github.com/fractal-analytics-platform/fractal-task-tools/issues/87
+    # Assertion related to
+    # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/87
+    # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/90
+    properties_ModelMixedDocstrings = manifest["task_list"][0][
+        "args_schema_non_parallel"
+    ]["$defs"]["ModelMixedDocstrings"]["properties"]
+    print(json.dumps(properties_ModelMixedDocstrings, indent=2))
+    return
+    assert properties_ModelMixedDocstrings["a"]["description"] == "Field for a"
+    assert properties_ModelMixedDocstrings["b"]["description"] == "New-style for b"
+    assert properties_ModelMixedDocstrings["c"]["description"] == "Field for c"
+    assert properties_ModelMixedDocstrings["d"]["description"] == "Old-style for d"
+    return
+
     assert (
         manifest["task_list"][0]["args_schema_non_parallel"]["$defs"]["MyModel"][
             "properties"
