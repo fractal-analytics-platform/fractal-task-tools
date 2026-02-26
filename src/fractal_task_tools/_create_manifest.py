@@ -66,13 +66,9 @@ def create_manifest(
     TASK_LIST: list[_BaseTask] = getattr(task_list_module, "TASK_LIST")
 
     # Load INPUT_MODELS
-    try:
-        INPUT_MODELS = getattr(task_list_module, "INPUT_MODELS")
-    except AttributeError:
-        INPUT_MODELS = []
-        logger.warning(
-            "No `INPUT_MODELS` found in task_list module. Setting it to `[]`."
-        )
+    INPUT_MODELS = getattr(task_list_module, "INPUT_MODELS", None)
+    if INPUT_MODELS is not None:
+        logging.warning("`INPUT_MODELS` is deprecated, and its usage has no effect")
 
     # Load AUTHORS
     try:
@@ -124,7 +120,6 @@ def create_manifest(
                 schema = create_schema_for_single_task(
                     executable,
                     package=package_name,
-                    pydantic_models=INPUT_MODELS,
                 )
 
                 validate_arguments(

@@ -2,9 +2,6 @@ from fractal_task_tools.task_models import NonParallelTask
 
 AUTHORS = "Fake Fake"
 DOCS_LINK = "https://www.example.org"
-INPUT_MODELS = [
-    ["fake_tasks", "task1.py", "MyModel"],
-]
 
 
 TASK_LIST = [

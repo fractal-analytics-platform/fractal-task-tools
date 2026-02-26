@@ -5,14 +5,16 @@ from pydantic import Field
 class MyModel(BaseModel):
     """
     Short description of `MyModel`
-
-    Attributes:
-        inner_arg: Description from docstring
-        another_arg: Description from docstring
     """
 
     inner_arg: int = Field(description="Description from field")
+    """
+    Description from docstring
+    """
     another_arg: int
+    """
+    Description from docstring
+    """
 
 
 def task1(

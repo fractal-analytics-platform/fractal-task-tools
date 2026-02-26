@@ -36,7 +36,7 @@ jobs:
             cmd_install: 'python -m pip install -e .'
 
           - package: fractal-uzh-converters
-            github_repo: fractal-analytics-platform/fractal-uzh-converters
+            github_repo: tcompa/fractal-uzh-converters
             github_branch: main
             cmd_install: 'python -m pip install -e .'
 
