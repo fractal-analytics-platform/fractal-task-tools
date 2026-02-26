@@ -82,6 +82,8 @@ def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
     if sys_argv is None:
         sys_argv = sys.argv[:]
     args = main_parser.parse_args(sys_argv[1:])
+    if args.cmd is None:
+        sys.exit("Error: No command specified (valid options: 'create', 'check').")
     if args.package is None:
         args.package = _get_package_name_from_pyproject(Path.cwd() / "pyproject.toml")
     return args
