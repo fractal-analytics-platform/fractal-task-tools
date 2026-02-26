@@ -2,7 +2,6 @@ import logging
 from typing import Any
 from typing import Literal
 
-
 REQUIRED_ARGUMENTS: dict[tuple[str, str], set[str]] = {
     ("non_parallel", "non_parallel"): {"zarr_urls", "zarr_dir"},
     ("compound", "non_parallel"): {"zarr_urls", "zarr_dir"},

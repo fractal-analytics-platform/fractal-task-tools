@@ -1,7 +1,10 @@
 from datetime import datetime
 
 import pytest
-from fractal_task_tools._deepdiff import deepdiff, ERRORS, Errors
+
+from fractal_task_tools._deepdiff import ERRORS
+from fractal_task_tools._deepdiff import Errors
+from fractal_task_tools._deepdiff import deepdiff
 
 
 def test_Errors():

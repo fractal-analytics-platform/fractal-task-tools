@@ -4,10 +4,11 @@ from pathlib import Path
 
 import pytest
 from devtools import debug
+
 from fractal_task_tools._cli import check_manifest
 from fractal_task_tools._cli import write_manifest_to_file
-from fractal_task_tools._create_manifest import create_manifest
 from fractal_task_tools._create_manifest import MANIFEST_FILENAME
+from fractal_task_tools._create_manifest import create_manifest
 
 
 def test_create_manifest(tmp_path: Path, caplog):

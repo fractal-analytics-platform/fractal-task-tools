@@ -4,9 +4,11 @@ from typing import Optional
 
 import pytest
 from devtools import debug
-from fractal_task_tools._args_schemas import create_schema_for_single_task
-from pydantic import Field, BaseModel
+from pydantic import BaseModel
+from pydantic import Field
 from pydantic import validate_call
+
+from fractal_task_tools._args_schemas import create_schema_for_single_task
 
 
 @validate_call

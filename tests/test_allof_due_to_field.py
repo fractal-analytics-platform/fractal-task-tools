@@ -1,10 +1,10 @@
-from devtools import debug
-from fractal_task_tools._args_schemas import (
-    create_schema_for_single_task,
-    _remove_top_level_single_element_allof,
-)
-from pydantic import validate_call
 from enum import Enum
+
+from devtools import debug
+from pydantic import validate_call
+
+from fractal_task_tools._args_schemas import _remove_top_level_single_element_allof
+from fractal_task_tools._args_schemas import create_schema_for_single_task
 
 
 class MyEnum(Enum):

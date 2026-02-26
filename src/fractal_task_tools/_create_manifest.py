@@ -18,6 +18,9 @@ MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
 MANIFEST_VERSION = "2"
 
 
+logger = logging.getLogger(__name__)
+
+
 def create_manifest(
     *,
     raw_package_name: str,
@@ -45,7 +48,7 @@ def create_manifest(
     # Normalize package name
     package_name = normalize_package_name(raw_package_name)
 
-    logging.info(f"Start generating a new manifest for {package_name}")
+    logger.info(f"Start generating a new manifest for {package_name}")
 
     # Prepare an empty manifest
     manifest = dict(
@@ -67,7 +70,7 @@ def create_manifest(
         INPUT_MODELS = getattr(task_list_module, "INPUT_MODELS")
     except AttributeError:
         INPUT_MODELS = []
-        logging.warning(
+        logger.warning(
             "No `INPUT_MODELS` found in task_list module. Setting it to `[]`."
         )
 
@@ -75,7 +78,7 @@ def create_manifest(
     try:
         manifest["authors"] = getattr(task_list_module, "AUTHORS")
     except AttributeError:
-        logging.warning("No `AUTHORS` found in task_list module.")
+        logger.warning("No `AUTHORS` found in task_list module.")
 
     # Load DOCS_LINK
     try:
@@ -83,10 +86,10 @@ def create_manifest(
         # Transform empty string into None
         if DOCS_LINK == "":
             DOCS_LINK = None
-            logging.warning("`DOCS_LINK=` transformed into `DOCS_LINK=None`.")
+            logger.warning("`DOCS_LINK=` transformed into `DOCS_LINK=None`.")
     except AttributeError:
         DOCS_LINK = None
-        logging.warning("No `DOCS_LINK` found in task_list module.")
+        logger.warning("No `DOCS_LINK` found in task_list module.")
 
     # Loop over TASK_LIST, and append the proper task dictionaries
     # to manifest["task_list"]
@@ -117,7 +120,7 @@ def create_manifest(
         for kind in ["non_parallel", "parallel"]:
             executable = task_dict.get(f"executable_{kind}")
             if executable is not None:
-                logging.info(f"[{executable}] START")
+                logger.info(f"[{executable}] START")
                 schema = create_schema_for_single_task(
                     executable,
                     package=package_name,
@@ -130,7 +133,7 @@ def create_manifest(
                     executable_kind=kind,
                 )
 
-                logging.info(f"[{executable}] END (new schema)")
+                logger.info(f"[{executable}] END (new schema)")
                 task_dict[f"args_schema_{kind}"] = schema
 
         # Compute and set `docs_info`

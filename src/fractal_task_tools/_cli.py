@@ -1,10 +1,11 @@
 import argparse as ap
 import sys
+from pathlib import Path
 
 from fractal_task_tools._cli_tools import check_manifest
 from fractal_task_tools._cli_tools import write_manifest_to_file
 from fractal_task_tools._create_manifest import create_manifest
-
+from fractal_task_tools._parse_pyproject import _get_package_name_from_pyproject
 
 main_parser = ap.ArgumentParser(
     description="`fractal-manifest` command-line interface",
@@ -34,8 +35,11 @@ for subparser in (create_manifest_parser, check_manifest_parser):
     subparser.add_argument(
         "--package",
         type=str,
-        help="Example: 'fractal_tasks_core'",
-        required=True,
+        help=(
+            "Example: 'fractal_tasks_core'. If unset, it will be read "
+            "from a current-directory `pyproject.toml`."
+        ),
+        required=False,
     )
     subparser.add_argument(
         "--task-list-path",
@@ -78,6 +82,8 @@ def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
     if sys_argv is None:
         sys_argv = sys.argv[:]
     args = main_parser.parse_args(sys_argv[1:])
+    if args.package is None:
+        args.package = _get_package_name_from_pyproject(Path.cwd() / "pyproject.toml")
     return args
 
 

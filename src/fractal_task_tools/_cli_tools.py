@@ -5,8 +5,8 @@ import sys
 from importlib import import_module
 from pathlib import Path
 
-from fractal_task_tools._deepdiff import ERRORS
 from fractal_task_tools._create_manifest import MANIFEST_FILENAME
+from fractal_task_tools._deepdiff import ERRORS
 from fractal_task_tools._deepdiff import deepdiff
 from fractal_task_tools._package_name_tools import normalize_package_name
 

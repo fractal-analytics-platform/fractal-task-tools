@@ -50,6 +50,7 @@ nav:
       - usage/index.md
       - usage/install.md
       - usage/manifest.md
+      - usage/task_types.md
       - usage/run_task.md
       - usage/legacy.md
   - Changelog: changelog.md

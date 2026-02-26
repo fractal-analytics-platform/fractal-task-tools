@@ -6,8 +6,8 @@ from argparse import ArgumentParser
 from json import JSONEncoder
 from pathlib import Path
 
-from .logging_config import setup_logging_config
 from .logging_config import WRAPPER_LOGGER_NAME
+from .logging_config import setup_logging_config
 
 task_wrapper_logger = logging.getLogger(WRAPPER_LOGGER_NAME)
 

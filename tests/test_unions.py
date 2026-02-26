@@ -5,11 +5,10 @@ from typing import Union
 
 import pytest
 from devtools import debug
-from fractal_task_tools._signature_constraints import (
-    _validate_function_signature,
-)
 from pydantic import BaseModel
 from pydantic import Field
+
+from fractal_task_tools._signature_constraints import _validate_function_signature
 
 
 class Model1(BaseModel):
@@ -39,11 +38,11 @@ def fun_plain_union_valid_3(arg: None | int = None):
     pass
 
 
-def fun_plain_union_valid_4(arg: Optional[None]):
+def fun_plain_union_valid_4(arg: Optional[int]):
     pass
 
 
-def fun_plain_union_valid_5(arg: Optional[None] = None):
+def fun_plain_union_valid_5(arg: Optional[int] = None):
     pass
 
 
@@ -63,15 +62,21 @@ def fun_tagged_union_valid_1(
     pass
 
 
+def fun_simple_model_valid_1(
+    arg: Model1,
+):
+    pass
+
+
 AnyModel = Annotated[Model1 | Model2 | Model3, Field(discriminator="label")]
 
 
 class NestedModel(BaseModel):
-    arg: AnyModel
+    x: AnyModel
 
 
 class NestedModelWithDefault(BaseModel):
-    arg: AnyModel = Model1()
+    x: AnyModel = Model1()
 
 
 def fun_nested_tagged_union_valid_1(arg: NestedModel):
@@ -114,7 +119,9 @@ def fun_plain_union_invalid_6(arg: int | None = Field(default=123)):
     pass
 
 
-def fun_plain_union_invalid_7(arg: int | None = Field(default_factory=lambda: 123)):
+def fun_plain_union_invalid_7(
+    arg: int | None = Field(default_factory=lambda: 123),
+):
     pass
 
 
@@ -123,6 +130,67 @@ def fun_non_tagged_union_invalid_1(arg: Annotated[int | str, "comment"]):
 
 
 def fun_non_tagged_union_invalid_2(arg: Annotated[int | None, "comment"] = 123):
+    pass
+
+
+class _ModelWithInvalidDefaults(BaseModel):
+    z: int | None = 7
+
+
+class ModelWithInvalidDefaults1(BaseModel):
+    x: _ModelWithInvalidDefaults
+
+
+class ModelWithInvalidDefaults2(BaseModel):
+    x: int | None = None
+    y: ModelWithInvalidDefaults1
+
+
+def fun_nested_model_invalid_1(arg: ModelWithInvalidDefaults1):
+    pass
+
+
+def fun_nested_model_invalid_2(arg: ModelWithInvalidDefaults2):
+    pass
+
+
+class MaxRecursion1(BaseModel):
+    x: int
+
+
+class MaxRecursion2(BaseModel):
+    x: MaxRecursion1
+
+
+class MaxRecursion3(BaseModel):
+    x: MaxRecursion2
+
+
+class MaxRecursion4(BaseModel):
+    x: MaxRecursion3
+
+
+class MaxRecursion5(BaseModel):
+    x: MaxRecursion4
+
+
+class MaxRecursion6(BaseModel):
+    x: MaxRecursion5
+
+
+class MaxRecursion7(BaseModel):
+    x: MaxRecursion6
+
+
+class MaxRecursion8(BaseModel):
+    x: MaxRecursion7
+
+
+class MaxRecursion9(BaseModel):
+    x: MaxRecursion8
+
+
+def fun_recursion_limit_invalid_1(arg: MaxRecursion9):
     pass
 
 
@@ -140,6 +208,7 @@ def test_validate_function_signature():
         fun_non_tagged_union_valid_2,
         fun_nested_tagged_union_valid_1,
         fun_nested_tagged_union_valid_2,
+        fun_simple_model_valid_1,
     ):
         debug(valid_function)
         _validate_function_signature(function=valid_function)
@@ -154,6 +223,9 @@ def test_validate_function_signature():
         fun_plain_union_invalid_7,
         fun_non_tagged_union_invalid_1,
         fun_non_tagged_union_invalid_2,
+        fun_nested_model_invalid_1,
+        fun_nested_model_invalid_2,
+        fun_recursion_limit_invalid_1,
     ):
         debug(invalid_function)
         with pytest.raises(ValueError) as exc_info:
