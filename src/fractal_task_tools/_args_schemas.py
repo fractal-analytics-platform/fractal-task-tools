@@ -1,5 +1,6 @@
 import logging
 import os
+from collections import Counter
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -8,7 +9,9 @@ from typing import Optional
 
 from docstring_parser import parse as docparse
 
+from ._descriptions import _get_class_attrs_descriptions
 from ._descriptions import _get_function_args_descriptions
+from ._descriptions import _insert_class_attrs_descriptions
 from ._descriptions import _insert_function_args_descriptions
 from ._generatejsonschema import CustomGenerateJsonSchema
 from ._signature_constraints import _extract_function
@@ -103,6 +106,7 @@ def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
 def create_schema_for_single_task(
     executable: str,
     package: Optional[str] = None,
+    pydantic_models: Optional[list[tuple[str, str, str]]] = None,
     task_function: Optional[Callable] = None,
     verbose: bool = False,
 ) -> _Schema:
@@ -201,6 +205,33 @@ def create_schema_for_single_task(
         descriptions=function_args_descriptions,
         verbose=verbose,
     )
+
+    if pydantic_models is not None:
+        # Check that model names are unique
+        pydantic_models_names = [item[2] for item in pydantic_models]
+        duplicate_class_names = [
+            name for name, count in Counter(pydantic_models_names).items() if count > 1
+        ]
+        if duplicate_class_names:
+            pydantic_models_str = "  " + "\n  ".join(map(str, pydantic_models))
+            raise ValueError(
+                "Cannot parse docstrings for models with non-unique names "
+                f"{duplicate_class_names}, in\n{pydantic_models_str}"
+            )
+
+        # Extract model-attribute descriptions and insert them into schema
+        for package_name, module_relative_path, class_name in pydantic_models:
+            attrs_descriptions = _get_class_attrs_descriptions(
+                package_name=package_name,
+                module_relative_path=module_relative_path,
+                class_name=class_name,
+            )
+            schema = _insert_class_attrs_descriptions(
+                schema=schema,
+                class_name=class_name,
+                descriptions=attrs_descriptions,
+                definition_key=DEFINITIONS_KEY,
+            )
 
     logging.info("[create_schema_for_single_task] END")
     return schema

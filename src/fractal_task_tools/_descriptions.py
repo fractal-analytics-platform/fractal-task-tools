@@ -122,6 +122,64 @@ def _get_function_args_descriptions(
     return descriptions
 
 
+def _get_class_attrs_descriptions_from_file(
+    *,
+    module_path: Path,
+    class_name: str,
+) -> dict[str, str]:
+    """
+    Extract class-attribute descriptions from a Python script
+
+    Args:
+        module_path: Example `/something/my_class.py`.
+        class_name: Example `OmeroChannel`.
+    """
+    tree = ast.parse(module_path.read_text())
+    try:
+        _class = next(
+            c
+            for c in ast.walk(tree)
+            if (isinstance(c, ast.ClassDef) and c.name == class_name)
+        )
+    except StopIteration:
+        raise RuntimeError(f"Cannot find {class_name=} in {module_path}.")
+    docstring = ast.get_docstring(_class)
+    parsed_docstring = docparse(docstring)
+    descriptions = {
+        x.arg_name: _sanitize_description(x.description)
+        if x.description
+        else "Missing description"
+        for x in parsed_docstring.params
+    }
+    return descriptions
+
+
+def _get_class_attrs_descriptions(
+    package_name: str, module_relative_path: str, class_name: str
+) -> dict[str, str]:
+    """
+    Extract class-attribute descriptions from an imported module
+
+    Args:
+        package_name: Example `fractal_tasks_core`.
+        module_relative_path: Example `lib_channels.py`.
+        class_name: Example `OmeroChannel`.
+    """
+
+    if not module_relative_path.endswith(".py"):
+        raise ValueError(f"Module {module_relative_path} must end with '.py'")
+
+    # Get the class ast.ClassDef object
+    package_path = Path(import_module(package_name).__file__).parent
+    module_path = package_path / module_relative_path
+    descriptions = _get_class_attrs_descriptions_from_file(
+        module_path=module_path,
+        class_name=class_name,
+    )
+    logging.info(f"[_get_class_attrs_descriptions] END ({class_name=})")
+    return descriptions
+
+
 def _insert_function_args_descriptions(
     *, schema: dict, descriptions: dict, verbose: bool = False
 ):
@@ -148,4 +206,43 @@ def _insert_function_args_descriptions(
                 )
     new_schema["properties"] = new_properties
     logging.info("[_insert_function_args_descriptions] END")
+    return new_schema
+
+
+def _insert_class_attrs_descriptions(
+    *,
+    schema: dict,
+    class_name: str,
+    descriptions: dict,
+    definition_key: str,
+):
+    """
+    Merge the descriptions obtained via `_get_attributes_models_descriptions`
+    into the `class_name` definition, within an existing JSON Schema
+
+    Args:
+        schema: TBD
+        class_name: TBD
+        descriptions: TBD
+        definition_key: Either `"definitions"` (for Pydantic V1) or
+            `"$defs"` (for Pydantic V2)
+    """
+    new_schema = schema.copy()
+    if definition_key not in schema:
+        return new_schema
+    else:
+        new_definitions = schema[definition_key].copy()
+    # Loop over existing definitions
+    for name, definition in schema[definition_key].items():
+        if name == class_name:
+            for prop in definition["properties"]:
+                if "description" in new_definitions[name]["properties"][prop]:
+                    # This branch covers e.g. the `Field(description="...")` case
+                    pass
+                else:
+                    new_definitions[name]["properties"][prop]["description"] = (
+                        descriptions[prop]
+                    )
+    new_schema[definition_key] = new_definitions
+    logging.info("[_insert_class_attrs_descriptions] END")
     return new_schema
