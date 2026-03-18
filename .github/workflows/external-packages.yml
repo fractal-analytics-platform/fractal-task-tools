@@ -121,7 +121,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - package: fractal-ilastik-tasks
+          - package: ilastik-tasks
             github_repo: fractal-analytics-platform/fractal-ilastik-tasks
             github_branch: main
 
