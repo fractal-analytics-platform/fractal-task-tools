@@ -9,12 +9,10 @@ on:
   # schedule:
   #   - cron: "0 23 * * 2,3,4"
 
-
 jobs:
   test-manifest:
     runs-on: ubuntu-24.04
     strategy:
-
       # Do not make the whole matrix fail if one element fails
       fail-fast: false
       matrix:
@@ -24,51 +22,50 @@ jobs:
         cmd_install: [skip]
 
         include:
-
           - package: fractal-tasks-core
             github_repo: fractal-analytics-platform/fractal-tasks-core
             github_branch: v2
-            cmd_install: 'python -m pip install -e .[fractal-tasks]'
+            cmd_install: "python -m pip install -e .[fractal-tasks]"
 
           - package: fractal-helper-tasks
             github_repo: fractal-analytics-platform/fractal-helper-tasks
             github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            cmd_install: "python -m pip install -e ."
 
           - package: fractal-uzh-converters
             github_repo: tcompa/fractal-uzh-converters
             github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            cmd_install: "python -m pip install -e ."
 
           - package: operetta-compose
             github_repo: leukemia-kispi/operetta-compose
             github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            cmd_install: "python -m pip install -e ."
 
           - package: zmb-fractal-tasks
             github_repo: tcompa/zmb-fractal-tasks
             github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            cmd_install: "python -m pip install -e ."
 
           - package: fractal-cellpose-sam-task
             github_repo: fractal-analytics-platform/fractal-cellpose-sam-task
-            github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            github_branch: feat/adopt-tasks-utils
+            cmd_install: "python -m pip install -e ."
 
           - package: APx_fractal_task_collection
             github_repo: Apricot-Therapeutics/APx_fractal_task_collection
             github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            cmd_install: "python -m pip install -e ."
 
           - package: fractal-ome-zarr-hcs-stitching
             github_repo: m-albert/fractal-ome-zarr-hcs-stitching
             github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            cmd_install: "python -m pip install -e ."
 
           - package: example-tasks
             github_repo: fractal-analytics-platform/example-fractal-task-arguments
             github_branch: main
-            cmd_install: 'python -m pip install -e .'
+            cmd_install: "python -m pip install -e ."
 
         exclude:
           - package: skip
@@ -77,16 +74,15 @@ jobs:
             cmd_install: skip
 
     steps:
-
       - name: Print matrix-element information
         run: echo '${{ matrix.package }}, ${{ matrix.github_repo }}, ${{ matrix.github_branch }}, ${{ matrix.cmd_install }}'
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Update pip
-        run:  python -m pip install --upgrade pip
+        run: python -m pip install --upgrade pip
 
       - name: Get package source code
         uses: actions/checkout@v4
@@ -118,3 +114,53 @@ jobs:
 
       - name: Validate manifest against fractal-server schema
         run: python ./fractal-task-tools/tests/scripts/validate_with_fractal_server.py
+
+  test-manifest-pixi:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: ilastik-tasks
+            github_repo: fractal-analytics-platform/fractal-ilastik-tasks
+            github_branch: main
+
+    steps:
+      - name: Print matrix-element information
+        run: echo '${{ matrix.package }}, ${{ matrix.github_repo }}, ${{ matrix.github_branch }}'
+
+      - name: Get package source code
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ matrix.github_repo }}
+          ref: ${{ matrix.github_branch }}
+          persist-credentials: false
+
+      - name: Get current branch of `fractal-task-tools`
+        uses: actions/checkout@v4
+        with:
+          path: fractal-task-tools
+          persist-credentials: false
+
+      - name: Set up pixi
+        uses: prefix-dev/setup-pixi@v0.8.0
+        with:
+          run-install: false
+
+      - name: Install package
+        run: pixi install
+
+      - name: Install current version of `fractal-task-tools`
+        run: pixi run pip install ./fractal-task-tools
+
+      - name: Check manifest
+        run: pixi run fractal-manifest check --package ${{ matrix.package }} --verbose
+
+      - name: Install current version of `fractal-task-tools` with `dev` extra
+        run: pixi run pip install ./fractal-task-tools[dev]
+
+      - name: Validate manifest with different JSON Schema drafts
+        run: pixi run python ./fractal-task-tools/tests/scripts/validate_multi_draft.py
+
+      - name: Validate manifest against fractal-server schema
+        run: pixi run python ./fractal-task-tools/tests/scripts/validate_with_fractal_server.py

@@ -40,31 +40,44 @@ def test_create_manifest(tmp_path: Path, caplog):
         assert "type" in task.keys()
     debug(manifest)
 
-    # Assertion related to
+    # TASK 1, see
     # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/87
     # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/90
     properties_ModelMixedDocstrings = manifest["task_list"][0][
         "args_schema_non_parallel"
     ]["$defs"]["ModelMixedDocstrings"]["properties"]
-    print(json.dumps(properties_ModelMixedDocstrings, indent=2))
-    return
+
+    debug(properties_ModelMixedDocstrings)
+
     assert properties_ModelMixedDocstrings["a"]["description"] == "Field for a"
     assert properties_ModelMixedDocstrings["b"]["description"] == "New-style for b"
     assert properties_ModelMixedDocstrings["c"]["description"] == "Field for c"
     assert properties_ModelMixedDocstrings["d"]["description"] == "Old-style for d"
-    return
 
-    assert (
-        manifest["task_list"][0]["args_schema_non_parallel"]["$defs"]["MyModel"][
-            "properties"
-        ]["inner_arg"]["description"]
-        == "Description from field"
-    )
-    assert (
-        manifest["task_list"][0]["args_schema_non_parallel"]["$defs"]["MyModel"][
-            "properties"
-        ]["another_arg"]["description"]
-        == "Description from docstring"
+    # TASK 2, see
+    # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/119
+    task2_defs = manifest["task_list"][1]["args_schema_non_parallel"]["$defs"]
+    properties_SpecificParameters = task2_defs["SpecificParameters"]["properties"]
+    debug(properties_SpecificParameters)
+    description_a = properties_SpecificParameters["a"]["description"]
+    description_b = properties_SpecificParameters["b"]["description"]
+    assert description_a == "Description of `a` in `GenericParameters`."
+    assert description_b == "Description of `b` in `SpecificParameters`."
+
+    # TASK 3, see
+    # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/118
+    task3_defs = manifest["task_list"][2]["args_schema_non_parallel"]["$defs"]
+    description_A = task3_defs["ParametersA"]["properties"]["a"]["description"]
+    description_B = task3_defs["ParametersB"]["properties"]["b"]["description"]
+    description_C = task3_defs["ParametersC"]["properties"]["c"]["description"]
+    assert "\n" not in description_A
+    assert "    " not in description_A
+    assert "\n" in description_B
+    assert "    " in description_B
+    assert description_C == (
+        "This is a description where we have full control. "
+        "Here is a new line:\nNew line.\n"
+        "Here is a tab:\tand then more text."
     )
 
     write_manifest_to_file(

@@ -1,4 +1,4 @@
-# 0.4.0 (unreleased)
+# 0.4.0
 
 * Schema generation:
     * Compute `default` as specified in `default_factory`, when possible (\#75, \#93).
