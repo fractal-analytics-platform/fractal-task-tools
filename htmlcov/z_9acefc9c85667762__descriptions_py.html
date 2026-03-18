@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for src/fractal_task_tools/_descriptions.py: 71%</title>
+    <title>Coverage for src/fractal_task_tools/_descriptions.py: 93%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_c827f16f.png">
     <link rel="stylesheet" href="style_cb_9ff733b0.css" type="text/css">
     <script src="coverage_html_cb_dd2e7eb5.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>src&#8201;/&#8201;fractal_task_tools&#8201;/&#8201;_descriptions.py</b>:
-            <span class="pc_cov">71%</span>
+            <span class="pc_cov">93%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -56,8 +56,8 @@
         </aside>
         <h2>
             <span class="text">82 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">63<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">19<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">78<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">4<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
             <button type="button" class="par run show_par button_toggle_par" value="par" data-shortcut="p" title="Toggle lines partially run">4<span class="text"> partial</span></button>
         </h2>
@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_9acefc9c85667762__generatejsonschema_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-02-26 12:37 +0000
+            created at 2026-03-18 13:10 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -107,8 +107,8 @@
     <p class="pln"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">    <span class="com"># Replace newline with space</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">    <span class="nam">new_string</span> <span class="op">=</span> <span class="nam">string</span><span class="op">.</span><span class="nam">replace</span><span class="op">(</span><span class="str">"\n"</span><span class="op">,</span> <span class="str">" "</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">    <span class="com"># Replace N-whitespace characters with a single one</span>&nbsp;</span><span class="r"></span></p>
-    <p class="par run show_par"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="key">while</span> <span class="str">"  "</span> <span class="key">in</span> <span class="nam">new_string</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">26&#x202F;&#x219B;&#x202F;27</span><span class="annotate long">line 26 didn't jump to line 27 because the condition on line 26 was never true</span></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">        <span class="nam">new_string</span> <span class="op">=</span> <span class="nam">new_string</span><span class="op">.</span><span class="nam">replace</span><span class="op">(</span><span class="str">"  "</span><span class="op">,</span> <span class="str">" "</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="key">while</span> <span class="str">"  "</span> <span class="key">in</span> <span class="nam">new_string</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">        <span class="nam">new_string</span> <span class="op">=</span> <span class="nam">new_string</span><span class="op">.</span><span class="nam">replace</span><span class="op">(</span><span class="str">"  "</span><span class="op">,</span> <span class="str">" "</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t">    <span class="key">return</span> <span class="nam">new_string</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -260,8 +260,8 @@
     <p class="run run2"><span class="n"><a id="t176" href="#t176">176</a></span><span class="t">        <span class="nam">module_path</span><span class="op">=</span><span class="nam">module_path</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t177" href="#t177">177</a></span><span class="t">        <span class="nam">class_name</span><span class="op">=</span><span class="nam">class_name</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t178" href="#t178">178</a></span><span class="t">    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t179" href="#t179">179</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="fst">f"</span><span class="fst">[_get_class_attrs_descriptions] END (</span><span class="op">{</span><span class="nam">class_name</span><span class="op">=</span><span class="op">}</span><span class="fst">)</span><span class="fst">"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t180" href="#t180">180</a></span><span class="t">    <span class="key">return</span> <span class="nam">descriptions</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t179" href="#t179">179</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="fst">f"</span><span class="fst">[_get_class_attrs_descriptions] END (</span><span class="op">{</span><span class="nam">class_name</span><span class="op">=</span><span class="op">}</span><span class="fst">)</span><span class="fst">"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t180" href="#t180">180</a></span><span class="t">    <span class="key">return</span> <span class="nam">descriptions</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t181" href="#t181">181</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t182" href="#t182">182</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t183" href="#t183">183</a></span><span class="t"><span class="key">def</span> <span class="nam">_insert_function_args_descriptions</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
@@ -311,25 +311,25 @@
     <p class="pln"><span class="n"><a id="t227" href="#t227">227</a></span><span class="t"><span class="str">        definition_key: Either `"definitions"` (for Pydantic V1) or</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t228" href="#t228">228</a></span><span class="t"><span class="str">            `"$defs"` (for Pydantic V2)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t229" href="#t229">229</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t230" href="#t230">230</a></span><span class="t">    <span class="nam">new_schema</span> <span class="op">=</span> <span class="nam">schema</span><span class="op">.</span><span class="nam">copy</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t231" href="#t231">231</a></span><span class="t">    <span class="key">if</span> <span class="nam">definition_key</span> <span class="key">not</span> <span class="key">in</span> <span class="nam">schema</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t230" href="#t230">230</a></span><span class="t">    <span class="nam">new_schema</span> <span class="op">=</span> <span class="nam">schema</span><span class="op">.</span><span class="nam">copy</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="par run show_par"><span class="n"><a id="t231" href="#t231">231</a></span><span class="t">    <span class="key">if</span> <span class="nam">definition_key</span> <span class="key">not</span> <span class="key">in</span> <span class="nam">schema</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">231&#x202F;&#x219B;&#x202F;232</span><span class="annotate long">line 231 didn't jump to line 232 because the condition on line 231 was never true</span></span></p>
     <p class="mis show_mis"><span class="n"><a id="t232" href="#t232">232</a></span><span class="t">        <span class="key">return</span> <span class="nam">new_schema</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t233" href="#t233">233</a></span><span class="t">    <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t234" href="#t234">234</a></span><span class="t">        <span class="nam">new_definitions</span> <span class="op">=</span> <span class="nam">schema</span><span class="op">[</span><span class="nam">definition_key</span><span class="op">]</span><span class="op">.</span><span class="nam">copy</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t234" href="#t234">234</a></span><span class="t">        <span class="nam">new_definitions</span> <span class="op">=</span> <span class="nam">schema</span><span class="op">[</span><span class="nam">definition_key</span><span class="op">]</span><span class="op">.</span><span class="nam">copy</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t235" href="#t235">235</a></span><span class="t">    <span class="com"># Loop over existing definitions</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t236" href="#t236">236</a></span><span class="t">    <span class="key">for</span> <span class="nam">name</span><span class="op">,</span> <span class="nam">definition</span> <span class="key">in</span> <span class="nam">schema</span><span class="op">[</span><span class="nam">definition_key</span><span class="op">]</span><span class="op">.</span><span class="nam">items</span><span class="op">(</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t237" href="#t237">237</a></span><span class="t">        <span class="key">if</span> <span class="nam">name</span> <span class="op">==</span> <span class="nam">class_name</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t238" href="#t238">238</a></span><span class="t">            <span class="key">for</span> <span class="nam">prop</span> <span class="key">in</span> <span class="nam">definition</span><span class="op">[</span><span class="str">"properties"</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t239" href="#t239">239</a></span><span class="t">                <span class="key">if</span> <span class="str">"description"</span> <span class="key">in</span> <span class="nam">new_definitions</span><span class="op">[</span><span class="nam">name</span><span class="op">]</span><span class="op">[</span><span class="str">"properties"</span><span class="op">]</span><span class="op">[</span><span class="nam">prop</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t236" href="#t236">236</a></span><span class="t">    <span class="key">for</span> <span class="nam">name</span><span class="op">,</span> <span class="nam">definition</span> <span class="key">in</span> <span class="nam">schema</span><span class="op">[</span><span class="nam">definition_key</span><span class="op">]</span><span class="op">.</span><span class="nam">items</span><span class="op">(</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t237" href="#t237">237</a></span><span class="t">        <span class="key">if</span> <span class="nam">name</span> <span class="op">==</span> <span class="nam">class_name</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t238" href="#t238">238</a></span><span class="t">            <span class="key">for</span> <span class="nam">prop</span> <span class="key">in</span> <span class="nam">definition</span><span class="op">[</span><span class="str">"properties"</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t239" href="#t239">239</a></span><span class="t">                <span class="key">if</span> <span class="str">"description"</span> <span class="key">in</span> <span class="nam">new_definitions</span><span class="op">[</span><span class="nam">name</span><span class="op">]</span><span class="op">[</span><span class="str">"properties"</span><span class="op">]</span><span class="op">[</span><span class="nam">prop</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t240" href="#t240">240</a></span><span class="t">                    <span class="com"># This branch covers e.g. the `Field(description="...")` case</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t241" href="#t241">241</a></span><span class="t">                    <span class="key">pass</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t241" href="#t241">241</a></span><span class="t">                    <span class="key">pass</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t242" href="#t242">242</a></span><span class="t">                <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t243" href="#t243">243</a></span><span class="t">                    <span class="nam">new_definitions</span><span class="op">[</span><span class="nam">name</span><span class="op">]</span><span class="op">[</span><span class="str">"properties"</span><span class="op">]</span><span class="op">[</span><span class="nam">prop</span><span class="op">]</span><span class="op">[</span><span class="str">"description"</span><span class="op">]</span> <span class="op">=</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis mis2 show_mis"><span class="n"><a id="t244" href="#t244">244</a></span><span class="t">                        <span class="nam">descriptions</span><span class="op">[</span><span class="nam">prop</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis mis2 show_mis"><span class="n"><a id="t245" href="#t245">245</a></span><span class="t">                    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t246" href="#t246">246</a></span><span class="t">    <span class="nam">new_schema</span><span class="op">[</span><span class="nam">definition_key</span><span class="op">]</span> <span class="op">=</span> <span class="nam">new_definitions</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t247" href="#t247">247</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="str">"[_insert_class_attrs_descriptions] END"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t248" href="#t248">248</a></span><span class="t">    <span class="key">return</span> <span class="nam">new_schema</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t243" href="#t243">243</a></span><span class="t">                    <span class="nam">new_definitions</span><span class="op">[</span><span class="nam">name</span><span class="op">]</span><span class="op">[</span><span class="str">"properties"</span><span class="op">]</span><span class="op">[</span><span class="nam">prop</span><span class="op">]</span><span class="op">[</span><span class="str">"description"</span><span class="op">]</span> <span class="op">=</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t244" href="#t244">244</a></span><span class="t">                        <span class="nam">descriptions</span><span class="op">[</span><span class="nam">prop</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t245" href="#t245">245</a></span><span class="t">                    <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t246" href="#t246">246</a></span><span class="t">    <span class="nam">new_schema</span><span class="op">[</span><span class="nam">definition_key</span><span class="op">]</span> <span class="op">=</span> <span class="nam">new_definitions</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t247" href="#t247">247</a></span><span class="t">    <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="str">"[_insert_class_attrs_descriptions] END"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t248" href="#t248">248</a></span><span class="t">    <span class="key">return</span> <span class="nam">new_schema</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -339,7 +339,7 @@
             <a class="nav" href="z_9acefc9c85667762__generatejsonschema_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-02-26 12:37 +0000
+            created at 2026-03-18 13:10 +0000
         </p>
     </div>
 </footer>
