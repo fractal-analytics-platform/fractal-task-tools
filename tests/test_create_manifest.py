@@ -56,18 +56,13 @@ def test_create_manifest(tmp_path: Path, caplog):
 
     # TASK 2, see
     # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/119
-    properties_SpecificParameters = manifest["task_list"][1][
-        "args_schema_non_parallel"
-    ]["$defs"]["SpecificParameters"]["properties"]
+    task2_defs = manifest["task_list"][1]["args_schema_non_parallel"]["$defs"]
+    properties_SpecificParameters = task2_defs["SpecificParameters"]["properties"]
     debug(properties_SpecificParameters)
-    assert (
-        properties_SpecificParameters["a"]["description"]
-        == "Description of `a` in `GenericParameters`."
-    )
-    assert (
-        properties_SpecificParameters["b"]["description"]
-        == "Description of `b` in `SpecificParameters`."
-    )
+    description_a = properties_SpecificParameters["a"]["description"]
+    description_b = properties_SpecificParameters["b"]["description"]
+    assert description_a == "Description of `a` in `GenericParameters`."
+    assert description_b == "Description of `b` in `SpecificParameters`."
 
     # TASK 3, see
     # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/118
