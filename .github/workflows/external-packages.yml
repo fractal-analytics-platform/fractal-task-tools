@@ -49,7 +49,7 @@ jobs:
 
           - package: fractal-cellpose-sam-task
             github_repo: fractal-analytics-platform/fractal-cellpose-sam-task
-            github_branch: feat/adopt-tasks-utils
+            github_branch: main
             cmd_install: "python -m pip install -e ."
 
           - package: APx_fractal_task_collection
