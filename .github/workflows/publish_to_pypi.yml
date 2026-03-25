@@ -24,6 +24,7 @@ jobs:
           python-version: "3.12"
       - uses: astral-sh/setup-uv@v7
         with:
+          enable-cache: "false"
           version: "0.10.2"
       - run: uv build --verbose
       - uses: pypa/gh-action-pypi-publish@release/v1
