@@ -162,7 +162,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up pixi
-        uses: prefix-dev/setup-pixi@33be5bafa68042a7d0747866e21e5a686bf961a1
+        uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0
         with:
           run-install: false
 
