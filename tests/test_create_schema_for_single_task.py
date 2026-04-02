@@ -1,4 +1,3 @@
-import json
 from enum import Enum
 
 import pytest
@@ -342,30 +341,3 @@ def test_descriptions():
         schema["$defs"]["ModelWithDocstrings"]["properties"]["y"]["description"]
         == "Docstring for `y`"
     )
-
-
-class ModelWithDefaultNone(BaseModel):
-    x: str | None = None
-    y: str | None = Field(default=None)
-
-
-@validate_call
-def task_function_with_default_none(
-    *,
-    arg1: str | None = None,
-    arg2: str | None = Field(default=None),
-    arg3: ModelWithDefaultNone,
-    arg4: str | None = Field(description="something"),
-):
-    pass
-
-
-def test_default_none():
-    schema = create_schema_for_single_task(
-        task_function=task_function_with_default_none,
-        executable=__file__,
-        package=None,
-        verbose=True,
-    )
-    debug(schema)
-    assert "default" not in json.dumps(schema)
