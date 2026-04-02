@@ -93,3 +93,29 @@ def test_E05():
         debug(schema)
         with pytest.raises(ValueError, match="E05"):
             validate_schema(schema=schema, path="")
+
+
+def test_E06():
+    # FIXME: Is this a good example?
+    oneof_no_discriminator = {
+        "items": {"type": "number"},
+        "oneOf": [
+            {"$ref": "#/$defs/Case1"},
+            {"$ref": "#/$defs/Case2"},
+        ],
+        "type": "array",
+    }
+
+    with pytest.raises(ValueError, match="E06"):
+        validate_schema(schema=oneof_no_discriminator, path="")
+
+
+def test_E07():
+    oneof_primitive = {
+        "oneOf": [
+            {"type": "number", "multipleOf": 5},
+            {"type": "number", "multipleOf": 3},
+        ]
+    }
+    with pytest.raises(ValueError, match="E07"):
+        validate_schema(schema=oneof_primitive, path="")

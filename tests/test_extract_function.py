@@ -1,6 +1,6 @@
 import pytest
 
-from fractal_task_tools._signature_constraints import _extract_function
+from fractal_task_tools._extract_function import _extract_function
 
 
 def test_extract_function():
