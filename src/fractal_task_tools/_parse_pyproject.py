@@ -39,3 +39,33 @@ def _get_package_name_from_pyproject(pyproject_path: Path) -> str:
             "`--package` was not provided, and discovery based on "
             f"`pyproject.toml` failed with the following error: {str(e)}"
         )
+
+
+def get_author_names_from_pyproject(pyproject_path: Path) -> str | None:
+    """
+    Get the package authors from a local `pyproject.toml`.
+
+    Examples:
+
+    ```
+    authors = [{"name": "a b", "email": "a@b.c"}]
+    authors = [{"name": "a b"}]
+    authors = [{"email": "a@b.c"}]
+    ```
+
+    Reference:
+    https://packaging.python.org/en/latest/specifications/pyproject-toml
+    """
+    try:
+        with Path(pyproject_path).open("rb") as f:
+            pyproject = tomllib.load(f)
+        authors = pyproject["project"]["authors"]
+        author_names = [author["name"] for author in authors]
+        author_names_string = ", ".join(author_names)
+        return author_names_string
+    except Exception as e:
+        logger.warning(
+            f"Cannot get author names from {pyproject_path.as_posix()}. "
+            f"Original error: {str(e)}"
+        )
+        return None

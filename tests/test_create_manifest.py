@@ -31,6 +31,15 @@ def test_create_manifest(tmp_path: Path, caplog):
     for task in manifest["task_list"]:
         assert "docs_link" not in task.keys()
 
+    # SUCCESS: create manifest with authors read from pyproject.toml
+    # NOTE: The relevant pyproject.toml is the one in the current directory,
+    # that is, the one for `fractal-task-tools`.
+    manifest = create_manifest(
+        raw_package_name="fake-tasks",
+        task_list_path="task_list_no_authors",
+    )
+    assert manifest["authors"] == "Tommaso Comparin"
+
     # SUCCESS: create manifest
     manifest = create_manifest(
         raw_package_name="fake-tasks",

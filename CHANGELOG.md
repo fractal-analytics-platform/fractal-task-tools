@@ -1,3 +1,8 @@
+
+# Unreleased
+
+* Support getting manifest `authors` from `pyproject.toml` in the current directory (\#136).
+
 # 0.4.0
 
 * Schema generation:
