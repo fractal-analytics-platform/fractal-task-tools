@@ -1,7 +1,8 @@
+import logging
 from importlib import import_module
 from pathlib import Path
 
-from fractal_task_tools._signature_constraints import logger
+logger = logging.getLogger(__name__)
 
 
 def _extract_function(
