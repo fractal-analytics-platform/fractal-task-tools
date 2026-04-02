@@ -25,6 +25,7 @@ def validate_schema(*, schema: JSON, path: str):
     """
     logging.warning(f"START validating {path}")  # FIXME: make info
 
+    # Recursive schema exploration
     for def_key in schema.get("$defs", []):
         validate_schema(
             schema=schema["$defs"][def_key],
@@ -40,21 +41,19 @@ def validate_schema(*, schema: JSON, path: str):
             schema=schema["items"],
             path=f"{path}/items",
         )
+    for ind, item in enumerate(schema.get("anyOf", [])):
+        validate_schema(
+            schema=item,
+            path=f"{path}/anyOf/{ind}",
+        )
 
+    # Validation
     if "anyOf" in schema:
         anyOf = schema["anyOf"]
         if _is_nullable_boolean_anyof(anyOf):
             raise ValueError(f"[E01] Nullable boolean at {path}")
-
         if _is_nullable_enum_anyof(anyOf):
             raise ValueError(f"[E02] Nullable enum at {path}")
-
-        for ind, item in enumerate(anyOf):
-            validate_schema(
-                schema=item,
-                path=f"{path}/anyOf/{ind}",
-            )
-
     if "enum" in schema:
         if not len(set(type(item) for item in schema["enum"])) == 1:
             raise ValueError(f"[E03] Non-homogeneous enum at {path}")
