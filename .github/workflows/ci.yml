@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: ["main"]
 
+
+permissions: {}
+
 jobs:
 
   tests:
@@ -95,11 +98,16 @@ jobs:
   coverage:
     name: Coverage
     runs-on: ubuntu-24.04
-    needs:
-      - tests
-      - tests-lowest
+    needs: [tests, tests-lowest]
+
+    permissions:
+      pull-requests: write
+      contents: write
+
     steps:
       - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@28f2168f4d98ee0445e3c6321f6e6616c83dd5ec
         with:
