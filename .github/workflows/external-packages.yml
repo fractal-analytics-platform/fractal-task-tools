@@ -63,7 +63,7 @@ jobs:
             non_core: true
 
           - package: zmb-fractal-tasks
-            github_repo: tcompa/zmb-fractal-tasks
+            github_repo: ZMB-UZH/zmb-fractal-tasks
             github_branch: main
             cmd_install: "python -m pip install -e ."
             non_core: true
@@ -76,6 +76,12 @@ jobs:
 
           - package: fractal-ome-zarr-hcs-stitching
             github_repo: m-albert/fractal-ome-zarr-hcs-stitching
+            github_branch: main
+            cmd_install: "python -m pip install -e ."
+            non_core: true
+
+          - package: scmultiplex
+            github_repo: fmi-basel/gliberal-scMultipleX
             github_branch: main
             cmd_install: "python -m pip install -e ."
             non_core: true
