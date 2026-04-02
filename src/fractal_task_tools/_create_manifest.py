@@ -4,10 +4,12 @@ Generate JSON schemas for task arguments and combine them into a manifest.
 
 import logging
 from importlib import import_module
+from pathlib import Path
 from typing import Any
 
 from ._args_schemas import create_schema_for_single_task
 from ._package_name_tools import normalize_package_name
+from ._parse_pyproject import get_author_names_from_pyproject
 from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
@@ -75,10 +77,11 @@ def create_manifest(
         )
 
     # Load AUTHORS
-    try:
-        manifest["authors"] = getattr(task_list_module, "AUTHORS")
-    except AttributeError:
+    AUTHORS = getattr(task_list_module, "AUTHORS", None)
+    if AUTHORS is None:
         logger.warning("No `AUTHORS` found in task_list module.")
+        AUTHORS = get_author_names_from_pyproject(Path.cwd() / "pyproject.toml")
+    manifest["authors"] = AUTHORS
 
     # Load DOCS_LINK
     try:
