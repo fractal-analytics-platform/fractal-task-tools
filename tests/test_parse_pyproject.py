@@ -4,6 +4,7 @@ import pytest
 from devtools import debug
 
 from fractal_task_tools._parse_pyproject import _get_package_name_from_pyproject
+from fractal_task_tools._parse_pyproject import get_author_names_from_pyproject
 
 
 def test_get_package_name_from_pyproject():
@@ -38,3 +39,19 @@ def test_get_package_name_from_pyproject():
         _get_package_name_from_pyproject(data_dir / "invalid-import-names.toml")
         == "my-package"
     )
+
+
+def test_get_author_names_from_pyproject(tmp_path: Path):
+    assert get_author_names_from_pyproject(tmp_path / "missing.toml") is None
+
+    data_dir = Path(__file__).parent / "data/pyproject-examples"
+    debug(data_dir)
+    assert (
+        get_author_names_from_pyproject(data_dir / "authors-email-name.toml")
+        == "Name 1, Name 2"
+    )
+    assert (
+        get_author_names_from_pyproject(data_dir / "authors-name-only.toml")
+        == "Name 1, Name 2"
+    )
+    assert get_author_names_from_pyproject(data_dir / "authors-email-only.toml") is None

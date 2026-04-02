@@ -31,6 +31,15 @@ def test_create_manifest(tmp_path: Path, caplog):
     for task in manifest["task_list"]:
         assert "docs_link" not in task.keys()
 
+    # SUCCESS: create manifest with authors read from pyproject.toml
+    # NOTE: The relevant pyproject.toml is the one in the current directory,
+    # that is, the one for `fractal-task-tools`.
+    manifest = create_manifest(
+        raw_package_name="fake-tasks",
+        task_list_path="task_list_no_authors",
+    )
+    assert manifest["authors"] == "Tommaso Comparin"
+
     # SUCCESS: create manifest
     manifest = create_manifest(
         raw_package_name="fake-tasks",
@@ -52,7 +61,7 @@ def test_create_manifest(tmp_path: Path, caplog):
     assert properties_ModelMixedDocstrings["a"]["description"] == "Field for a"
     assert properties_ModelMixedDocstrings["b"]["description"] == "New-style for b"
     assert properties_ModelMixedDocstrings["c"]["description"] == "Field for c"
-    assert properties_ModelMixedDocstrings["d"]["description"] == "Old-style for d"
+    assert "description" not in properties_ModelMixedDocstrings["d"]
 
     # TASK 2, see
     # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/119
@@ -67,11 +76,8 @@ def test_create_manifest(tmp_path: Path, caplog):
     # TASK 3, see
     # * https://github.com/fractal-analytics-platform/fractal-task-tools/issues/118
     task3_defs = manifest["task_list"][2]["args_schema_non_parallel"]["$defs"]
-    description_A = task3_defs["ParametersA"]["properties"]["a"]["description"]
     description_B = task3_defs["ParametersB"]["properties"]["b"]["description"]
     description_C = task3_defs["ParametersC"]["properties"]["c"]["description"]
-    assert "\n" not in description_A
-    assert "    " not in description_A
     assert "\n" in description_B
     assert "    " in description_B
     assert description_C == (

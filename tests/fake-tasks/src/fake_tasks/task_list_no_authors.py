@@ -1,6 +1,5 @@
 from fractal_task_tools.task_models import NonParallelTask
 
-AUTHORS = "Fake Fake"
 DOCS_LINK = "https://www.example.org"
 TASK_LIST = [
     NonParallelTask(
