@@ -4,7 +4,7 @@ import pytest
 from devtools import debug
 
 from fractal_task_tools._args_schemas import create_schema_for_single_task
-from fractal_task_tools._validate_fractal_schema import validate_schema
+from fractal_task_tools._specs import validate_schema
 
 
 def test_E01():

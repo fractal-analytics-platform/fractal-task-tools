@@ -10,10 +10,10 @@ from typing import Any
 from ._args_schemas import create_schema_for_single_task
 from ._package_name_tools import normalize_package_name
 from ._parse_pyproject import get_author_names_from_pyproject
+from ._specs import validate_schema
 from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
-from ._validate_fractal_schema import validate_schema
 from .task_models import _BaseTask
 
 ARGS_SCHEMA_VERSION = "fractal_schema_v1"
