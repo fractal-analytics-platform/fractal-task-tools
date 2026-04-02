@@ -58,4 +58,7 @@ def validate_schema(*, schema: JSON, path: str):
         if not len(set(type(item) for item in schema["enum"])) == 1:
             raise ValueError(f"[E03] Non-homogeneous enum at {path}")
 
+    if "definitions" in schema:
+        raise ValueError(f'[E04] Unsupported keyword "definitions" at {path}')
+
     logging.warning(f"END validating {path}")  # FIXME: make info
