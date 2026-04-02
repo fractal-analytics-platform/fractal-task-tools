@@ -11,9 +11,6 @@ class GenericParameters(BaseModel):
 class SpecificParameters(GenericParameters):
     """
     Description
-
-    Attributes:
-        a: Description of `a` in `SpecificParameters`
     """
 
     b: int
