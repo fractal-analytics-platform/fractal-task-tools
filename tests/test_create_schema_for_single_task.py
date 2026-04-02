@@ -141,6 +141,7 @@ def test_enum_argument():
         ],
         "title": "ColorA",
         "type": "string",
+        "description": "Missing description for ColorA.",
     }
     assert schema["$defs"]["ColorB"] == {
         "enum": [
@@ -149,6 +150,7 @@ def test_enum_argument():
         ],
         "title": "ColorB",
         "type": "string",
+        "description": "Missing description for ColorB.",
     }
     assert schema["properties"] == {
         "arg_A": {

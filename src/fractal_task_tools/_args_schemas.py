@@ -6,6 +6,8 @@ from typing import Any
 from typing import Callable
 from typing import Optional
 
+from docstring_parser import parse as docparse
+
 from ._descriptions import _get_function_args_descriptions
 from ._descriptions import _insert_function_args_descriptions
 from ._generatejsonschema import CustomGenerateJsonSchema
@@ -14,6 +16,42 @@ from ._signature_constraints import _validate_function_signature
 from ._titles import _include_titles
 
 _Schema = dict[str, Any]
+
+
+def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
+    """
+    Keeps only the description part of the docstrings: e.g from
+    ```
+    'Custom class for Omero-channel window, based on OME-NGFF v0.4.\\n'
+    '\\n'
+    'Attributes:\\n'
+    'min: Do not change. It will be set to `0` by default.\\n'
+    'max: Do not change. It will be set according to bitdepth of the images\\n'
+    '    by default (e.g. 65535 for 16 bit images).\\n'
+    'start: Lower-bound rescaling value for visualization.\\n'
+    'end: Upper-bound rescaling value for visualization.'
+    ```
+    to `'Custom class for Omero-channel window, based on OME-NGFF v0.4.\\n'`.
+    Args:
+        old_schema: TBD
+    """
+    new_schema = old_schema.copy()
+    if "$defs" in new_schema:
+        for name, definition in new_schema["$defs"].items():
+            if "description" in definition.keys():
+                parsed_docstring = docparse(definition["description"])
+                new_schema["$defs"][name]["description"] = (
+                    parsed_docstring.short_description
+                )
+            elif "title" in definition.keys():
+                title = definition["title"]
+                new_schema["$defs"][name]["description"] = (
+                    f"Missing description for {title}."
+                )
+            else:
+                new_schema["$defs"][name]["description"] = "Missing description"
+    logging.info("[_remove_attributes_from_descriptions] END")
+    return new_schema
 
 
 def _create_schema_for_function(function: Callable) -> _Schema:
@@ -134,6 +172,7 @@ def create_schema_for_single_task(
 
     # Create and clean up schema
     schema = _create_schema_for_function(task_function)
+    schema = _remove_attributes_from_descriptions(schema)
     schema = _remove_top_level_single_element_allof(schema)
 
     # Include titles for custom-model-typed arguments
