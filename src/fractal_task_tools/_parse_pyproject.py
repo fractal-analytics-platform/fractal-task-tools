@@ -61,10 +61,11 @@ def get_author_names_from_pyproject(pyproject_path: Path) -> str | None:
             pyproject = tomllib.load(f)
         authors = pyproject["project"]["authors"]
         author_names = [author["name"] for author in authors]
-        author_names_string = ",".join(author_names)
+        author_names_string = ", ".join(author_names)
         return author_names_string
     except Exception as e:
         logger.warning(
-            f"Cannot get author names from pyproject.toml. Original error: {str(e)}"
+            f"Cannot get author names from {pyproject_path.as_posix()}. "
+            f"Original error: {str(e)}"
         )
         return None

@@ -1,0 +1,5 @@
+[project]
+authors = [
+    {name="Name 1", email="1@example.org"},
+    {name="Name 2", email="2@example.org"},
+]
