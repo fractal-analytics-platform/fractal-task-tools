@@ -25,6 +25,7 @@ TASK_LIST = [
 ```
 
 Where:
+
 1. More details about the different Fractal task types are available at [the task-types page](./task_types.md).
 2. The `AUTHORS` variable is optional. If unset, `fractal-task-tools` looks at the `pyproject.toml` in the current directory (if any) and tries to parse authors' names from it. If also the second approach fails, no authors will be set in the manifest.
 3. The `DOCS_LINK` variable is optional
