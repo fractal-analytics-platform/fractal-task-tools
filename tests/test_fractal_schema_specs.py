@@ -53,3 +53,9 @@ def test_E03():
     debug(schema)
     with pytest.raises(ValueError, match="E03"):
         validate_schema(schema=schema, path="")
+
+
+def test_E04():
+    schema = dict(definitions=123)
+    with pytest.raises(ValueError, match="E04"):
+        validate_schema(schema=schema, path="")

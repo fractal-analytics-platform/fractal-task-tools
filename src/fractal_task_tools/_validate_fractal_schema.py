@@ -5,6 +5,13 @@ logger = logging.getLogger("validate_schema")
 JSON = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
 
 
+_ANYOF = "anyOf"
+_ITEMS = "items"
+_DEFS = "$defs"
+_PROPERTIES = "properties"
+_DEFINITIONS = "definitions"
+_ENUM = "enum"
+
 NULL_TYPE = {"type": "null"}
 NULLABLE_BOOLEAN_ANYOF_SORTED = [{"type": "boolean"}, {"type": "null"}]
 
@@ -15,7 +22,7 @@ def _is_nullable_boolean_anyof(_anyof: JSON) -> bool:
 
 def _is_nullable_enum_anyof(_anyof: JSON) -> bool:
     return NULL_TYPE in _anyof and any(
-        "enum" in item.keys() for item in _anyof if isinstance(item, dict)
+        _ENUM in item.keys() for item in _anyof if isinstance(item, dict)
     )
 
 
@@ -26,39 +33,40 @@ def validate_schema(*, schema: JSON, path: str):
     logging.warning(f"START validating {path}")  # FIXME: make info
 
     # Recursive schema exploration
-    for def_key in schema.get("$defs", []):
+    for def_key in schema.get(_DEFS, []):
         validate_schema(
-            schema=schema["$defs"][def_key],
-            path=f"{path}/$defs/{def_key}",
+            schema=schema[_DEFS][def_key],
+            path=f"{path}/{_DEFS}/{def_key}",
         )
-    for prop_key in schema.get("properties", []):
+    for prop_key in schema.get(_PROPERTIES, []):
         validate_schema(
-            schema=schema["properties"][prop_key],
-            path=f"{path}/properties/{prop_key}",
+            schema=schema[_PROPERTIES][prop_key],
+            path=f"{path}/{_PROPERTIES}/{prop_key}",
         )
-    if "items" in schema:
+    if _ITEMS in schema:
         validate_schema(
-            schema=schema["items"],
-            path=f"{path}/items",
+            schema=schema[_ITEMS],
+            path=f"{path}/{_ITEMS}",
         )
-    for ind, item in enumerate(schema.get("anyOf", [])):
+    for ind, item in enumerate(schema.get(_ANYOF, [])):
         validate_schema(
             schema=item,
-            path=f"{path}/anyOf/{ind}",
+            path=f"{path}/{_ANYOF}/{ind}",
         )
 
     # Validation
-    if "anyOf" in schema:
-        anyOf = schema["anyOf"]
-        if _is_nullable_boolean_anyof(anyOf):
+    if _ANYOF in schema:
+        if _is_nullable_boolean_anyof(schema[_ANYOF]):
             raise ValueError(f"[E01] Nullable boolean at {path}")
-        if _is_nullable_enum_anyof(anyOf):
+
+        if _is_nullable_enum_anyof(schema[_ANYOF]):
             raise ValueError(f"[E02] Nullable enum at {path}")
-    if "enum" in schema:
-        if not len(set(type(item) for item in schema["enum"])) == 1:
+
+    if _ENUM in schema:
+        if not len(set(type(item) for item in schema[_ENUM])) == 1:
             raise ValueError(f"[E03] Non-homogeneous enum at {path}")
 
-    if "definitions" in schema:
-        raise ValueError(f'[E04] Unsupported keyword "definitions" at {path}')
+    if _DEFINITIONS in schema:
+        raise ValueError(f'[E04] Unsupported keyword "{_DEFINITIONS}" at {path}')
 
     logging.warning(f"END validating {path}")  # FIXME: make info
