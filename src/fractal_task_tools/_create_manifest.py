@@ -13,6 +13,7 @@ from ._parse_pyproject import get_author_names_from_pyproject
 from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
+from ._validate_fractal_schema import validate_schema
 from .task_models import _BaseTask
 
 ARGS_SCHEMA_VERSION = "fractal_schema_v1"
@@ -125,6 +126,8 @@ def create_manifest(
                     schema=schema,
                     executable_kind=kind,
                 )
+
+                validate_schema(schema=schema, path=schema["title"])
 
                 logger.info(f"[{executable}] END (new schema)")
                 task_dict[f"args_schema_{kind}"] = schema
