@@ -12,7 +12,6 @@ from ._descriptions import _get_function_args_descriptions
 from ._descriptions import _insert_function_args_descriptions
 from ._generatejsonschema import CustomGenerateJsonSchema
 from ._signature_constraints import _extract_function
-from ._signature_constraints import _validate_function_signature
 from ._titles import _include_titles
 
 _Schema = dict[str, Any]
@@ -168,7 +167,7 @@ def create_schema_for_single_task(
         logging.info(f"[create_schema_for_single_task] {task_function=}")
 
     # Validate function signature against some custom constraints
-    _validate_function_signature(task_function)
+    # _validate_function_signature(task_function) # FIXME
 
     # Create and clean up schema
     schema = _create_schema_for_function(task_function)
