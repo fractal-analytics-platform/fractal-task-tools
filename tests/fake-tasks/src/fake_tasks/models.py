@@ -5,11 +5,6 @@ from pydantic import Field
 class ModelMixedDocstrings(BaseModel):
     """
     Description of ModelMixedDocstrings
-
-    Attributes:
-        a: Old-style for a
-        b: Old-style for b
-        d: Old-style for d
     """
 
     a: int = Field(description="Field for a")
