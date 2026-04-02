@@ -80,6 +80,12 @@ jobs:
             cmd_install: "python -m pip install -e ."
             non_core: true
 
+          - package: scmultiplex
+            github_repo: fmi-basel/gliberal-scMultipleX
+            github_branch: main
+            cmd_install: "python -m pip install -e ."
+            non_core: true
+
         exclude:
           - package: skip
             github_repo: skip
