@@ -119,3 +119,8 @@ def test_E07():
     }
     with pytest.raises(ValueError, match="E07"):
         validate_schema(schema=oneof_primitive, path="")
+
+
+def test_E00():
+    with pytest.raises(ValueError, match="E00"):
+        validate_schema(schema={"name": "args"}, path="")
