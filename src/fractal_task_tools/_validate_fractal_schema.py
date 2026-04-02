@@ -6,11 +6,11 @@ JSON = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
 
 
 NULL_TYPE = {"type": "null"}
-NULLABLE_BOOLEAN_ANYOF_SET = [{"type": "boolean"}, {"type": "null"}]
+NULLABLE_BOOLEAN_ANYOF_SORTED = [{"type": "boolean"}, {"type": "null"}]
 
 
 def _is_nullable_boolean_anyof(_anyof: JSON) -> bool:
-    return sorted(_anyof, key=lambda obj: obj["type"]) == NULLABLE_BOOLEAN_ANYOF_SET
+    return sorted(_anyof, key=lambda obj: obj["type"]) == NULLABLE_BOOLEAN_ANYOF_SORTED
 
 
 def _is_nullable_enum_anyof(_anyof: JSON) -> bool:
