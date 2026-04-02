@@ -24,6 +24,8 @@ INPUT_MODELS = [
   ]
 ```
 
+> WARNING: `INPUT_MODELS` is deprecated as of `fractal-task-tools` 0.4.0 and will be removed in a future version.
+
 4. In order to create the manifest for your package and write it to disk (within the root directory of the installed package), use
 ```
 fractal-manifest create --package my-fractal-tasks-package

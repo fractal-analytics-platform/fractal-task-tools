@@ -67,15 +67,6 @@ def create_manifest(
     # Load TASK_LIST
     TASK_LIST: list[_BaseTask] = getattr(task_list_module, "TASK_LIST")
 
-    # Load INPUT_MODELS
-    try:
-        INPUT_MODELS = getattr(task_list_module, "INPUT_MODELS")
-    except AttributeError:
-        INPUT_MODELS = []
-        logger.warning(
-            "No `INPUT_MODELS` found in task_list module. Setting it to `[]`."
-        )
-
     # Load AUTHORS
     AUTHORS = getattr(task_list_module, "AUTHORS", None)
     if AUTHORS is None:
@@ -127,7 +118,6 @@ def create_manifest(
                 schema = create_schema_for_single_task(
                     executable,
                     package=package_name,
-                    pydantic_models=INPUT_MODELS,
                 )
 
                 validate_arguments(

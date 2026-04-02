@@ -2,20 +2,6 @@ from pydantic import BaseModel
 from pydantic import Field
 
 
-class ParametersA(BaseModel):
-    """
-    `ParametersA` model description
-
-    Attributes:
-        a: This is a long description with no new lines. This is a long
-            description with no new lines.
-            Even if I go to a new line, it has no new lines.
-                Even I add more indentation, there is no tab.
-    """
-
-    a: int
-
-
 class ParametersB(BaseModel):
     """
     `ParametersB` model description
@@ -46,7 +32,6 @@ class ParametersC(BaseModel):
 def task3_for_descriptions(
     zarr_urls: list[str],
     zarr_dir: str,
-    arg_A: ParametersA,
     arg_B: ParametersB,
     arg_C: ParametersC,
 ):
