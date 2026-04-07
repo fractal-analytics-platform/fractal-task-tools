@@ -7,6 +7,8 @@ from importlib import import_module
 from pathlib import Path
 from typing import Any
 
+import fractal_task_tools
+
 from ._args_schemas import create_schema_for_single_task
 from ._package_name_tools import normalize_package_name
 from ._parse_pyproject import get_author_names_from_pyproject
@@ -53,6 +55,7 @@ def create_manifest(
     # Normalize package name
     package_name = normalize_package_name(raw_package_name)
 
+    logger.info(f"fractal-task-tools version: {fractal_task_tools.__VERSION__}")
     logger.info(f"Start generating a new manifest for {package_name}")
 
     # Prepare an empty manifest
