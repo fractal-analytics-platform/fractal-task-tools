@@ -105,7 +105,10 @@ def validate_schema(
                 [
                     item
                     for item in schema[_ANYOF]
-                    if item["type"] in NON_NULL_PRIMITIVE_TYPES
+                    if (
+                        isinstance(item, dict)
+                        and item.get("type", None) in NON_NULL_PRIMITIVE_TYPES
+                    )
                 ]
             )
             > 1
