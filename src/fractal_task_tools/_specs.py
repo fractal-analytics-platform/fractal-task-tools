@@ -77,7 +77,7 @@ def validate_schema(*, schema: JSON, path: str):
     # E1x: anyOf-related errors
     if _ANYOF in schema:
         if (
-            sorted(schema[_ANYOF], key=lambda obj: obj["type"])
+            sorted(schema[_ANYOF], key=lambda obj: obj.get("type", None))
             == NULLABLE_BOOLEAN_ANYOF_SORTED
         ):
             raise ValueError(f"[E10] Nullable boolean at {path}")
