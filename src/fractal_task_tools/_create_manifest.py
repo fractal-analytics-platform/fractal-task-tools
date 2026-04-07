@@ -130,7 +130,11 @@ def create_manifest(
                     executable_kind=kind,
                 )
 
-                validate_schema(schema=schema, path=schema["title"])
+                validate_schema(
+                    schema=schema,
+                    path=schema["title"],
+                    verbose=verbose,
+                )
 
                 logger.info(f"[{executable}] END (new schema)")
                 task_dict[f"args_schema_{kind}"] = schema

@@ -1,3 +1,4 @@
+import json
 import logging
 
 logger = logging.getLogger("validate_schema")
@@ -35,7 +36,12 @@ FORBIDDEN_NAMES = {
 }
 
 
-def validate_schema(*, schema: JSON, path: str):
+def validate_schema(
+    *,
+    schema: JSON,
+    path: str,
+    verbose: bool = False,
+):
     """
     Recursive function that checks some patterns on a JSON schema.
     """
@@ -65,9 +71,14 @@ def validate_schema(*, schema: JSON, path: str):
 
     # Validation
 
+    if verbose:
+        logger.error(f"Now validate {json.dumps(schema)}")
+
     # E0x: general errors
 
     if schema.get(_NAME, None) in FORBIDDEN_NAMES:
+        if verbose:
+            logger.error(json.dumps(schema))
         raise ValueError(f"[E01] Forbidden {_NAME} at {path}")
 
     if _DEFINITIONS in schema:
