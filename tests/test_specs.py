@@ -8,37 +8,21 @@ from fractal_task_tools._specs import validate_schema
 
 
 def test_E01():
-    def task_fun(optional_bool: bool | None):
-        pass
-
-    schema = create_schema_for_single_task(
-        task_function=task_fun,
-        executable=__file__,
-        package=None,
-        verbose=True,
-    )
+    schema = {"name": "args"}
     debug(schema)
     with pytest.raises(ValueError, match="E01"):
         validate_schema(schema=schema, path="")
 
 
 def test_E02():
-    def task_fun(optional_enum: Literal["a", "b"] | None):
-        pass
-
-    schema = create_schema_for_single_task(
-        task_function=task_fun,
-        executable=__file__,
-        package=None,
-        verbose=True,
-    )
+    schema = {"definitions": "mock-value"}
     debug(schema)
     with pytest.raises(ValueError, match="E02"):
         validate_schema(schema=schema, path="")
 
 
 def test_E03():
-    def task_fun(optional_enum: Literal["a", "b", None]):
+    def task_fun(non_homogeneous_enum: Literal["a", 1]):
         pass
 
     schema = create_schema_for_single_task(
@@ -52,13 +36,37 @@ def test_E03():
         validate_schema(schema=schema, path="")
 
 
-def test_E04():
-    schema = dict(definitions=123)
-    with pytest.raises(ValueError, match="E04"):
+def test_E10():
+    def task_fun(optional_bool: bool | None):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E10"):
         validate_schema(schema=schema, path="")
 
 
-def test_E05():
+def test_E11():
+    def task_fun(optional_enum: Literal["a", "b"] | None):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E11"):
+        validate_schema(schema=schema, path="")
+
+
+def test_E12():
     def task_fun0(x: int | None):
         pass
 
@@ -91,13 +99,15 @@ def test_E05():
             verbose=True,
         )
         debug(schema)
-        with pytest.raises(ValueError, match="E05"):
+        with pytest.raises(ValueError, match="E12"):
             validate_schema(schema=schema, path="")
 
 
-def test_E06():
-    # FIXME: Is this a good example?
-    oneof_no_discriminator = {
+def test_E20():
+    """
+    Note: it is unclear whether this can be actually reproduced.
+    """
+    schema = {
         "items": {"type": "number"},
         "oneOf": [
             {"$ref": "#/$defs/Case1"},
@@ -106,21 +116,32 @@ def test_E06():
         "type": "array",
     }
 
-    with pytest.raises(ValueError, match="E06"):
+    debug(schema)
+    with pytest.raises(ValueError, match="E20"):
+        validate_schema(schema=schema, path="")
+
+
+def test_E21():
+    oneof_no_discriminator = {
+        "oneOf": [
+            {"$ref": "#/$defs/Case1"},
+            {"$ref": "#/$defs/Case2"},
+        ],
+        "type": "array",
+    }
+
+    with pytest.raises(ValueError, match="E21"):
         validate_schema(schema=oneof_no_discriminator, path="")
 
 
-def test_E07():
-    oneof_primitive = {
+def test_E22():
+    schema = {
+        "discriminator": "mock-value",
         "oneOf": [
             {"type": "number", "multipleOf": 5},
             {"type": "number", "multipleOf": 3},
-        ]
+        ],
     }
-    with pytest.raises(ValueError, match="E07"):
-        validate_schema(schema=oneof_primitive, path="")
-
-
-def test_E00():
-    with pytest.raises(ValueError, match="E00"):
-        validate_schema(schema={"name": "args"}, path="")
+    debug(schema)
+    with pytest.raises(ValueError, match="E22"):
+        validate_schema(schema=schema, path="")
