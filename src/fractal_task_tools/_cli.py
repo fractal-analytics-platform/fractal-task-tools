@@ -12,13 +12,6 @@ main_parser = ap.ArgumentParser(
     allow_abbrev=False,
 )
 
-main_parser.add_argument(
-    "--verbose",
-    help="Make logs more verbose (default value: False).",
-    action="store_true",
-    default=False,
-    required=False,
-)
 
 subparsers = main_parser.add_subparsers(
     title="Available commands",
@@ -57,6 +50,13 @@ for subparser in (create_manifest_parser, check_manifest_parser):
             "relative to the package root (default value: 'dev.task_list')."
         ),
         default="dev.task_list",
+        required=False,
+    )
+    subparser.add_argument(
+        "--verbose",
+        help="Make logs more verbose (default value: False).",
+        action="store_true",
+        default=False,
         required=False,
     )
 
