@@ -13,6 +13,8 @@
     * Support getting manifest `authors` from `pyproject.toml` in the current directory (\#136).
 * CLI commands:
     * Add `--verbose` to `create` subcommand (\#140).
+* Testing:
+    * Fix testing of `pixi`-installable task packages (\#140).
 
 # 0.4.0
 
