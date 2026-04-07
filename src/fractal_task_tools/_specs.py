@@ -16,6 +16,8 @@ _DEFINITIONS = "definitions"
 _ENUM = "enum"
 _DISCRIMINATOR = "discriminator"
 _REF = "$ref"
+_ARRAY = "array"
+_TYPE = "type"
 
 
 NULL_TYPE = {"type": "null"}
@@ -128,6 +130,10 @@ def validate_schema(
 
         if not all(_REF in item for item in schema[_ONEOF]):
             raise ValueError(f"[E22] Unsupported non-{_REF} item in {_ONEOF} at {path}")
+
+    # E3x: array-related errors
+    if schema.get(_TYPE) == _ARRAY and schema.get(_ITEMS) == {}:
+        raise ValueError(f"[E30] Unsupported array with {_ITEMS}={{}} at {path}")
 
     if verbose:
         logger.info(f"END validating {path}")  # FIXME: make info

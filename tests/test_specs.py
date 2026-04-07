@@ -145,3 +145,18 @@ def test_E22():
     debug(schema)
     with pytest.raises(ValueError, match="E22"):
         validate_schema(schema=schema, path="")
+
+
+def test_E30():
+    def task_fun(list_no_type: list):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E30"):
+        validate_schema(schema=schema, path="")
