@@ -12,6 +12,14 @@ main_parser = ap.ArgumentParser(
     allow_abbrev=False,
 )
 
+main_parser.add_argument(
+    "--verbose",
+    help="Make logs more verbose (default value: False).",
+    action="store_true",
+    default=False,
+    required=False,
+)
+
 subparsers = main_parser.add_subparsers(
     title="Available commands",
     dest="cmd",
@@ -63,14 +71,6 @@ check_manifest_parser.add_argument(
     required=False,
 )
 
-check_manifest_parser.add_argument(
-    "--verbose",
-    help="Make logs more verbose (default value: False).",
-    action="store_true",
-    default=False,
-    required=False,
-)
-
 
 def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
     """
@@ -95,6 +95,7 @@ def main():
         manifest = create_manifest(
             raw_package_name=args.package,
             task_list_path=args.task_list_path,
+            verbose=args.verbose,
         )
         write_manifest_to_file(
             raw_package_name=args.package,
@@ -105,6 +106,7 @@ def main():
         manifest = create_manifest(
             raw_package_name=args.package,
             task_list_path=args.task_list_path,
+            verbose=args.verbose,
         )
         check_manifest(
             raw_package_name=args.package,

@@ -1,6 +1,7 @@
 
-# Unreleased
+# 0.5.0 (unreleased)
 
+* Add `--verbose` to `create` subcommand (\#140).
 * Support getting manifest `authors` from `pyproject.toml` in the current directory (\#136).
 * Drop support for `INPUT_MODELS`, in favor of new style for class-attribute docstrings (\#137).
 

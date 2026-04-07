@@ -28,6 +28,7 @@ def create_manifest(
     *,
     raw_package_name: str,
     task_list_path: str,
+    verbose: bool = False,
 ) -> dict[str, Any]:
     """
     Create the package manifest based on a `task_list.py` module
@@ -39,6 +40,7 @@ def create_manifest(
         task_list_path:
             Relative path to the `task_list.py` module, with respect to the
             package root (example `dev.task_list`).
+        verbose: Whether to print more verbose logs.
 
     Returns:
         Task-package manifest.
@@ -119,6 +121,7 @@ def create_manifest(
                 schema = create_schema_for_single_task(
                     executable,
                     package=package_name,
+                    verbose=verbose,
                 )
 
                 validate_arguments(
