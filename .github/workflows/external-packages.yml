@@ -176,8 +176,12 @@ jobs:
         continue-on-error: ${{ matrix.non_core }}
         run: pixi install
 
+      - run: pixi run --as-is pip show fractal-task-tools
+
       - name: Install current version of `fractal-task-tools`
         run: pixi run pip install ./fractal-task-tools
+
+      - run: pixi run --as-is pip show fractal-task-tools
 
       - name: Check manifest
         continue-on-error: ${{ matrix.non_core }}
