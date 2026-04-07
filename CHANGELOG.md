@@ -1,8 +1,20 @@
 
-# Unreleased
+# 0.5.0 (unreleased)
 
-* Support getting manifest `authors` from `pyproject.toml` in the current directory (\#136).
-* Drop support for `INPUT_MODELS`, in favor of new style for class-attribute docstrings (\#137).
+> WARNING: This is a breaking release, which moves the schema version from `pydantic_v2` to `fractal_schema_v1`.
+
+* Schema generation:
+    * Adopt default Pydantic behavior for optional arguments, that is, an `anyOf` array with `{"type": "null"}` (\#140).
+    * Do not strip `null` default values (\#140).
+    * Remove Python-function-based call signature constraints on union types (\#140).
+    * Drop support for `INPUT_MODELS`, in favor of new style for class-attribute docstrings (\#137).
+    * Introduce `validate_schema` function (\#140).
+* Manifest metadata:
+    * Support getting manifest `authors` from `pyproject.toml` in the current directory (\#136).
+* CLI commands:
+    * Add `--verbose` to `create` subcommand (\#140).
+* Testing:
+    * Fix testing of `pixi`-installable task packages (\#140).
 
 # 0.4.0
 

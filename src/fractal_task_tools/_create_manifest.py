@@ -7,15 +7,18 @@ from importlib import import_module
 from pathlib import Path
 from typing import Any
 
+import fractal_task_tools
+
 from ._args_schemas import create_schema_for_single_task
 from ._package_name_tools import normalize_package_name
 from ._parse_pyproject import get_author_names_from_pyproject
+from ._specs import validate_schema
 from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
 from .task_models import _BaseTask
 
-ARGS_SCHEMA_VERSION = "pydantic_v2"
+ARGS_SCHEMA_VERSION = "fractal_schema_v1"
 MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
 MANIFEST_VERSION = "2"
 
@@ -27,6 +30,7 @@ def create_manifest(
     *,
     raw_package_name: str,
     task_list_path: str,
+    verbose: bool = False,
 ) -> dict[str, Any]:
     """
     Create the package manifest based on a `task_list.py` module
@@ -38,6 +42,7 @@ def create_manifest(
         task_list_path:
             Relative path to the `task_list.py` module, with respect to the
             package root (example `dev.task_list`).
+        verbose: Whether to print more verbose logs.
 
     Returns:
         Task-package manifest.
@@ -50,6 +55,7 @@ def create_manifest(
     # Normalize package name
     package_name = normalize_package_name(raw_package_name)
 
+    logger.info(f"fractal-task-tools version: {fractal_task_tools.__VERSION__}")
     logger.info(f"Start generating a new manifest for {package_name}")
 
     # Prepare an empty manifest
@@ -118,12 +124,19 @@ def create_manifest(
                 schema = create_schema_for_single_task(
                     executable,
                     package=package_name,
+                    verbose=verbose,
                 )
 
                 validate_arguments(
                     task_type=task_obj.type,
                     schema=schema,
                     executable_kind=kind,
+                )
+
+                validate_schema(
+                    schema=schema,
+                    path=schema["title"],
+                    verbose=verbose,
                 )
 
                 logger.info(f"[{executable}] END (new schema)")

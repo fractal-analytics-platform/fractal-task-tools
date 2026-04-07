@@ -176,20 +176,24 @@ jobs:
         continue-on-error: ${{ matrix.non_core }}
         run: pixi install
 
+      - run: pixi add pip && pixi install
+
       - name: Install current version of `fractal-task-tools`
         run: pixi run pip install ./fractal-task-tools
 
+      - run: pixi run --as-is pip show fractal-task-tools
+
       - name: Check manifest
         continue-on-error: ${{ matrix.non_core }}
-        run: pixi run fractal-manifest check --package ${{ matrix.package }} --verbose
+        run: pixi run --as-is fractal-manifest check --package ${{ matrix.package }} --verbose
 
       - name: Install current version of `fractal-task-tools` with `dev` extra
-        run: pixi run pip install ./fractal-task-tools[dev]
+        run: pixi run --as-is pip install ./fractal-task-tools[dev]
 
       - name: Validate manifest with different JSON Schema drafts
         continue-on-error: ${{ matrix.non_core }}
-        run: pixi run python ./fractal-task-tools/tests/scripts/validate_multi_draft.py
+        run: pixi run --as-is python ./fractal-task-tools/tests/scripts/validate_multi_draft.py
 
       - name: Validate manifest against fractal-server schema
         continue-on-error: ${{ matrix.non_core }}
-        run: pixi run python ./fractal-task-tools/tests/scripts/validate_with_fractal_server.py
+        run: pixi run --as-is python ./fractal-task-tools/tests/scripts/validate_with_fractal_server.py

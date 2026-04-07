@@ -12,6 +12,7 @@ main_parser = ap.ArgumentParser(
     allow_abbrev=False,
 )
 
+
 subparsers = main_parser.add_subparsers(
     title="Available commands",
     dest="cmd",
@@ -51,6 +52,13 @@ for subparser in (create_manifest_parser, check_manifest_parser):
         default="dev.task_list",
         required=False,
     )
+    subparser.add_argument(
+        "--verbose",
+        help="Make logs more verbose (default value: False).",
+        action="store_true",
+        default=False,
+        required=False,
+    )
 
 check_manifest_parser.add_argument(
     "--ignore-keys-order",
@@ -59,14 +67,6 @@ check_manifest_parser.add_argument(
         "Ignore the order of dictionary keys when comparing manifests "
         "(default value: False)."
     ),
-    default=False,
-    required=False,
-)
-
-check_manifest_parser.add_argument(
-    "--verbose",
-    help="Make logs more verbose (default value: False).",
-    action="store_true",
     default=False,
     required=False,
 )
@@ -95,6 +95,7 @@ def main():
         manifest = create_manifest(
             raw_package_name=args.package,
             task_list_path=args.task_list_path,
+            verbose=args.verbose,
         )
         write_manifest_to_file(
             raw_package_name=args.package,
@@ -105,6 +106,7 @@ def main():
         manifest = create_manifest(
             raw_package_name=args.package,
             task_list_path=args.task_list_path,
+            verbose=args.verbose,
         )
         check_manifest(
             raw_package_name=args.package,

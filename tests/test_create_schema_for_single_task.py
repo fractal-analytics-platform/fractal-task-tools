@@ -1,6 +1,4 @@
-import json
 from enum import Enum
-from typing import Optional
 
 import pytest
 from devtools import debug
@@ -164,46 +162,6 @@ def test_enum_argument():
             "description": "Description of arg_B.",
         },
     }
-
-
-@validate_call
-def task_function_with_optional(
-    arg1: str,
-    arg2: Optional[str] = None,
-    arg3: Optional[list[str]] = None,
-):
-    """
-    Short task description
-
-    Args:
-        arg1: This is the argument description
-        arg2: This is the argument description
-        arg3: This is the argument description
-    """
-    pass
-
-
-def test_optional_argument():
-    """
-    As a first implementation of the Pydantic V2 schema generation, we are not
-    supporting the `anyOf` pattern for nullable attributes. This test verifies
-    that the type of nullable properties is not `anyOf`, and that they are not
-    required.
-
-    Note: future versions of fractal-tasks-core may change this behavior.
-    """
-    schema = create_schema_for_single_task(
-        task_function=task_function_with_optional,
-        executable=__file__,
-        package=None,
-        verbose=True,
-    )
-    print(json.dumps(schema, indent=2, sort_keys=True))
-    print()
-    assert schema["properties"]["arg2"]["type"] == "string"
-    assert "arg2" not in schema["required"]
-    assert schema["properties"]["arg3"]["type"] == "array"
-    assert "arg3" not in schema["required"]
 
 
 @validate_call
@@ -383,30 +341,3 @@ def test_descriptions():
         schema["$defs"]["ModelWithDocstrings"]["properties"]["y"]["description"]
         == "Docstring for `y`"
     )
-
-
-class ModelWithDefaultNone(BaseModel):
-    x: str | None = None
-    y: str | None = Field(default=None)
-
-
-@validate_call
-def task_function_with_default_none(
-    *,
-    arg1: str | None = None,
-    arg2: str | None = Field(default=None),
-    arg3: ModelWithDefaultNone,
-    arg4: str | None = Field(description="something"),
-):
-    pass
-
-
-def test_default_none():
-    schema = create_schema_for_single_task(
-        task_function=task_function_with_default_none,
-        executable=__file__,
-        package=None,
-        verbose=True,
-    )
-    debug(schema)
-    assert "default" not in json.dumps(schema)

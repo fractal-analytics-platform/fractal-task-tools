@@ -44,6 +44,7 @@ def test_create_manifest(tmp_path: Path, caplog):
     manifest = create_manifest(
         raw_package_name="fake-tasks",
         task_list_path="task_list",
+        verbose=True,
     )
     for task in manifest["task_list"]:
         assert "type" in task.keys()
