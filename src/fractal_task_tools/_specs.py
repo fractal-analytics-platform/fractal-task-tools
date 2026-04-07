@@ -19,7 +19,10 @@ _REF = "$ref"
 
 NULL_TYPE = {"type": "null"}
 NON_NULL_PRIMITIVE_TYPES = {"boolean", "string", "integer", "number"}
-NULLABLE_BOOLEAN_ANYOF_SORTED = [{"type": "boolean"}, {"type": "null"}]
+CASES_NULLABLE_BOOLEAN_ANYOF = (
+    [{"type": "boolean"}, {"type": "null"}],
+    [{"type": "null"}, {"type": "boolean"}],
+)
 
 # Forbidden variable names based on `pydantic.v1.decorator` for v2.11.10:
 FORBIDDEN_NAMES = {
@@ -76,10 +79,7 @@ def validate_schema(*, schema: JSON, path: str):
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:
-        if (
-            sorted(schema[_ANYOF], key=lambda obj: obj.get("type", None))
-            == NULLABLE_BOOLEAN_ANYOF_SORTED
-        ):
+        if schema[_ANYOF] in CASES_NULLABLE_BOOLEAN_ANYOF:
             raise ValueError(f"[E10] Nullable boolean at {path}")
 
         if NULL_TYPE in schema[_ANYOF] and any(
