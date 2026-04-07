@@ -1,7 +1,7 @@
 import json
-import logging
+from logging import getLogger
 
-logger = logging.getLogger("validate_schema")
+logger = getLogger("validate_schema")
 
 JSON = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
 
@@ -45,7 +45,7 @@ def validate_schema(
     """
     Recursive function that checks some patterns on a JSON schema.
     """
-    logging.warning(f"START validating {path}")  # FIXME: make info
+    logger.warning(f"START validating {path}")  # FIXME: make info
 
     # Recursive schema exploration
     for def_key in schema.get(_DEFS, []):
@@ -77,8 +77,6 @@ def validate_schema(
     # E0x: general errors
 
     if schema.get(_NAME, None) in FORBIDDEN_NAMES:
-        if verbose:
-            logger.error(json.dumps(schema))
         raise ValueError(f"[E01] Forbidden {_NAME} at {path}")
 
     if _DEFINITIONS in schema:
@@ -122,4 +120,4 @@ def validate_schema(
         if not all(_REF in item for item in schema[_ONEOF]):
             raise ValueError(f"[E22] Unsupported non-{_REF} item in {_ONEOF} at {path}")
 
-    logging.warning(f"END validating {path}")  # FIXME: make info
+    logger.warning(f"END validating {path}")  # FIXME: make info
