@@ -52,21 +52,25 @@ def validate_schema(
         validate_schema(
             schema=schema[_DEFS][def_key],
             path=f"{path}/{_DEFS}/{def_key}",
+            verbose=verbose,
         )
     for prop_key in schema.get(_PROPERTIES, []):
         validate_schema(
             schema=schema[_PROPERTIES][prop_key],
             path=f"{path}/{_PROPERTIES}/{prop_key}",
+            verbose=verbose,
         )
     if _ITEMS in schema:
         validate_schema(
             schema=schema[_ITEMS],
             path=f"{path}/{_ITEMS}",
+            verbose=verbose,
         )
     for ind, item in enumerate(schema.get(_ANYOF, [])):
         validate_schema(
             schema=item,
             path=f"{path}/{_ANYOF}/{ind}",
+            verbose=verbose,
         )
 
     # Validation
