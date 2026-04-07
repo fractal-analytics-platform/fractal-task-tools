@@ -177,6 +177,7 @@ jobs:
         run: pixi install
 
       - run: pixi add pip
+      - run: pixi install
 
       - run: pixi run --as-is pip show fractal-task-tools
 
