@@ -27,6 +27,7 @@ def test_create_manifest(tmp_path: Path, caplog):
     manifest = create_manifest(
         raw_package_name="fake-tasks",
         task_list_path="task_list_with_empty_docs_link",
+        verbose=True,
     )
     for task in manifest["task_list"]:
         assert "docs_link" not in task.keys()
