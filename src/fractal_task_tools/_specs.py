@@ -18,6 +18,7 @@ _DISCRIMINATOR = "discriminator"
 _REF = "$ref"
 _ARRAY = "array"
 _TYPE = "type"
+_OBJECT = "object"
 
 
 NULL_TYPE = {"type": "null"}
@@ -94,6 +95,14 @@ def validate_schema(
         if len(set(type(item) for item in schema[_ENUM])) > 1:
             raise ValueError(f"[E03] Non-homogeneous {_ENUM} at {path}")
 
+    if (
+        _TYPE not in schema
+        and _ANYOF not in schema
+        and _ONEOF not in schema
+        and _ITEMS not in schema
+    ):
+        raise ValueError(f"[E04] Unsupported schema at {path}")
+
     # E1x: anyOf-related errors
     if _ANYOF in schema:
         if schema[_ANYOF] in CASES_NULLABLE_BOOLEAN_ANYOF:
@@ -130,10 +139,3 @@ def validate_schema(
 
         if not all(_REF in item for item in schema[_ONEOF]):
             raise ValueError(f"[E22] Unsupported non-{_REF} item in {_ONEOF} at {path}")
-
-    # E3x: array-related errors
-    if schema.get(_TYPE) == _ARRAY and schema.get(_ITEMS) == {}:
-        raise ValueError(f"[E30] Unsupported array with {_ITEMS}={{}} at {path}")
-
-    if verbose:
-        logger.info(f"END validating {path}")  # FIXME: make info
