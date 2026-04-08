@@ -16,9 +16,9 @@ _DEFINITIONS = "definitions"
 _ENUM = "enum"
 _DISCRIMINATOR = "discriminator"
 _REF = "$ref"
-_ARRAY = "array"
 _TYPE = "type"
-_OBJECT = "object"
+_BOOLEAN = "boolean"
+_DEFAULT = "default"
 
 
 NULL_TYPE = {"type": "null"}
@@ -103,6 +103,9 @@ def validate_schema(
         and _REF not in schema
     ):
         raise ValueError(f"[E04] Unsupported schema at {path}")
+
+    if schema.get(_TYPE) == _BOOLEAN and _DEFAULT not in schema:
+        raise ValueError(f"[E05] Boolean with no {_DEFAULT} at {path}")
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:
