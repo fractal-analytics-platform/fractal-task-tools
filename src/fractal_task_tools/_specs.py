@@ -100,6 +100,7 @@ def validate_schema(
         and _ANYOF not in schema
         and _ONEOF not in schema
         and _ITEMS not in schema
+        and _REF not in schema
     ):
         raise ValueError(f"[E04] Unsupported schema at {path}")
 
