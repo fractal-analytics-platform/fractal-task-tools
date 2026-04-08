@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import Any
 
 logger = logging.getLogger("validate_schema")
 
@@ -41,12 +42,15 @@ FORBIDDEN_NAMES = {
 
 def validate_schema(
     *,
-    schema: JSON,
+    schema: JSON,  # FIX type hint: likely just a dict?
     path: str,
     verbose: bool = False,
+    parent_schema: dict[str, Any] | None = None,
 ):
     """
     Recursive function that checks some patterns on a JSON schema.
+
+    FIXME: docstring
     """
     if verbose:
         logger.setLevel(logging.INFO)
@@ -76,6 +80,7 @@ def validate_schema(
             schema=item,
             path=f"{path}/{_ANYOF}/{ind}",
             verbose=verbose,
+            parent_schema=schema,
         )
 
     # Validation
@@ -104,7 +109,14 @@ def validate_schema(
     ):
         raise ValueError(f"[E04] Unsupported schema at {path}")
 
-    if schema.get(_TYPE) == _BOOLEAN and _DEFAULT not in schema:
+    if schema.get(_TYPE) == _BOOLEAN and not (
+        _DEFAULT in schema
+        or (
+            parent_schema is not None
+            and _ANYOF in parent_schema
+            and _DEFAULT in parent_schema
+        )
+    ):
         raise ValueError(f"[E05] Boolean with no {_DEFAULT} at {path}")
 
     # E1x: anyOf-related errors
