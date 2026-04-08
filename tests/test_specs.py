@@ -67,6 +67,31 @@ def test_E05():
         validate_schema(schema=schema, path="", verbose=True)
 
 
+def test_E06():
+    def task_fun1(empty_string: str = " "):
+        pass
+
+    def task_fun2(empty_string_in_array: list[str] = ["\n"]):
+        pass
+
+    def task_fun3(empty_string_key: dict[str, str] = {"  ": "value"}):
+        pass
+
+    def task_fun4(empty_string_value: dict[str, str] = {"key": ""}):
+        pass
+
+    for task_fun in (task_fun1, task_fun2, task_fun3, task_fun4):
+        schema = create_schema_for_single_task(
+            task_function=task_fun,
+            executable=__file__,
+            package=None,
+            verbose=True,
+        )
+        debug(schema)
+        with pytest.raises(ValueError, match="E06"):
+            validate_schema(schema=schema, path="", verbose=True)
+
+
 def test_E10():
     def task_fun(optional_bool: bool | None = None):
         pass
