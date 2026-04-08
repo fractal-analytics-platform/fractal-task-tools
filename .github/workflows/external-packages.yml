@@ -28,25 +28,25 @@ jobs:
 
           - package: fractal-tasks-core
             github_repo: fractal-analytics-platform/fractal-tasks-core
-            github_branch: main
+            github_branch: new-task-tools
             cmd_install: "python -m pip install -e .[fractal-tasks]"
             non_core: false
 
           - package: fractal-uzh-converters
             github_repo: fractal-analytics-platform/fractal-uzh-converters
-            github_branch: main
+            github_branch: new-task-tools
             cmd_install: "python -m pip install -e ."
             non_core: false
 
           - package: fractal-cellpose-sam-task
             github_repo: fractal-analytics-platform/fractal-cellpose-sam-task
-            github_branch: main
+            github_branch: new-task-tools
             cmd_install: "python -m pip install -e ."
             non_core: false
 
           - package: fractal-helper-tasks
             github_repo: fractal-analytics-platform/fractal-helper-tasks
-            github_branch: main
+            github_branch: new-task-tools
             cmd_install: "python -m pip install -e ."
             non_core: false
 
@@ -147,7 +147,7 @@ jobs:
         include:
           - package: ilastik-tasks
             github_repo: fractal-analytics-platform/fractal-ilastik-tasks
-            github_branch: main
+            github_branch: new-task-tools
             non_core: false
 
     steps:
