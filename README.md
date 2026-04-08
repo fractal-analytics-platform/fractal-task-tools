@@ -15,14 +15,14 @@
 | src/fractal\_task\_tools/\_generatejsonschema.py   |       18 |        1 |        6 |        1 |     92% |        44 |
 | src/fractal\_task\_tools/\_package\_name\_tools.py |        5 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_parse\_pyproject.py     |       30 |        0 |        2 |        0 |    100% |           |
-| src/fractal\_task\_tools/\_specs.py                |       62 |        0 |       42 |        2 |     98% |150-\>156, 156-\>exit |
+| src/fractal\_task\_tools/\_specs.py                |       75 |        0 |       54 |        4 |     97% |130-\>140, 133-\>140, 167-\>173, 173-\>exit |
 | src/fractal\_task\_tools/\_task\_arguments.py      |       26 |        0 |        6 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_task\_docs.py           |       47 |       15 |       16 |        3 |     65% |33-\>35, 41-43, 91-107 |
 | src/fractal\_task\_tools/\_titles.py               |       37 |        3 |       22 |        2 |     92% |29-31, 80-\>78 |
 | src/fractal\_task\_tools/logging\_config.py        |       24 |        0 |        2 |        0 |    100% |           |
 | src/fractal\_task\_tools/task\_models.py           |       99 |        4 |        0 |        0 |     96% |26, 30, 34, 38 |
 | src/fractal\_task\_tools/task\_wrapper.py          |       37 |        0 |        8 |        1 |     98% |   76-\>85 |
-| **TOTAL**                                          |  **737** |   **43** |  **228** |   **23** | **92%** |           |
+| **TOTAL**                                          |  **750** |   **43** |  **240** |   **25** | **92%** |           |
 
 
 ## Setup coverage badge
