@@ -1,3 +1,4 @@
+from typing import Any
 from typing import Literal
 
 import pytest
@@ -11,14 +12,14 @@ def test_E01():
     schema = {"name": "args"}
     debug(schema)
     with pytest.raises(ValueError, match="E01"):
-        validate_schema(schema=schema, path="")
+        validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E02():
     schema = {"definitions": "mock-value"}
     debug(schema)
     with pytest.raises(ValueError, match="E02"):
-        validate_schema(schema=schema, path="")
+        validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E03():
@@ -33,7 +34,22 @@ def test_E03():
     )
     debug(schema)
     with pytest.raises(ValueError, match="E03"):
-        validate_schema(schema=schema, path="")
+        validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_E04():
+    def task_fun(arg_any: Any):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E04"):
+        validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E10():
@@ -48,7 +64,7 @@ def test_E10():
     )
     debug(schema)
     with pytest.raises(ValueError, match="E10"):
-        validate_schema(schema=schema, path="")
+        validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E11():
@@ -63,7 +79,7 @@ def test_E11():
     )
     debug(schema)
     with pytest.raises(ValueError, match="E11"):
-        validate_schema(schema=schema, path="")
+        validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E12():
@@ -77,7 +93,7 @@ def test_E12():
         verbose=True,
     )
     debug(schema)
-    validate_schema(schema=schema, path="")
+    validate_schema(schema=schema, path="", verbose=True)
 
     def task_fun1(x: int | str | float):
         pass
@@ -100,7 +116,7 @@ def test_E12():
         )
         debug(schema)
         with pytest.raises(ValueError, match="E12"):
-            validate_schema(schema=schema, path="")
+            validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E20():
@@ -118,7 +134,7 @@ def test_E20():
 
     debug(schema)
     with pytest.raises(ValueError, match="E20"):
-        validate_schema(schema=schema, path="")
+        validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E21():
@@ -144,4 +160,4 @@ def test_E22():
     }
     debug(schema)
     with pytest.raises(ValueError, match="E22"):
-        validate_schema(schema=schema, path="")
+        validate_schema(schema=schema, path="", verbose=True)
