@@ -40,6 +40,11 @@ FORBIDDEN_NAMES = {
 }
 
 
+def _raise_E06_if_empty_string(arg: Any, *, path: str) -> None:
+    if isinstance(arg, str) and arg.strip() == "":
+        raise ValueError(f"[E06] Empty string default at {path}")
+
+
 def validate_schema(
     *,
     schema: JSON,  # FIX type hint: likely just a dict?
@@ -118,6 +123,18 @@ def validate_schema(
         )
     ):
         raise ValueError(f"[E05] Boolean with no {_DEFAULT} at {path}")
+
+    if _DEFAULT in schema:
+        default_value = schema[_DEFAULT]
+        if isinstance(default_value, list):
+            for item in default_value:
+                _raise_E06_if_empty_string(item, path=path)
+        elif isinstance(default_value, dict):
+            for key, value in default_value.items():
+                _raise_E06_if_empty_string(key, path=path)
+                _raise_E06_if_empty_string(value, path=path)
+        else:
+            _raise_E06_if_empty_string(default_value, path=path)
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:
