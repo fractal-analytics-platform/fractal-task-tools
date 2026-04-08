@@ -68,7 +68,7 @@ def test_E05():
 
 
 def test_E10():
-    def task_fun(optional_bool: bool | None):
+    def task_fun(optional_bool: bool | None = None):
         pass
 
     schema = create_schema_for_single_task(
@@ -119,7 +119,7 @@ def test_E12():
     def task_fun3(x: int | float):
         pass
 
-    def task_fun4(x: bool | float):
+    def task_fun4(x: bool | float = True):
         pass
 
     for task_fun in [task_fun1, task_fun2, task_fun3, task_fun4]:
