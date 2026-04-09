@@ -5,11 +5,11 @@ Generate JSON schemas for task arguments and combine them into a manifest.
 import logging
 from importlib import import_module
 from pathlib import Path
-from typing import Any
 
 import fractal_task_tools
 
 from ._args_schemas import create_schema_for_single_task
+from ._json_types import JSONdictType
 from ._package_name_tools import normalize_package_name
 from ._parse_pyproject import get_author_names_from_pyproject
 from ._specs import validate_schema
@@ -31,7 +31,7 @@ def create_manifest(
     raw_package_name: str,
     task_list_path: str,
     verbose: bool = False,
-) -> dict[str, Any]:
+) -> JSONdictType:
     """
     Create the package manifest based on a `task_list.py` module
 

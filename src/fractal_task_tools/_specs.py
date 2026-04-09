@@ -1,8 +1,8 @@
 import json
 import logging
-from typing import Any
 
 from ._json_types import JSONdictType
+from ._json_types import JSONType
 
 logger = logging.getLogger("validate_schema")
 
@@ -49,7 +49,7 @@ Forbidden variable names (including the ones from `pydantic.v1.decorator` for v2
 """
 
 
-def _raise_E07_if_empty_string(arg: Any, *, path: str) -> None:
+def _raise_E07_if_empty_string(arg: JSONType, *, path: str) -> None:
     if isinstance(arg, str) and arg.strip() == "":
         raise ValueError(f"[E07] Empty string default at {path}")
 
@@ -58,7 +58,7 @@ def validate_schema(
     *,
     schema: JSONdictType,
     path: str,
-    anyof_parent_schema: dict[str, Any] | None = None,
+    anyof_parent_schema: JSONdictType | None = None,
     verbose: bool = False,
 ):
     """

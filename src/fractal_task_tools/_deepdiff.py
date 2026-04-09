@@ -8,11 +8,16 @@ ERRORS = []
 
 class Errors:
     """
-    An item of `self._data` is made of the old JSON object, the new JSON object
-    and the error message.
+    Class to represent deepdiff errors.
     """
 
     _data: list[tuple[JSONType, JSONType, str]]
+    """
+    Actual contents.
+
+    Each item of `self._data` is made of the old JSON object, the new JSON object
+    and the error message.
+    """
 
     def __init__(self):
         self._data = []
@@ -48,6 +53,21 @@ def deepdiff(
     recursion_level: int = 1,
     verbose: bool = False,
 ):
+    """
+    Recursive diff of two JSON values.
+
+    Note: when a difference is identified, a new item is added to the
+    `ERRORS = Errors()` variable.
+
+    Args:
+        old_object:
+        new_object:
+        path:
+        ignore_keys_order:
+        recursion_level:
+        verbose:
+    """
+
     if type(old_object) is not type(new_object):
         ERRORS.append(
             (

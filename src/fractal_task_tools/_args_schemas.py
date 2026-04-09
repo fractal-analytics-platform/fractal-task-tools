@@ -2,8 +2,6 @@ import logging
 import os
 from copy import deepcopy
 from pathlib import Path
-from typing import Any
-from typing import Callable
 from typing import Optional
 
 from docstring_parser import parse as docparse
@@ -12,14 +10,16 @@ from ._descriptions import _get_function_args_descriptions
 from ._descriptions import _insert_function_args_descriptions
 from ._extract_function import _extract_function
 from ._generatejsonschema import CustomGenerateJsonSchema
+from ._json_types import JSONdictType
+from ._json_types import JSONType
 from ._titles import _include_titles
 
-_Schema = dict[str, Any]
 
-
-def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
+def _remove_attributes_from_descriptions(old_schema: JSONdictType) -> JSONdictType:
     """
-    Keeps only the description part of the docstrings: e.g from
+    Keep only the description part of the docstrings.
+
+    E.g. go from
     ```
     'Custom class for Omero-channel window, based on OME-NGFF v0.4.\\n'
     '\\n'
@@ -31,8 +31,9 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
     'end: Upper-bound rescaling value for visualization.'
     ```
     to `'Custom class for Omero-channel window, based on OME-NGFF v0.4.\\n'`.
+
     Args:
-        old_schema: TBD
+        old_schema: The JSON schema to be modified.
     """
     new_schema = old_schema.copy()
     if "$defs" in new_schema:
@@ -53,7 +54,13 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
     return new_schema
 
 
-def _create_schema_for_function(function: Callable) -> _Schema:
+def _create_schema_for_function(function: callable) -> JSONdictType:
+    """
+    Create JSON Schema for a given function.
+
+    Args:
+        function:
+    """
 
     from pydantic import ConfigDict
     from pydantic.experimental.arguments_schema import generate_arguments_schema
@@ -76,9 +83,12 @@ def _create_schema_for_function(function: Callable) -> _Schema:
     return json_schema
 
 
-def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
+def _remove_top_level_single_element_allof(schema: JSONdictType) -> JSONdictType:
     """
     Transform `"allOf": [{"$ref": X}]` into `"$ref": X`
+
+    Args:
+        schema:
     """
     old_schema = deepcopy(schema)
     for arg_name, old_arg_schema in old_schema["properties"].items():
@@ -90,7 +100,7 @@ def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
             and list(old_arg_schema["allOf"][0].keys()) == ["$ref"]
             and "$ref" not in old_arg_schema.keys()
         ):
-            new_arg_schema: dict[str, Any] = deepcopy(old_arg_schema)
+            new_arg_schema: dict[str, JSONType] = deepcopy(old_arg_schema)
             key_value = new_arg_schema.pop("allOf")[0]
             new_arg_schema.update(key_value)
             schema["properties"][arg_name] = new_arg_schema
@@ -101,9 +111,9 @@ def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
 def create_schema_for_single_task(
     executable: str,
     package: Optional[str] = None,
-    task_function: Optional[Callable] = None,
+    task_function: Optional[callable] = None,
     verbose: bool = False,
-) -> _Schema:
+) -> JSONdictType:
     """
     Main function to create a JSON Schema of task arguments
 
@@ -114,9 +124,13 @@ def create_schema_for_single_task(
     2. `task_function` argument is provided, `executable` is an absolute path
         to the function module, and `package` is `None. This is useful for
         testing.
-    """
 
-    DEFINITIONS_KEY = "$defs"
+    Args:
+        executable:
+        package:
+        task_function:
+        verbose:
+    """
 
     logging.info("[create_schema_for_single_task] START")
     if task_function is None:
@@ -172,7 +186,7 @@ def create_schema_for_single_task(
     schema = _remove_top_level_single_element_allof(schema)
 
     # Include titles for custom-model-typed arguments
-    schema = _include_titles(schema, definitions_key=DEFINITIONS_KEY, verbose=verbose)
+    schema = _include_titles(schema, verbose=verbose)
 
     # Include main title
     if schema.get("title") is None:
