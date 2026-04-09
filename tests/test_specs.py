@@ -289,15 +289,16 @@ def test_EXX():
     def task_fun1(x: tuple[int, bool]):
         pass
 
-    def task_fun2(x: tuple[bool, bool]):
+    def task_fun2(x: tuple[bool]):
         pass
 
-    schema = create_schema_for_single_task(
-        task_function=task_fun1,
-        executable=__file__,
-        package=None,
-        verbose=True,
-    )
-    debug(schema)
-    with pytest.raises(ValueError):  # FIXME match
-        validate_schema(schema=schema, path="", verbose=True)
+    for task_fun in (task_fun1, task_fun2):
+        schema = create_schema_for_single_task(
+            task_function=task_fun,
+            executable=__file__,
+            package=None,
+            verbose=True,
+        )
+        debug(schema)
+        with pytest.raises(ValueError):  # FIXME match
+            validate_schema(schema=schema, path="", verbose=True)
