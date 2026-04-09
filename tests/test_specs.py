@@ -4,6 +4,7 @@ from typing import Literal
 
 import pytest
 from devtools import debug
+from pydantic import BaseModel
 from pydantic import Field
 
 from fractal_task_tools._args_schemas import create_schema_for_single_task
@@ -302,3 +303,25 @@ def test_E08():
         debug(schema)
         with pytest.raises(ValueError, match="E08"):
             validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_E14():
+
+    class MyModel1(BaseModel):
+        x: int
+
+    class MyModel2(BaseModel):
+        y: int
+
+    def task_fun(x: MyModel1 | MyModel2):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E14"):
+        validate_schema(schema=schema, path="", verbose=True)

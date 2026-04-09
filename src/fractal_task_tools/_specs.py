@@ -207,6 +207,21 @@ def validate_schema(
         ):
             raise ValueError(f"[E13] Unsupported {_ANYOF} of primitive types at {path}")
 
+        # FIXME: add to docs
+        if (
+            len(
+                [
+                    item
+                    for item in schema[_ANYOF]
+                    if isinstance(item, dict) and _REF in item
+                ]
+            )
+            > 1
+        ):
+            raise ValueError(
+                f"[E14] Unsupported {_ANYOF} with more than one {_REF} at {path}"
+            )
+
     # E2x: oneOf-related errors
     if _ONEOF in schema:
         if _ITEMS in schema:
