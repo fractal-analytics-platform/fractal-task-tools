@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any
 from typing import Literal
 
@@ -152,6 +153,23 @@ def test_E10():
 
 def test_E11():
     def task_fun(optional_enum: Literal["a", "b"] | None):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E11"):
+        validate_schema(schema=schema, path="", verbose=True)
+
+    class MyEnum(Enum):
+        key1 = "VALUE1"
+        key2 = "VALUE2"
+
+    def task_fun(optional_enum: MyEnum | None):
         pass
 
     schema = create_schema_for_single_task(
