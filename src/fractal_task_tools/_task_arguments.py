@@ -1,6 +1,7 @@
 import logging
-from typing import Any
 from typing import Literal
+
+from ._json_types import JSONdictType
 
 REQUIRED_ARGUMENTS: dict[tuple[str, str], set[str]] = {
     ("non_parallel", "non_parallel"): {"zarr_urls", "zarr_dir"},
@@ -26,7 +27,7 @@ def validate_arguments(
     *,
     task_type: Literal["parallel", "non_parallel", "compound"],
     executable_kind: Literal["parallel", "non_parallel"],
-    schema: dict[str, Any],
+    schema: JSONdictType,
 ) -> None:
     """
     Validate schema arguments against required/forbidden ones.

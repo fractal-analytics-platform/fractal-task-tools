@@ -58,7 +58,7 @@ def validate_schema(
     *,
     schema: JSONdictType,
     path: str,
-    anyof_parent_schema: dict[str, Any] | None = None,
+    anyof_parent_schema: JSONdictType | None = None,
     verbose: bool = False,
 ):
     """

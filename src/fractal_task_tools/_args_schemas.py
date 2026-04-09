@@ -2,7 +2,6 @@ import logging
 import os
 from copy import deepcopy
 from pathlib import Path
-from typing import Any
 from typing import Optional
 
 from docstring_parser import parse as docparse
@@ -12,6 +11,7 @@ from ._descriptions import _insert_function_args_descriptions
 from ._extract_function import _extract_function
 from ._generatejsonschema import CustomGenerateJsonSchema
 from ._json_types import JSONdictType
+from ._json_types import JSONType
 from ._titles import _include_titles
 
 
@@ -100,7 +100,7 @@ def _remove_top_level_single_element_allof(schema: JSONdictType) -> JSONdictType
             and list(old_arg_schema["allOf"][0].keys()) == ["$ref"]
             and "$ref" not in old_arg_schema.keys()
         ):
-            new_arg_schema: dict[str, Any] = deepcopy(old_arg_schema)
+            new_arg_schema: dict[str, JSONType] = deepcopy(old_arg_schema)
             key_value = new_arg_schema.pop("allOf")[0]
             new_arg_schema.update(key_value)
             schema["properties"][arg_name] = new_arg_schema
