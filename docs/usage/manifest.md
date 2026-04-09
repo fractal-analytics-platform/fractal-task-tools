@@ -74,3 +74,5 @@ The list of forbidden values is as follows (note: this is currently evolving, an
 - E20: `oneOf` for the `items` of an array is not supported unless `discriminator` is present.
 - E21: `oneOf` with no `discriminator` is not supported.
 - E22: `oneOf` items which are not `$ref`s are not supported.
+
+A set of valid examples is available at https://github.com/fractal-analytics-platform/fractal-feature-explorer.
