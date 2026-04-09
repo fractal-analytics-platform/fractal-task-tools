@@ -1,7 +1,8 @@
 import logging
-from typing import Any
 
-_Schema = dict[str, Any]
+from ._json_types import JSONdictType
+
+_DEFINITIONS_KEY = "$defs"
 
 
 def _include_titles_for_properties(
@@ -37,25 +38,19 @@ def _include_titles_for_properties(
 
 
 def _include_titles(
-    schema: _Schema,
-    definitions_key: str,
+    schema: JSONdictType,
     verbose: bool = False,
-) -> _Schema:
+) -> JSONdictType:
     """
     Include property titles, when missing.
 
-    This handles both:
-
-    - first-level JSON Schema properties (corresponding to task
-        arguments);
-    - properties of JSON Schema definitions (corresponding to
-        task-argument attributes).
+    This handles both first-level JSON Schema properties (corresponding to task
+    arguments) and properties of JSON Schema definitions (corresponding to
+    task-argument attributes).
 
     Args:
-        schema: TBD
-        definitions_key: Either `"definitions"` (for Pydantic V1) or
-            `"$defs"` (for Pydantic V2)
-        verbose:
+        schema: Original JSON Schema.
+        verbose: Whether to print more logs.
     """
     new_schema = schema.copy()
 
@@ -73,8 +68,8 @@ def _include_titles(
         logging.info("[_include_titles] Titles for properties now included.")
 
     # Update properties of definitions
-    if definitions_key in schema.keys():
-        new_definitions = schema[definitions_key].copy()
+    if _DEFINITIONS_KEY in schema.keys():
+        new_definitions = schema[_DEFINITIONS_KEY].copy()
         for def_name, def_schema in new_definitions.items():
             if "properties" not in def_schema.keys():
                 if verbose:
@@ -86,7 +81,7 @@ def _include_titles(
                     def_schema["properties"], verbose=verbose
                 )
                 new_definitions[def_name]["properties"] = new_properties
-        new_schema[definitions_key] = new_definitions
+        new_schema[_DEFINITIONS_KEY] = new_definitions
 
     if verbose:
         logging.info(

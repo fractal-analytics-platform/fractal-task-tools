@@ -31,6 +31,7 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
     'end: Upper-bound rescaling value for visualization.'
     ```
     to `'Custom class for Omero-channel window, based on OME-NGFF v0.4.\\n'`.
+
     Args:
         old_schema: TBD
     """
@@ -116,8 +117,6 @@ def create_schema_for_single_task(
         testing.
     """
 
-    DEFINITIONS_KEY = "$defs"
-
     logging.info("[create_schema_for_single_task] START")
     if task_function is None:
         usage = "1"
@@ -172,7 +171,7 @@ def create_schema_for_single_task(
     schema = _remove_top_level_single_element_allof(schema)
 
     # Include titles for custom-model-typed arguments
-    schema = _include_titles(schema, definitions_key=DEFINITIONS_KEY, verbose=verbose)
+    schema = _include_titles(schema, verbose=verbose)
 
     # Include main title
     if schema.get("title") is None:
