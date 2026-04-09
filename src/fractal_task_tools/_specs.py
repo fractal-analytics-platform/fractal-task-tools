@@ -5,9 +5,9 @@ from typing import Any
 logger = logging.getLogger("validate_schema")
 
 JSON = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
+JSONdict = dict[str, JSON]
 
 # Keywords (to avoid typos)
-_NAME = "name"
 _ANYOF = "anyOf"
 _ONEOF = "oneOf"
 _ITEMS = "items"
@@ -15,6 +15,7 @@ _DEFS = "$defs"
 _PROPERTIES = "properties"
 _DEFINITIONS = "definitions"
 _ENUM = "enum"
+_NAME = "name"
 _DISCRIMINATOR = "discriminator"
 _REF = "$ref"
 _TYPE = "type"
@@ -23,15 +24,16 @@ _DEFAULT = "default"
 _ADDITIONAL_PROPERTIES = "additionalProperties"
 _OBJECT = "object"
 
-NULL_TYPE = {"type": "null"}
-NON_NULL_PRIMITIVE_TYPES = {"boolean", "string", "integer", "number"}
-CASES_NULLABLE_BOOLEAN_ANYOF = (
-    [{"type": "boolean"}, {"type": "null"}],
-    [{"type": "null"}, {"type": "boolean"}],
+_NULL_TYPE = {"type": "null"}
+_BOOLEAN_TYPE = {_TYPE: _BOOLEAN}
+_NON_NULL_PRIMITIVE_TYPES = {"boolean", "string", "integer", "number"}
+_CASES_NULLABLE_BOOLEAN_ANYOF = (
+    [_NULL_TYPE, _BOOLEAN_TYPE],
+    [_BOOLEAN_TYPE, _NULL_TYPE],
 )
 
 # Forbidden variable names based on `pydantic.v1.decorator` for v2.11.10:
-FORBIDDEN_NAMES = {
+_FORBIDDEN_NAMES = {
     "args",
     "kwargs",
     "v__args",
@@ -48,7 +50,7 @@ def _raise_E07_if_empty_string(arg: Any, *, path: str) -> None:
 
 def validate_schema(
     *,
-    schema: JSON,  # FIX type hint: likely just a dict?
+    schema: JSONdict,
     path: str,
     verbose: bool = False,
     parent_schema: dict[str, Any] | None = None,
@@ -96,7 +98,7 @@ def validate_schema(
 
     # E0x: general errors
 
-    if schema.get(_NAME, None) in FORBIDDEN_NAMES:
+    if schema.get(_NAME, None) in _FORBIDDEN_NAMES:
         raise ValueError(f"[E01] Forbidden {_NAME} at {path}")
 
     if _DEFINITIONS in schema:
@@ -125,9 +127,10 @@ def validate_schema(
     ):
         raise ValueError(f"[E05] Boolean with no {_DEFAULT} at {path}")
 
-    if schema.get(_TYPE) == _OBJECT and schema.get(_ADDITIONAL_PROPERTIES) == {
-        _TYPE: _BOOLEAN
-    }:
+    if (
+        schema.get(_TYPE) == _OBJECT
+        and schema.get(_ADDITIONAL_PROPERTIES) == _BOOLEAN_TYPE
+    ):
         raise ValueError(f"[E06] Object of booleans at {path}")
 
     if _DEFAULT in schema:
@@ -144,10 +147,10 @@ def validate_schema(
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:
-        if schema[_ANYOF] in CASES_NULLABLE_BOOLEAN_ANYOF:
+        if schema[_ANYOF] in _CASES_NULLABLE_BOOLEAN_ANYOF:
             raise ValueError(f"[E10] Nullable boolean at {path}")
 
-        if NULL_TYPE in schema[_ANYOF] and any(
+        if _NULL_TYPE in schema[_ANYOF] and any(
             _ENUM in item.keys() for item in schema[_ANYOF] if isinstance(item, dict)
         ):
             raise ValueError(f"[E11] Nullable {_ENUM} at {path}")
@@ -159,7 +162,7 @@ def validate_schema(
                     for item in schema[_ANYOF]
                     if (
                         isinstance(item, dict)
-                        and item.get("type", None) in NON_NULL_PRIMITIVE_TYPES
+                        and item.get("type", None) in _NON_NULL_PRIMITIVE_TYPES
                     )
                 ]
             )
