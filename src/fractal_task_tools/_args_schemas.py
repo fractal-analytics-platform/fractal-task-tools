@@ -55,6 +55,12 @@ def _remove_attributes_from_descriptions(old_schema: JSONdictType) -> JSONdictTy
 
 
 def _create_schema_for_function(function: callable) -> JSONdictType:
+    """
+    Create JSON Schema for a given function.
+
+    Args:
+        function:
+    """
 
     from pydantic import ConfigDict
     from pydantic.experimental.arguments_schema import generate_arguments_schema
@@ -80,6 +86,9 @@ def _create_schema_for_function(function: callable) -> JSONdictType:
 def _remove_top_level_single_element_allof(schema: JSONdictType) -> JSONdictType:
     """
     Transform `"allOf": [{"$ref": X}]` into `"$ref": X`
+
+    Args:
+        schema:
     """
     old_schema = deepcopy(schema)
     for arg_name, old_arg_schema in old_schema["properties"].items():
@@ -115,6 +124,12 @@ def create_schema_for_single_task(
     2. `task_function` argument is provided, `executable` is an absolute path
         to the function module, and `package` is `None. This is useful for
         testing.
+
+    Args:
+        executable:
+        package:
+        task_function:
+        verbose:
     """
 
     logging.info("[create_schema_for_single_task] START")
