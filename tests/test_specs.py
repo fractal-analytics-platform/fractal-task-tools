@@ -3,6 +3,7 @@ from typing import Literal
 
 import pytest
 from devtools import debug
+from pydantic import Field
 
 from fractal_task_tools._args_schemas import create_schema_for_single_task
 from fractal_task_tools._specs import validate_schema
@@ -53,21 +54,63 @@ def test_E04():
 
 
 def test_E05():
-    def task_fun(bool_with_no_default: bool):
+    def task_fun_scalar(bool_with_no_default: bool):
         pass
 
-    schema = create_schema_for_single_task(
-        task_function=task_fun,
-        executable=__file__,
-        package=None,
-        verbose=True,
-    )
-    debug(schema)
-    with pytest.raises(ValueError, match="E05"):
-        validate_schema(schema=schema, path="", verbose=True)
+    def task_fun_array_1(arg: list[bool]):
+        pass
+
+    def task_fun_array_2(arg: list[bool] = Field(default_factory=list)):
+        pass
+
+    def task_fun_array_3(arg: list[bool] = Field(default=[True, False])):
+        pass
+
+    for task_fun in (
+        task_fun_scalar,
+        task_fun_array_1,
+        task_fun_array_2,
+        task_fun_array_3,
+    ):
+        schema = create_schema_for_single_task(
+            task_function=task_fun,
+            executable=__file__,
+            package=None,
+            verbose=True,
+        )
+        debug(schema)
+        with pytest.raises(ValueError, match="E05"):
+            validate_schema(schema=schema, path="", verbose=True)
 
 
 def test_E06():
+    def task_fun_object_1(arg: dict[str, bool]):
+        pass
+
+    def task_fun_object_2(arg: dict[str, bool] = Field(default_factory=dict)):
+        pass
+
+    def task_fun_object_3(arg: dict[str, bool] = Field(default={"key": True})):
+        pass
+
+    for task_fun in (
+        task_fun_object_1,
+        task_fun_object_2,
+        task_fun_object_3,
+    ):
+        debug(task_fun)
+        schema = create_schema_for_single_task(
+            task_function=task_fun,
+            executable=__file__,
+            package=None,
+            verbose=True,
+        )
+        debug(schema)
+        with pytest.raises(ValueError, match="E06"):
+            validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_E07():
     def task_fun1(empty_string: str = " "):
         pass
 
@@ -88,7 +131,7 @@ def test_E06():
             verbose=True,
         )
         debug(schema)
-        with pytest.raises(ValueError, match="E06"):
+        with pytest.raises(ValueError, match="E07"):
             validate_schema(schema=schema, path="", verbose=True)
 
 
