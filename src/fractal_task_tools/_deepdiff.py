@@ -1,9 +1,6 @@
 from typing import Self
-from typing import TypeAlias
 
-JSONType: TypeAlias = (
-    dict[str, "JSONType"] | list["JSONType"] | str | int | float | bool | None
-)
+from ._json_types import JSONType
 
 MAX_RECURSION_LEVEL = 20
 ERRORS = []
