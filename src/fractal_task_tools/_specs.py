@@ -11,6 +11,7 @@ logger = logging.getLogger("validate_schema")
 _ANYOF = "anyOf"
 _ONEOF = "oneOf"
 _ITEMS = "items"
+_PREFIX_ITEMS = "prefixItems"
 _DEFS = "$defs"
 _PROPERTIES = "properties"
 _DEFINITIONS = "definitions"
@@ -160,6 +161,10 @@ def validate_schema(
                 _raise_E07_if_empty_string(value, path=path)
         else:
             _raise_E07_if_empty_string(default_value, path=path)
+
+    if _BOOLEAN_TYPE in schema.get(_PREFIX_ITEMS, []):
+        raise ValueError(f"[E08] Unsupported boolean in 'tuple' at {path}")
+        # FIXME: add to docs
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:

@@ -285,7 +285,7 @@ def test_non_homogeneous_tuple():
     validate_schema(schema=schema, path="", verbose=True)
 
 
-def test_EXX():
+def test_E08():
     def task_fun1(x: tuple[int, bool]):
         pass
 
@@ -300,5 +300,5 @@ def test_EXX():
             verbose=True,
         )
         debug(schema)
-        with pytest.raises(ValueError):  # FIXME match
+        with pytest.raises(ValueError, match="E08"):
             validate_schema(schema=schema, path="", verbose=True)
