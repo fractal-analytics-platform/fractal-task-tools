@@ -83,7 +83,7 @@ jobs:
           - package: scmultiplex
             github_repo: fmi-basel/gliberal-scMultipleX
             github_branch: main
-            cmd_install: "python -m pip install -e ."
+            cmd_install: "python -m pip install -e .[fractal-tasks]"
             non_core: true
 
         exclude:
