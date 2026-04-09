@@ -3,7 +3,6 @@ import os
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
-from typing import Callable
 from typing import Optional
 
 from docstring_parser import parse as docparse
@@ -12,14 +11,15 @@ from ._descriptions import _get_function_args_descriptions
 from ._descriptions import _insert_function_args_descriptions
 from ._extract_function import _extract_function
 from ._generatejsonschema import CustomGenerateJsonSchema
+from ._json_types import JSONdictType
 from ._titles import _include_titles
 
-_Schema = dict[str, Any]
 
-
-def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
+def _remove_attributes_from_descriptions(old_schema: JSONdictType) -> JSONdictType:
     """
-    Keeps only the description part of the docstrings: e.g from
+    Keep only the description part of the docstrings.
+
+    E.g. go from
     ```
     'Custom class for Omero-channel window, based on OME-NGFF v0.4.\\n'
     '\\n'
@@ -33,7 +33,7 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
     to `'Custom class for Omero-channel window, based on OME-NGFF v0.4.\\n'`.
 
     Args:
-        old_schema: TBD
+        old_schema: The JSON schema to be modified.
     """
     new_schema = old_schema.copy()
     if "$defs" in new_schema:
@@ -54,7 +54,7 @@ def _remove_attributes_from_descriptions(old_schema: _Schema) -> _Schema:
     return new_schema
 
 
-def _create_schema_for_function(function: Callable) -> _Schema:
+def _create_schema_for_function(function: callable) -> JSONdictType:
 
     from pydantic import ConfigDict
     from pydantic.experimental.arguments_schema import generate_arguments_schema
@@ -77,7 +77,7 @@ def _create_schema_for_function(function: Callable) -> _Schema:
     return json_schema
 
 
-def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
+def _remove_top_level_single_element_allof(schema: JSONdictType) -> JSONdictType:
     """
     Transform `"allOf": [{"$ref": X}]` into `"$ref": X`
     """
@@ -102,9 +102,9 @@ def _remove_top_level_single_element_allof(schema: _Schema) -> _Schema:
 def create_schema_for_single_task(
     executable: str,
     package: Optional[str] = None,
-    task_function: Optional[Callable] = None,
+    task_function: Optional[callable] = None,
     verbose: bool = False,
-) -> _Schema:
+) -> JSONdictType:
     """
     Main function to create a JSON Schema of task arguments
 
