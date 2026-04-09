@@ -269,3 +269,35 @@ def test_E22():
     debug(schema)
     with pytest.raises(ValueError, match="E22"):
         validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_non_homogeneous_tuple():
+    def task_fun(x: tuple[int, str]):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_EXX():
+    def task_fun1(x: tuple[int, bool]):
+        pass
+
+    def task_fun2(x: tuple[bool, bool]):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun1,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError):  # FIXME match
+        validate_schema(schema=schema, path="", verbose=True)
