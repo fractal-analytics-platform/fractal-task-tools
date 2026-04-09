@@ -19,10 +19,10 @@ class TaskParameterEncoder(JSONEncoder):
     Ref https://docs.python.org/3/library/json.html
     """
 
-    def default(self, obj):
-        if isinstance(obj, Path):
-            return obj.as_posix()
-        return super().default(obj)
+    def default(self, o):
+        if isinstance(o, Path):
+            return o.as_posix()
+        return super().default(o)
 
 
 def _check_deprecated_argument(logger_name: str | None = None) -> None:

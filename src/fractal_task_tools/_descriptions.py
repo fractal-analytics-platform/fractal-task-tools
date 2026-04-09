@@ -34,7 +34,7 @@ def _get_function_docstring(
     module_path: str,
     function_name: str,
     verbose: bool = False,
-) -> str:
+) -> str | None:
     """
     Extract docstring from a function.
 
@@ -59,20 +59,19 @@ def _get_function_docstring(
                 "None but `module_path` is absolute."
             )
         package_path = Path(import_module(package_name).__file__).parent
-        module_path = package_path / module_path
+        module_path = (package_path / module_path).as_posix()
     else:
         if not os.path.isabs(module_path):
             raise ValueError(
                 "Error in _get_function_docstring: `package_name` is None "
                 "but `module_path` is not absolute."
             )
-        module_path = Path(module_path)
 
     if verbose:
         logging.info(f"[_get_function_docstring] {function_name=}")
         logging.info(f"[_get_function_docstring] {module_path=}")
 
-    tree = ast.parse(module_path.read_text())
+    tree = ast.parse(Path(module_path).read_text())
     _function = next(
         f
         for f in ast.walk(tree)
@@ -113,11 +112,11 @@ def _get_function_args_descriptions(
         logging.info(f"[_get_function_args_descriptions] {docstring}")
 
     # Parse docstring (via docstring_parser) and prepare output
-    parsed_docstring = docparse(docstring)
-    descriptions = {
-        param.arg_name: _sanitize_description(param.description)
-        for param in parsed_docstring.params
-    }
+    descriptions = {}
+    if docstring is not None:
+        parsed_docstring = docparse(docstring)
+        for param in parsed_docstring.params:
+            descriptions[param.arg_name] = _sanitize_description(param.description)
     logging.info(f"[_get_function_args_descriptions] END ({function_name=})")
     return descriptions
 
