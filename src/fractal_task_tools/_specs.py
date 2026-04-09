@@ -164,7 +164,6 @@ def validate_schema(
 
     if _BOOLEAN_TYPE in schema.get(_PREFIX_ITEMS, []):
         raise ValueError(f"[E08] Unsupported boolean in 'tuple' at {path}")
-        # FIXME: add to docs
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:
@@ -207,7 +206,6 @@ def validate_schema(
         ):
             raise ValueError(f"[E13] Unsupported {_ANYOF} of primitive types at {path}")
 
-        # FIXME: add to docs
         if (
             len(
                 [
