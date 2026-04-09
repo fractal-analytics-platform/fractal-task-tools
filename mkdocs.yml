@@ -52,7 +52,6 @@ nav:
       - usage/manifest.md
       - usage/task_types.md
       - usage/run_task.md
-      - usage/legacy.md
   - Changelog: changelog.md
   - API/CLI reference: reference/
   - Development: development.md
