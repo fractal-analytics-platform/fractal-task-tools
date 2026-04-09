@@ -51,90 +51,26 @@ Each task listed in the manifest is associated to a JSON Schema that represents 
 
 This kind of schemas are not used at task runtime (where the validity of task arguments is typically enforced by the [`@pydantic.validate_call` decorator](https://docs.pydantic.dev/latest/concepts/validation_decorator)), but they form the basis for constructing the [`fractal-web`](https://github.com/fractal-analytics-platform/fractal-web) user interface that lets a user edit task arguments.
 
-The `args_schema_version` property, which is set at the manifest level, determines a set of constraints on the task-arguments schemas. What is described below applies to the current one as of `fractal-task-tools=0.4.0a3`, named `args_schema_version = "pydantic_v2"`. The discussion about an upcoming specification is tracked at https://github.com/fractal-analytics-platform/fractal-task-tools/issues/97.
+The `args_schema_version` property, which is set at the manifest level, determines a set of constraints on the task-arguments schemas. What is described below applies to the current one as of `fractal-task-tools=0.5.0`, named `args_schema_version = "fractal_schema_v1"`.
 
-### Restrictions on task functions
+> **NOTE**: This version has relevant breaking changes with respect to the previous version (`args_schema_version = "pydantic_v2"`), which was supported until `fractal-task-tools=0.4.*`.
 
-Some patterns are forbidden in the Python functions representing Fractal tasks.
+### Restrictions on JSON Schemas
 
-#### Argument names
+A set of patterns are forbidden in the Python functions representing Fractal tasks, to simplify the generation of task-arguments user interface in [`fractal-web`](https://github.com/fractal-analytics-platform/fractal-web).
 
-The following keywords are reserved and cannot be used for a task-argument name:
+The list of forbidden values is as follows (note: this is currently evolving, and the ground truth is in the [`_specs.py` module](/reference/fractal_task_tools/_specs/#fractal_task_tools._specs.validate_schema)):
 
-- `"args"`
-- `"kwargs"`
-- `"v__args"`
-- `"v__kwargs"`
-- `"v__duplicate_kwargs"`
-- `"v__positional_only"`
-
-#### Union types
-
-When top-level task arguments or nested properties have a *union* type annotation, it must be one of the two supported cases described below
-
-##### Supported case 1: Plain binary unions with `None`
-
-The first supported case is the one of an union of a given type and `None`. If the default is set, it must be `None`. Here are some examples of supported and non-supported type annotations for task arguments:
-```python
-from pydantic import Field
-
-def task_function_ok(
-    arg1: int | None,
-    arg2: int | None = None,
-    arg3: int | None = Field(default=None),
-    arg4: int | None = Field(default_factory=lambda: None),
-    arg5: Optional[int],
-    arg6: Annotated[int | None, "a comment"],
-    arg7: Annotated[int | None, "a comment"] = None,
-    arg8: Annotated[int | None, "a comment"] = Field(default=None),
-    arg9: int | None = Field(default_factory=lambda _: 7),  # Since the factory requires additional data, it is ignored and the default is not populated.
-):
-    pass
-
-def task_function_bad(
-    arg1: int | str,
-    arg2: int | str | None,
-    arg3: int | None = 1,
-    arg4: int | None = Field(default=1),
-    arg5: int | None = Field(default_factory=lambda: 1),
-):
-    pass
-```
-
-##### Supported case 2: Tagged unions
-
-The second supported case is the one of a _tagged_ union, see e.g. https://docs.pydantic.dev/latest/concepts/unions/#discriminated-unions-with-str-discriminators.
-
-Here is a supported example:
-```python
-from typing import Literal
-from typing import Annotated
-
-class Model1(BaseModel):
-    label: Literal["label1"] = "label1"
-    field1: int = 1
-
-
-class Model2(BaseModel):
-    label: Literal["label2"] = "label2"
-    field1: int
-    field2: str
-
-MyTaggedUnion = Annotated[Model1 | Model2, Field(discriminator="label")]
-
-def task_function_ok(
-    arg1: MyTaggedUnion,
-):
-    pass
-
-```
-
-### Customizations of schema generation
-
-The general approach for customizing the Pydantic schema-generation procedure is described at https://docs.pydantic.dev/latest/concepts/json_schema/#customizing-the-json-schema-generation-process.
-
-In `fractal-task-tools`, this includes the following customizations (which are applied at all levels, that is, both for top-level task arguments and for nested properties):
-
-1. When the generated schema includes an `anyOf` array, we remove any `{"type": "null"}` element from it.
-2. When the generated schema includes a `default` value which is set to `null`, we remove it.
-3. The the type annotation is a `Field` with a `default_factory` which is set and which does not require any argument, we compute the `default` value as `default_factory()`.
+- E01: Property names cannot be in one of the [forbidden ones](/reference/fractal_task_tools/_specs/#fractal_task_tools._specs._FORBIDDEN_NAMES).
+- E02: The `definitions` keyword is not supported, in favor of `$defs`.
+- E03: `enum` with non-homogeneous possible values (e.g. an integer and a string) are not supported.
+- E04: Underdefined schemas like the ones generated by the `typing.Any` Python type hint are not supported.
+- E05: Boolean properties without a default are not supported.
+- E06: Object with boolean values are not supported.
+- E07: Empty strings are not supported in default values of string, array, or object properties.
+- E10: Nullable `boolean`s are not supported.
+- E11: Nullable `enum`s are not supported.
+- E12: `anyOf` of [non-`null` primitive types](/reference/fractal_task_tools/_specs/#fractal_task_tools._specs._NON_NULL_PRIMITIVE_TYPES) are not supported.
+- E20: `oneOf` for the `items` of an array is not supported unless `discriminator` is present.
+- E21: `oneOf` with no `discriminator` is not supported.
+- E22: `oneOf` items which are not `$ref`s are not supported.

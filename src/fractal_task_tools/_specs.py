@@ -26,13 +26,16 @@ _OBJECT = "object"
 
 _NULL_TYPE = {"type": "null"}
 _BOOLEAN_TYPE = {_TYPE: _BOOLEAN}
-_NON_NULL_PRIMITIVE_TYPES = {"boolean", "string", "integer", "number"}
 _CASES_NULLABLE_BOOLEAN_ANYOF = (
     [_NULL_TYPE, _BOOLEAN_TYPE],
     [_BOOLEAN_TYPE, _NULL_TYPE],
 )
 
-# Forbidden variable names based on `pydantic.v1.decorator` for v2.11.10:
+_NON_NULL_PRIMITIVE_TYPES = {"boolean", "string", "integer", "number"}
+"""
+Non-`null` primitive types.
+"""
+
 _FORBIDDEN_NAMES = {
     "args",
     "kwargs",
@@ -41,6 +44,9 @@ _FORBIDDEN_NAMES = {
     "v__duplicate_kwargs",
     "v__positional_only",
 }
+"""
+Forbidden variable names (including the ones from `pydantic.v1.decorator` for v2.11.10).
+"""
 
 
 def _raise_E07_if_empty_string(arg: Any, *, path: str) -> None:
@@ -52,17 +58,22 @@ def validate_schema(
     *,
     schema: JSONdictType,
     path: str,
+    anyof_parent_schema: dict[str, Any] | None = None,
     verbose: bool = False,
-    parent_schema: dict[str, Any] | None = None,
 ):
     """
     Recursive function that checks some patterns on a JSON schema.
 
-    FIXME: docstring
+    Args:
+        schema: The JSON Schema to validate.
+        path:
+            Current path in the JSON Schema traversal, expanded at each recursive call.
+        anyof_parent_schema: Additional context for validation of `anyOf` items.
+        verbose: Whether to print additional logs.
     """
     if verbose:
         logger.setLevel(logging.INFO)
-        logger.info(f"START validating {path}")  # FIXME: make info
+        logger.info(f"START validating {path}")
 
     # Recursive schema exploration
     for def_key in schema.get(_DEFS, []):
@@ -88,7 +99,7 @@ def validate_schema(
             schema=item,
             path=f"{path}/{_ANYOF}/{ind}",
             verbose=verbose,
-            parent_schema=schema,
+            anyof_parent_schema=schema,
         )
 
     # Validation
@@ -120,9 +131,9 @@ def validate_schema(
     if schema.get(_TYPE) == _BOOLEAN and not (
         _DEFAULT in schema
         or (
-            parent_schema is not None
-            and _ANYOF in parent_schema
-            and _DEFAULT in parent_schema
+            anyof_parent_schema is not None
+            and _ANYOF in anyof_parent_schema
+            and _DEFAULT in anyof_parent_schema
         )
     ):
         raise ValueError(f"[E05] Boolean with no {_DEFAULT} at {path}")
