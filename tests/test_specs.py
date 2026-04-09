@@ -165,6 +165,8 @@ def test_E11():
     with pytest.raises(ValueError, match="E11"):
         validate_schema(schema=schema, path="", verbose=True)
 
+
+def test_E12():
     class MyEnum(Enum):
         key1 = "VALUE1"
         key2 = "VALUE2"
@@ -179,11 +181,16 @@ def test_E11():
         verbose=True,
     )
     debug(schema)
-    with pytest.raises(ValueError, match="E11"):
-        validate_schema(schema=schema, path="", verbose=True)
+    with pytest.raises(ValueError, match="E12"):
+        validate_schema(
+            schema=schema,
+            path="",
+            verbose=True,
+            root_schema=schema,
+        )
 
 
-def test_E12():
+def test_E13():
     def task_fun0(x: int | None):
         pass
 
@@ -216,7 +223,7 @@ def test_E12():
             verbose=True,
         )
         debug(schema)
-        with pytest.raises(ValueError, match="E12"):
+        with pytest.raises(ValueError, match="E13"):
             validate_schema(schema=schema, path="", verbose=True)
 
 

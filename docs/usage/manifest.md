@@ -70,7 +70,8 @@ The list of forbidden values is as follows (note: this is currently evolving, an
 - E07: Empty strings are not supported in default values of string, array, or object properties.
 - E10: Nullable `boolean`s are not supported.
 - E11: Nullable `enum`s are not supported.
-- E12: `anyOf` of [non-`null` primitive types](/reference/fractal_task_tools/_specs/#fractal_task_tools._specs._NON_NULL_PRIMITIVE_TYPES) are not supported.
+- E12: Nullable `enum`s represented as `$ref` are not supported.
+- E13: `anyOf` of [non-`null` primitive types](/reference/fractal_task_tools/_specs/#fractal_task_tools._specs._NON_NULL_PRIMITIVE_TYPES) are not supported.
 - E20: `oneOf` for the `items` of an array is not supported unless `discriminator` is present.
 - E21: `oneOf` with no `discriminator` is not supported.
 - E22: `oneOf` items which are not `$ref`s are not supported.

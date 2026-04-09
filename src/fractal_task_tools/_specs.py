@@ -59,6 +59,7 @@ def validate_schema(
     schema: JSONdictType,
     path: str,
     anyof_parent_schema: JSONdictType | None = None,
+    root_schema: JSONdictType | None = None,
     verbose: bool = False,
 ):
     """
@@ -81,18 +82,21 @@ def validate_schema(
             schema=schema[_DEFS][def_key],
             path=f"{path}/{_DEFS}/{def_key}",
             verbose=verbose,
+            root_schema=root_schema,
         )
     for prop_key in schema.get(_PROPERTIES, []):
         validate_schema(
             schema=schema[_PROPERTIES][prop_key],
             path=f"{path}/{_PROPERTIES}/{prop_key}",
             verbose=verbose,
+            root_schema=root_schema,
         )
     if _ITEMS in schema:
         validate_schema(
             schema=schema[_ITEMS],
             path=f"{path}/{_ITEMS}",
             verbose=verbose,
+            root_schema=root_schema,
         )
     for ind, item in enumerate(schema.get(_ANYOF, [])):
         validate_schema(
@@ -100,6 +104,7 @@ def validate_schema(
             path=f"{path}/{_ANYOF}/{ind}",
             verbose=verbose,
             anyof_parent_schema=schema,
+            root_schema=root_schema,
         )
 
     # Validation
@@ -161,10 +166,26 @@ def validate_schema(
         if schema[_ANYOF] in _CASES_NULLABLE_BOOLEAN_ANYOF:
             raise ValueError(f"[E10] Nullable boolean at {path}")
 
-        if _NULL_TYPE in schema[_ANYOF] and any(
-            _ENUM in item.keys() for item in schema[_ANYOF] if isinstance(item, dict)
-        ):
-            raise ValueError(f"[E11] Nullable {_ENUM} at {path}")
+        if _NULL_TYPE in schema[_ANYOF]:
+            if any(
+                _ENUM in item.keys()
+                for item in schema[_ANYOF]
+                if isinstance(item, dict)
+            ):
+                raise ValueError(f"[E11] Nullable {_ENUM} at {path}")
+
+            for internal_schema in schema[_ANYOF]:
+                if internal_schema == _NULL_TYPE:
+                    continue
+                if _REF in internal_schema:
+                    if root_schema is None:
+                        raise RuntimeError("Internal error: missing root_schema")
+                    ref_value = internal_schema.get(_REF)
+                    _hash, _defs, ref_key = ref_value.split("/")
+                    if _hash != "#" or _defs != _DEFS:
+                        raise RuntimeError(f"Internal error for {ref_value=}")
+                    if _ENUM in root_schema[_DEFS][ref_key]:
+                        raise ValueError(f"[E12] Nullable {_ENUM} at {path}")
 
         if (
             len(
@@ -179,7 +200,7 @@ def validate_schema(
             )
             > 1
         ):
-            raise ValueError(f"[E12] Unsupported {_ANYOF} of primitive types at {path}")
+            raise ValueError(f"[E13] Unsupported {_ANYOF} of primitive types at {path}")
 
     # E2x: oneOf-related errors
     if _ONEOF in schema:
