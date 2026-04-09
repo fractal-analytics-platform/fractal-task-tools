@@ -17,3 +17,10 @@ def test_get_function_docstring():
             module_path="/tmp/_descriptions.py",
             function_name="_get_function_docstring",
         )
+
+    with pytest.raises(ValueError, match="is not absolute"):
+        docstring = _get_function_docstring(
+            package_name=None,
+            module_path="_descriptions.py",
+            function_name="_get_function_docstring",
+        )
