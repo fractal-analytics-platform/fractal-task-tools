@@ -11,7 +11,9 @@ ValidLoggingLevel = typing.Literal[
     "ERROR",
     "CRITICAL",
 ]
-ALLOWED_LOGGING_LEVELS: tuple[str, ...] = typing.get_args(ValidLoggingLevel)
+ALLOWED_LOGGING_LEVELS: tuple[ValidLoggingLevel, ...] = typing.get_args(
+    ValidLoggingLevel
+)
 
 
 DEFAULT_LOG_LEVEL: ValidLoggingLevel = "INFO"

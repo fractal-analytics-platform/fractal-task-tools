@@ -2,10 +2,10 @@ import json
 import logging
 from typing import Any
 
+from ._json_types import JSONdictType
+
 logger = logging.getLogger("validate_schema")
 
-JSON = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
-JSONdict = dict[str, JSON]
 
 # Keywords (to avoid typos)
 _ANYOF = "anyOf"
@@ -50,7 +50,7 @@ def _raise_E07_if_empty_string(arg: Any, *, path: str) -> None:
 
 def validate_schema(
     *,
-    schema: JSONdict,
+    schema: JSONdictType,
     path: str,
     verbose: bool = False,
     parent_schema: dict[str, Any] | None = None,
