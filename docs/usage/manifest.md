@@ -57,7 +57,8 @@ The `args_schema_version` property, which is set at the manifest level, determin
 
 ### Restrictions on JSON Schemas
 
-A set of patterns are forbidden in the Python functions representing Fractal tasks, to simplify the generation of task-arguments user interface in [`fractal-web`](https://github.com/fractal-analytics-platform/fractal-web).
+A set of patterns are forbidden in Fractal task, to simplify the generation of task-arguments user interface in [`fractal-web`](https://github.com/fractal-analytics-platform/fractal-web).
+
 
 The list of forbidden values is as follows (note: this is currently evolving, and the ground truth is in the [`_specs.py` module](../../reference/fractal_task_tools/_specs/#fractal_task_tools._specs.validate_schema)):
 
@@ -79,3 +80,5 @@ The list of forbidden values is as follows (note: this is currently evolving, an
 - E22: `oneOf` items which are not `$ref`s are not supported.
 
 A set of valid examples is available at https://github.com/fractal-analytics-platform/example-fractal-task-arguments.
+
+> **NOTE**: All the restrictions above are evaluated based on the JSON Schema for the task arguments, independently on the corresponding Python-function call signature. If the conversion from Python type hints to a JSON Schema is not fully precise, this may lead to edge cases which are not fully supported. One such example is the usage of `argument: dict[int, int]` in Python, where the JSON schema would not express the integer type of the keys. In this case, the user may set `argument = {"non-integer": 1}` in the JSON-Schema-based task-arguments user interface, even though this would be invalid for the Python function.
