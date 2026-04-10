@@ -293,6 +293,25 @@ def test_anyof_edge_cases():
         )
 
 
+def test_E15():
+    schema = {
+        "properties": {
+            "optional_enum": {
+                "anyOf": [{"type": "fake1"}, {"type": "fake2"}, {"type": "fake3"}]
+            }
+        },
+        "type": "object",
+    }
+    debug(schema)
+    with pytest.raises(ValueError, match="E15"):
+        validate_schema(
+            schema=schema,
+            path="",
+            verbose=True,
+            root_schema=schema,
+        )
+
+
 def test_E20():
     """
     Note: it is unclear whether this can be actually reproduced.
