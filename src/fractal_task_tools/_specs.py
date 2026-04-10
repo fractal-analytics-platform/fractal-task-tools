@@ -231,9 +231,6 @@ def validate_schema(
                 f"[E14] Unsupported {_ANYOF} with more than one {_REF} at {path}"
             )
 
-        if len(schema[_ANYOF]) > 2:
-            raise RuntimeError("DUMMY ERROR")
-
     # E2x: oneOf-related errors
     if _ONEOF in schema:
         if _ITEMS in schema:

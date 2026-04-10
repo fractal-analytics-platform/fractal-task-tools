@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Annotated
 from typing import Any
 from typing import Literal
 
@@ -227,6 +228,70 @@ def test_E13():
         with pytest.raises(ValueError, match="E13"):
             validate_schema(schema=schema, path="", verbose=True)
 
+    # Redundant unions are handled correctly
+    def task_fun5(x: int | int | int):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun5,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_anyof_edge_cases():
+    schema_E12 = {
+        "$defs": {
+            "MyEnum1": {"enum": ["1a", "1b"], "type": "string"},
+            "MyEnum2": {"enum": ["2a", "2b"], "type": "string"},
+        },
+        "properties": {
+            "optional_enum": {
+                "anyOf": [
+                    {"$ref": "#/$defs/MyEnum1"},
+                    {"$ref": "#/$defs/MyEnum2"},
+                    {"type": "null"},
+                ]
+            }
+        },
+        "type": "object",
+    }
+    debug(schema_E12)
+    with pytest.raises(ValueError, match="E12"):
+        validate_schema(
+            schema=schema_E12,
+            path="",
+            verbose=True,
+            root_schema=schema_E12,
+        )
+
+    schema_E14 = {
+        "$defs": {
+            "MyEnum1": {"enum": ["1a", "1b"], "type": "string"},
+            "MyEnum2": {"enum": ["2a", "2b"], "type": "string"},
+        },
+        "properties": {
+            "optional_enum": {
+                "anyOf": [
+                    {"$ref": "#/$defs/MyEnum1"},
+                    {"$ref": "#/$defs/MyEnum2"},
+                ]
+            }
+        },
+        "type": "object",
+    }
+    debug(schema_E14)
+    with pytest.raises(ValueError, match="E14"):
+        validate_schema(
+            schema=schema_E14,
+            path="",
+            verbose=True,
+            root_schema=schema_E14,
+        )
+
 
 def test_E20():
     """
@@ -405,3 +470,34 @@ def test_E12_internal_errors():
             root_schema=schema_invalid_ref,
         )
     debug(ei.value)
+
+
+def test_tagged_union():
+    class MyModel1(BaseModel):
+        label: Literal["label1"] = "label1"
+        x1: int
+
+    class MyModel2(BaseModel):
+        label: Literal["label2"] = "label2"
+        x2: int
+
+    class MyModel3(BaseModel):
+        label: Literal["label3"] = "label3"
+        x3: int
+
+    TaggedUnion = Annotated[
+        MyModel1 | MyModel2 | MyModel3,
+        Field(discriminator="label"),
+    ]
+
+    def task_fun(x: TaggedUnion):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    validate_schema(schema=schema, path="", verbose=True)
