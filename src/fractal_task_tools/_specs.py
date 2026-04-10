@@ -183,12 +183,23 @@ def validate_schema(
                     continue
                 if _REF in internal_schema:
                     if root_schema is None:
-                        raise RuntimeError("Internal error: missing root_schema")
+                        raise RuntimeError(
+                            f"[I90] Internal error at {path}: `root_schema` not set."
+                        )
                     ref_value = internal_schema.get(_REF)
                     _hash, _defs, ref_key = ref_value.split("/")
                     if _hash != "#" or _defs != _DEFS:
-                        raise RuntimeError(f"Internal error for {ref_value=}")
-                    if _ENUM in root_schema[_DEFS][ref_key]:
+                        raise RuntimeError(
+                            f"[I91] Internal error at {path}: "
+                            f"Invalid {_REF} string {ref_value}"
+                        )
+                    try:
+                        _internal_def = root_schema[_DEFS][ref_key]
+                    except KeyError as e:
+                        raise RuntimeError(
+                            f"[I92] Internal error at {path}: KeyError {str(e)}"
+                        )
+                    if _ENUM in _internal_def:
                         raise ValueError(f"[E12] Nullable {_ENUM} at {path}")
 
         if (
