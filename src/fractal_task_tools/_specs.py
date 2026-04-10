@@ -234,7 +234,7 @@ def validate_schema(
         if len(schema[_ANYOF]) > 2:
             # Note: this branch is likely unreachable, but we keep it as an
             # additional safety measure
-            raise RuntimeError(
+            raise ValueError(
                 f"[E15] Unsupported {_ANYOF} with more than two items at {path}"
             )
 
