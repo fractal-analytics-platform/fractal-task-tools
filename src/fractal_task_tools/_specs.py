@@ -231,6 +231,13 @@ def validate_schema(
                 f"[E14] Unsupported {_ANYOF} with more than one {_REF} at {path}"
             )
 
+        if len(schema[_ANYOF]) > 2:
+            # Note: this branch is likely unreachable, but we keep it as an
+            # additional safety measure
+            raise ValueError(
+                f"[E15] Unsupported {_ANYOF} with more than two items at {path}"
+            )
+
     # E2x: oneOf-related errors
     if _ONEOF in schema:
         if _ITEMS in schema:
