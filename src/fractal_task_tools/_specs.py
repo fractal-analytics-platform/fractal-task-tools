@@ -167,6 +167,9 @@ def validate_schema(
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:
+        if len(schema[_ANYOF]) > 2:
+            raise RuntimeError("DUMMY ERROR")
+
         if schema[_ANYOF] in _CASES_NULLABLE_BOOLEAN_ANYOF:
             raise ValueError(f"[E10] Nullable boolean at {path}")
 
