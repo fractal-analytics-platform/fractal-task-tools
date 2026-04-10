@@ -167,9 +167,6 @@ def validate_schema(
 
     # E1x: anyOf-related errors
     if _ANYOF in schema:
-        if len(schema[_ANYOF]) > 2:
-            raise RuntimeError("DUMMY ERROR")
-
         if schema[_ANYOF] in _CASES_NULLABLE_BOOLEAN_ANYOF:
             raise ValueError(f"[E10] Nullable boolean at {path}")
 
@@ -233,6 +230,9 @@ def validate_schema(
             raise ValueError(
                 f"[E14] Unsupported {_ANYOF} with more than one {_REF} at {path}"
             )
+
+        if len(schema[_ANYOF]) > 2:
+            raise RuntimeError("DUMMY ERROR")
 
     # E2x: oneOf-related errors
     if _ONEOF in schema:
