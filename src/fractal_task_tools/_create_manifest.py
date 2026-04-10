@@ -137,6 +137,7 @@ def create_manifest(
                     schema=schema,
                     path=schema["title"],
                     verbose=verbose,
+                    root_schema=schema,
                 )
 
                 logger.info(f"[{executable}] END (new schema)")

@@ -1,8 +1,10 @@
+from enum import Enum
 from typing import Any
 from typing import Literal
 
 import pytest
 from devtools import debug
+from pydantic import BaseModel
 from pydantic import Field
 
 from fractal_task_tools._args_schemas import create_schema_for_single_task
@@ -166,6 +168,30 @@ def test_E11():
 
 
 def test_E12():
+    class MyEnum(Enum):
+        key1 = "VALUE1"
+        key2 = "VALUE2"
+
+    def task_fun(optional_enum: MyEnum | None):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E12"):
+        validate_schema(
+            schema=schema,
+            path="",
+            verbose=True,
+            root_schema=schema,
+        )
+
+
+def test_E13():
     def task_fun0(x: int | None):
         pass
 
@@ -198,7 +224,7 @@ def test_E12():
             verbose=True,
         )
         debug(schema)
-        with pytest.raises(ValueError, match="E12"):
+        with pytest.raises(ValueError, match="E13"):
             validate_schema(schema=schema, path="", verbose=True)
 
 
@@ -244,3 +270,138 @@ def test_E22():
     debug(schema)
     with pytest.raises(ValueError, match="E22"):
         validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_non_homogeneous_tuple():
+    def task_fun(x: tuple[int, str]):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_E08():
+    def task_fun1(x: tuple[int, bool]):
+        pass
+
+    def task_fun2(x: tuple[bool]):
+        pass
+
+    for task_fun in (task_fun1, task_fun2):
+        schema = create_schema_for_single_task(
+            task_function=task_fun,
+            executable=__file__,
+            package=None,
+            verbose=True,
+        )
+        debug(schema)
+        with pytest.raises(ValueError, match="E08"):
+            validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_E14():
+    class MyModel1(BaseModel):
+        x: int
+
+    class MyModel2(BaseModel):
+        y: int
+
+    def task_fun(x: MyModel1 | MyModel2):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    with pytest.raises(ValueError, match="E14"):
+        validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_EXX():
+    schema_nullable_enum = {
+        "$defs": {"MyEnum": {"enum": ["VALUE1", "VALUE2"], "type": "string"}},
+        "properties": {
+            "optional_enum": {"anyOf": [{"$ref": "#/$defs/MyEnum"}, {"type": "null"}]}
+        },
+        "type": "object",
+    }
+
+    with pytest.raises(ValueError, match="E12"):
+        validate_schema(
+            schema=schema_nullable_enum,
+            path="",
+            verbose=True,
+            root_schema=schema_nullable_enum,
+        )
+
+    # Root_schema not set
+    with pytest.raises(RuntimeError, match="[I90]") as ei:
+        validate_schema(
+            schema=schema_nullable_enum,
+            path="",
+            verbose=True,
+        )
+    debug(ei.value)
+
+    # Cannot parse "$ref": "INVALID/$defs/MyEnum"
+    schema_invalid_ref = {
+        "$defs": {"MyEnum": {"enum": ["VALUE1", "VALUE2"], "type": "string"}},
+        "properties": {
+            "optional_enum": {
+                "anyOf": [{"$ref": "INVALID/$defs/MyEnum"}, {"type": "null"}]
+            }
+        },
+        "type": "object",
+    }
+    with pytest.raises(RuntimeError, match="[I91]") as ei:
+        validate_schema(
+            schema=schema_invalid_ref,
+            path="",
+            verbose=True,
+            root_schema=schema_invalid_ref,
+        )
+    debug(ei.value)
+
+    # Missing "$defs"
+    schema_invalid_ref = {
+        "properties": {
+            "optional_enum": {"anyOf": [{"$ref": "#/$defs/MyEnum"}, {"type": "null"}]}
+        },
+        "type": "object",
+    }
+    with pytest.raises(RuntimeError, match="[I92]") as ei:
+        validate_schema(
+            schema=schema_invalid_ref,
+            path="",
+            verbose=True,
+            root_schema=schema_invalid_ref,
+        )
+    debug(ei.value)
+
+    # Cannot find "$ref in "$defs"
+    schema_invalid_ref = {
+        "$defs": {"MyEnum": {"enum": ["VALUE1", "VALUE2"], "type": "string"}},
+        "properties": {
+            "optional_enum": {
+                "anyOf": [{"$ref": "#/$defs/WRONG-NAME"}, {"type": "null"}]
+            }
+        },
+        "type": "object",
+    }
+    with pytest.raises(RuntimeError, match="[I92]") as ei:
+        validate_schema(
+            schema=schema_invalid_ref,
+            path="",
+            verbose=True,
+            root_schema=schema_invalid_ref,
+        )
+    debug(ei.value)

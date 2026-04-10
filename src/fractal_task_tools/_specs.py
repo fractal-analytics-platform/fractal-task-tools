@@ -11,6 +11,7 @@ logger = logging.getLogger("validate_schema")
 _ANYOF = "anyOf"
 _ONEOF = "oneOf"
 _ITEMS = "items"
+_PREFIX_ITEMS = "prefixItems"
 _DEFS = "$defs"
 _PROPERTIES = "properties"
 _DEFINITIONS = "definitions"
@@ -59,6 +60,7 @@ def validate_schema(
     schema: JSONdictType,
     path: str,
     anyof_parent_schema: JSONdictType | None = None,
+    root_schema: JSONdictType | None = None,
     verbose: bool = False,
 ):
     """
@@ -81,18 +83,21 @@ def validate_schema(
             schema=schema[_DEFS][def_key],
             path=f"{path}/{_DEFS}/{def_key}",
             verbose=verbose,
+            root_schema=root_schema,
         )
     for prop_key in schema.get(_PROPERTIES, []):
         validate_schema(
             schema=schema[_PROPERTIES][prop_key],
             path=f"{path}/{_PROPERTIES}/{prop_key}",
             verbose=verbose,
+            root_schema=root_schema,
         )
     if _ITEMS in schema:
         validate_schema(
             schema=schema[_ITEMS],
             path=f"{path}/{_ITEMS}",
             verbose=verbose,
+            root_schema=root_schema,
         )
     for ind, item in enumerate(schema.get(_ANYOF, [])):
         validate_schema(
@@ -100,6 +105,7 @@ def validate_schema(
             path=f"{path}/{_ANYOF}/{ind}",
             verbose=verbose,
             anyof_parent_schema=schema,
+            root_schema=root_schema,
         )
 
     # Validation
@@ -156,15 +162,45 @@ def validate_schema(
         else:
             _raise_E07_if_empty_string(default_value, path=path)
 
+    if _BOOLEAN_TYPE in schema.get(_PREFIX_ITEMS, []):
+        raise ValueError(f"[E08] Unsupported boolean in 'tuple' at {path}")
+
     # E1x: anyOf-related errors
     if _ANYOF in schema:
         if schema[_ANYOF] in _CASES_NULLABLE_BOOLEAN_ANYOF:
             raise ValueError(f"[E10] Nullable boolean at {path}")
 
-        if _NULL_TYPE in schema[_ANYOF] and any(
-            _ENUM in item.keys() for item in schema[_ANYOF] if isinstance(item, dict)
-        ):
-            raise ValueError(f"[E11] Nullable {_ENUM} at {path}")
+        if _NULL_TYPE in schema[_ANYOF]:
+            if any(
+                _ENUM in item.keys()
+                for item in schema[_ANYOF]
+                if isinstance(item, dict)
+            ):
+                raise ValueError(f"[E11] Nullable {_ENUM} at {path}")
+
+            for internal_schema in schema[_ANYOF]:
+                if internal_schema == _NULL_TYPE:
+                    continue
+                if _REF in internal_schema:
+                    if root_schema is None:
+                        raise RuntimeError(
+                            f"[I90] Internal error at {path}: `root_schema` not set."
+                        )
+                    ref_value = internal_schema.get(_REF)
+                    _hash, _defs, ref_key = ref_value.split("/")
+                    if _hash != "#" or _defs != _DEFS:
+                        raise RuntimeError(
+                            f"[I91] Internal error at {path}: "
+                            f"Invalid {_REF} string {ref_value}"
+                        )
+                    try:
+                        _internal_def = root_schema[_DEFS][ref_key]
+                    except KeyError as e:
+                        raise RuntimeError(
+                            f"[I92] Internal error at {path}: KeyError {str(e)}"
+                        )
+                    if _ENUM in _internal_def:
+                        raise ValueError(f"[E12] Nullable {_ENUM} at {path}")
 
         if (
             len(
@@ -179,7 +215,21 @@ def validate_schema(
             )
             > 1
         ):
-            raise ValueError(f"[E12] Unsupported {_ANYOF} of primitive types at {path}")
+            raise ValueError(f"[E13] Unsupported {_ANYOF} of primitive types at {path}")
+
+        if (
+            len(
+                [
+                    item
+                    for item in schema[_ANYOF]
+                    if isinstance(item, dict) and _REF in item
+                ]
+            )
+            > 1
+        ):
+            raise ValueError(
+                f"[E14] Unsupported {_ANYOF} with more than one {_REF} at {path}"
+            )
 
     # E2x: oneOf-related errors
     if _ONEOF in schema:
