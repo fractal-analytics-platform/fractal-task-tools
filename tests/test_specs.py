@@ -326,7 +326,7 @@ def test_E14():
         validate_schema(schema=schema, path="", verbose=True)
 
 
-def test_EXX():
+def test_E12_internal_errors():
     schema_nullable_enum = {
         "$defs": {"MyEnum": {"enum": ["VALUE1", "VALUE2"], "type": "string"}},
         "properties": {
