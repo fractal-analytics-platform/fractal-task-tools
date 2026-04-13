@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Annotated
 from typing import Any
+from typing import ClassVar
 from typing import Literal
 
 import pytest
@@ -520,3 +521,26 @@ def test_tagged_union():
     )
     debug(schema)
     validate_schema(schema=schema, path="", verbose=True)
+
+
+def test_classvar():
+    class MyModel(BaseModel):
+        label: Literal["label-value"] = "label-value"
+        property1: ClassVar[bool] = True
+        property2: ClassVar[int]
+
+    def task_fun(arg: MyModel):
+        pass
+
+    schema = create_schema_for_single_task(
+        task_function=task_fun,
+        executable=__file__,
+        package=None,
+        verbose=True,
+    )
+    debug(schema)
+    validate_schema(schema=schema, path="", verbose=True)
+    mymodel_properties = schema["$defs"]["MyModel"]["properties"]
+    assert "label" in mymodel_properties
+    assert "property1" not in mymodel_properties
+    assert "property2" not in mymodel_properties
