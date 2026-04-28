@@ -1,5 +1,9 @@
+# 0.5.1 (unreleased)
 
-# 0.5.0 (unreleased)
+* Dependencies:
+    * Support pydantic 2.13 (\#170).
+
+# 0.5.0
 
 > WARNING: This is a breaking release, which moves the schema version from `pydantic_v2` to `fractal_schema_v1`.
 
