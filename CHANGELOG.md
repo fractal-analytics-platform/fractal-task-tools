@@ -2,6 +2,7 @@
 
 * Dependencies:
     * Support pydantic 2.13 (\#170).
+    * Bump `pytest` to v9 (\#171).
 
 # 0.5.0
 
