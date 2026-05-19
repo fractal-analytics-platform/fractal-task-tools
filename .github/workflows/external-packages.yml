@@ -147,7 +147,7 @@ jobs:
         include:
           - package: ilastik-tasks
             github_repo: fractal-analytics-platform/fractal-ilastik-tasks
-            github_branch: new-task-tools
+            github_branch: main
             non_core: false
 
     steps:
