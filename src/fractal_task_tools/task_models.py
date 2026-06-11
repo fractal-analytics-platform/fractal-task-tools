@@ -182,7 +182,7 @@ _AnyTask = (
 
 class _TaskList(RootModel):
     """
-    List of valid tasks.
+    List of valid tasks, with unique names.
 
     Note: this model is only used for validation, and then discarded. If you
     want to use its data, you should e.g. override the `__iter__` and
