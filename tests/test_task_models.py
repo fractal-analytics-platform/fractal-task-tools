@@ -1,8 +1,12 @@
+import pytest
+from pydantic import ValidationError
+
 from fractal_task_tools.task_models import CompoundTask
 from fractal_task_tools.task_models import ConverterCompoundTask
 from fractal_task_tools.task_models import ConverterNonParallelTask
 from fractal_task_tools.task_models import NonParallelTask
 from fractal_task_tools.task_models import ParallelTask
+from fractal_task_tools.task_models import _TaskList
 
 NAME = "name"
 EXECUTABLE = "executable"
@@ -69,3 +73,22 @@ def test_parallel_task_model():
     assert t.meta_non_parallel is None
     assert t.executable_parallel == EXECUTABLE
     assert t.meta_parallel == META
+
+
+def test_task_list():
+    # Invalid single task
+    with pytest.raises(ValidationError):
+        _TaskList([{}])
+
+    # Valid list of tasks (with unique names)
+    other_args = dict(
+        executable_init=EXECUTABLE_INIT,
+        meta_init=META_INIT,
+        executable=EXECUTABLE,
+        meta=META,
+    )
+    _TaskList([dict(name=f"different name {ind}", **other_args) for ind in range(10)])
+
+    # Invalid list of tasks (due to non-unique names)
+    with pytest.raises(ValueError, match="Task names must be unique"):
+        _TaskList([dict(name="non-unique name", **other_args) for ind in range(10)])

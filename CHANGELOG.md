@@ -1,5 +1,7 @@
 # 0.5.1 (unreleased)
 
+* Validation:
+    * Require task names to be unique (\#174).
 * Dependencies:
     * Support pydantic 2.13 (\#170).
     * Bump `pytest` to v9 (\#171).
