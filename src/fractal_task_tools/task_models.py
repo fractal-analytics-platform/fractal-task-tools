@@ -1,10 +1,13 @@
 from typing import Any
 from typing import Literal
 from typing import Optional
+from typing import Self
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
+from pydantic import RootModel
+from pydantic import model_validator
 
 
 class _BaseTask(BaseModel):
@@ -166,3 +169,31 @@ class ParallelTask(_BaseTask):
     @property
     def meta_parallel(self) -> Optional[dict[str, Any]]:
         return self.meta
+
+
+_AnyTask = (
+    CompoundTask
+    | ConverterCompoundTask
+    | NonParallelTask
+    | ConverterNonParallelTask
+    | ParallelTask
+)
+
+
+class _TaskList(RootModel):
+    """
+    List of valid tasks.
+
+    Note: this model is only used for validation, and then discarded. If you
+    want to use its data, you should e.g. override the `__iter__` and
+    `__getitem__` methods. See
+    https://pydantic.dev/docs/validation/latest/concepts/models/#rootmodel-and-custom-root-types
+    """
+
+    root: list[_AnyTask]
+
+    @model_validator(mode="after")
+    def check_unique_names(self: Self) -> Self:
+        task_names = [task.name for task in self.root]
+        if len(set(task_names)) != len(task_names):
+            raise ValueError(f"Task names must be unique (given: {task_names}).")

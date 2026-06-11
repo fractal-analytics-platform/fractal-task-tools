@@ -16,7 +16,8 @@ from ._specs import validate_schema
 from ._task_arguments import validate_arguments
 from ._task_docs import create_docs_info
 from ._task_docs import read_docs_info_from_file
-from .task_models import _BaseTask
+from .task_models import _AnyTask
+from .task_models import _TaskList
 
 ARGS_SCHEMA_VERSION = "fractal_schema_v1"
 MANIFEST_FILENAME = "__FRACTAL_MANIFEST__.json"
@@ -70,8 +71,9 @@ def create_manifest(
     # Import the task-list module
     task_list_module = import_module(f"{package_name}.{task_list_path}")
 
-    # Load TASK_LIST
-    TASK_LIST: list[_BaseTask] = getattr(task_list_module, "TASK_LIST")
+    # Load and validate TASK_LIST (including uniqueness of task names)
+    TASK_LIST: list[_AnyTask] = getattr(task_list_module, "TASK_LIST")
+    _TaskList(TASK_LIST)
 
     # Load AUTHORS
     AUTHORS = getattr(task_list_module, "AUTHORS", None)
