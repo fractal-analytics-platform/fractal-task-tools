@@ -28,7 +28,7 @@ nav = [
 # Missing: CLI reference
 
 [project.theme]
-name = "material"
+variant = "classic"
 language = "en"
 logo = "https://raw.githubusercontent.com/fractal-analytics-platform/fractal-logos/refs/heads/main/common/fractal_logo.png"
 favicon = "https://raw.githubusercontent.com/fractal-analytics-platform/fractal-logos/refs/heads/main/common/fractal_favicon.png"
