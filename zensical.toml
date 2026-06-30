@@ -21,7 +21,14 @@ nav = [
       "usage/manifest.md",
       "usage/task_types.md",
       "usage/run_task.md",
-    ]},
+    ]
+    },
+    { "CLI reference" = [
+        "cli_reference/index.md",
+        "cli_reference/create.md",
+        "cli_reference/check.md",
+    ]
+    },
     { "Changelog" = "changelog.md" },
     { "Development" = "development.md" },
 ]

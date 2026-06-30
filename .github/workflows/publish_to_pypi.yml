@@ -9,6 +9,8 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+beta[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
 
+permissions: {}
+
 jobs:
   build_and_publish:
     runs-on: ubuntu-24.04
@@ -19,12 +21,10 @@ jobs:
       - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
         with:
           persist-credentials: false
-      - uses: actions/setup-python@28f2168f4d98ee0445e3c6321f6e6616c83dd5ec
-        with:
-          python-version: "3.12"
       - uses: astral-sh/setup-uv@5c62c5926145985eec91f09e2e0a75f40daed929
         with:
-          enable-cache: "false"
-          version: "0.10.2"
+          version: "0.11.26"
+          enable-cache: false
+          python-version: "3.12"
       - run: uv build --verbose
-      - uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
+      - uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
