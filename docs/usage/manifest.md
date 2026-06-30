@@ -32,7 +32,7 @@ Where:
 
 Once the `task_list.py` module is defined, `fractal-task-tools` also includes a command-line interface for creating and checking a manifest file.
 
-The [`create` command](../../reference/fractal-manifest/create/) can be used as in
+The [`create` command](../cli_reference/create.md) can be used as in
 ```console
 fractal-manifest create --package my-task-package
 ```
