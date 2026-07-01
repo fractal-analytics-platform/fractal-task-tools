@@ -38,7 +38,7 @@ fractal-manifest create --package my-task-package
 ```
 and it writes the manifest to a file called `__FRACTAL_MANIFEST__.json`, in the root folder where the package `my-task-package` is installed.
 
-The [`check` command](../../reference/fractal-manifest/check/) can be used as in
+The [`check` command](../cli_reference/check.md) can be used as in
 ```console
 fractal-manifest check --package my-task-package
 ```
