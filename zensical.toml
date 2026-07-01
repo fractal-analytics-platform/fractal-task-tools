@@ -25,6 +25,7 @@ nav = [
         "cli_reference/check.md",
     ]
     },
+    { "Code reference" = "code_reference/" },
     { "Changelog" = "changelog.md" },
     { "Development" = "development.md" },
 ]

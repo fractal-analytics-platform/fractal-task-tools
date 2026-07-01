@@ -5,7 +5,7 @@ Within the Fractal framework, tasks are run as executable commands with a given 
 python task.py --args-json /path/to/arguments.json --out-json /path/to/output/metadata.json
 ```
 
-The [`run_fractal_task` wrapper](../reference/fractal_task_tools/task_wrapper.md#fractal_task_tools.task_wrapper.run_fractal_task) converts a Python function into such a command-line interface.
+The [`run_fractal_task` wrapper](../code_reference/task_wrapper.md#fractal_task_tools.task_wrapper.run_fractal_task) converts a Python function into such a command-line interface.
 It can be used by writing a task Python module like
 ```python title="my_task.py"
 from pydantic import validate_call
