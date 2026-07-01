@@ -58,13 +58,13 @@ def walk_and_build(base_path: Path):
         print(f"[WALK {base_path}] MODULES")
         modules = get_modules(base_path)
         if modules:
-            f.write("## Modules\n\n")
+            # f.write("## Modules\n\n")
             for module in modules:
                 relative_module_path = module.relative_to(BASE_CODE_DIR).with_suffix("")
                 relative_module_string = relative_module_path.as_posix()
                 relative_module_string_dots = relative_module_string.replace("/", ".")
                 docs_path = BASE_DOCS_DIR / relative_module_path.with_suffix(".md")
-                f.write(f"- [{relative_module_string}](./{docs_path.name})\n")
+                # f.write(f"- [{relative_module_string}](./{docs_path.name})\n")
                 with docs_path.open("w") as f1:
                     f1.write(f"::: {PKG_NAME}.{relative_module_string_dots}\n")
                 print(f"[WALK {base_path}] {relative_module_path}, {docs_path}")
