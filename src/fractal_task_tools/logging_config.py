@@ -1,3 +1,7 @@
+"""
+Tools to configure logging.
+"""
+
 import logging
 import os
 import typing

@@ -92,24 +92,25 @@ inventories = [
 ]
 
 [project.plugins.mkdocstrings.handlers.python.options]
+
+paths = ["fractal_task_tools"]
+filters = []
+
+group_by_category = true
+show_category_heading = true
+summary = true
+
 backlinks = "tree"
 docstring_style = "google"
 docstring_section_style = "spacy"
-filters = []
-merge_init_into_class = true
-parameter_headings = true
-# separate_signature = true
-# show_root_heading = true
-allow_inspection = true
-show_root_full_path = false
-show_signature_annotations = false
 show_source = true
+
+parameter_headings = true
+allow_inspection = true
 show_symbol_type_heading = true
-show_symbol_type_toc = true
+show_symbol_type_toc = false
 signature_crossrefs = true
-summary = true
 unwrap_annotated = true
 show_attribute_values = true
 inherited_members = true
 extensions= ["griffe_pydantic"]
-paths=["fractal_server"]

@@ -1,0 +1,3 @@
+def fun():
+    """pasdasda"""
+    pass

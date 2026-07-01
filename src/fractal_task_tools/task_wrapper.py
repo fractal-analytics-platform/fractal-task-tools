@@ -1,3 +1,7 @@
+"""
+Wrapper to run a Fractal task.
+"""
+
 import json
 import logging
 import os
