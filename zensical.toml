@@ -5,12 +5,8 @@ repo_url = "https://github.com/fractal-analytics-platform/fractal-task-tools"
 repo_name = "fractal-analytics-platform/fractal-task-tools"
 extra_css = ["extra.css"]
 copyright = """
-© Copyright 2022
-Friedrich Miescher Institute for Biomedical Research and
-University of Zurich
-(see <u><a href="https://github.com/fractal-analytics-platform/fractal-task-tools/blob/main/LICENSE">
-LICENSE
-</a></u>).
+Copyright 2026 (C) BioVisionCenter (University of Zurich) - see
+<u><a href="https://github.com/fractal-analytics-platform/fractal-task-tools/blob/main/LICENSE">LICENSE</a></u>.
 """
 
 nav = [
