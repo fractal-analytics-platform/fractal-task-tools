@@ -6,7 +6,7 @@
 |--------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | src/fractal\_task\_tools/\_\_init\_\_.py           |        3 |        0 |        0 |        0 |    100% |           |
 | src/fractal\_task\_tools/\_args\_schemas.py        |       79 |        1 |       28 |        2 |     97% |52, 192-\>201 |
-| src/fractal\_task\_tools/\_cli.py                  |       33 |        8 |       12 |        1 |     71% |83, 93-111 |
+| src/fractal\_task\_tools/\_cli.py                  |       33 |        8 |       12 |        1 |     71% |87, 100-118 |
 | src/fractal\_task\_tools/\_cli\_tools.py           |       49 |        0 |        8 |        2 |     96% |85-\>94, 89-\>87 |
 | src/fractal\_task\_tools/\_create\_manifest.py     |       72 |        8 |       28 |        6 |     84% |54, 92-94, 112-\>114, 115, 119, 156-157, 161-\>165 |
 | src/fractal\_task\_tools/\_deepdiff.py             |       50 |        0 |       22 |        0 |    100% |           |
@@ -21,8 +21,8 @@
 | src/fractal\_task\_tools/\_task\_docs.py           |       47 |       15 |       16 |        3 |     65% |33-\>35, 41-43, 91-107 |
 | src/fractal\_task\_tools/\_titles.py               |       37 |        3 |       22 |        2 |     92% |30-32, 75-\>73 |
 | src/fractal\_task\_tools/logging\_config.py        |       24 |        0 |        2 |        0 |    100% |           |
-| src/fractal\_task\_tools/task\_models.py           |      109 |        4 |        2 |        0 |     96% |29, 33, 37, 41 |
-| src/fractal\_task\_tools/task\_wrapper.py          |       37 |        0 |        8 |        1 |     98% |   76-\>85 |
+| src/fractal\_task\_tools/task\_models.py           |      109 |        4 |        2 |        0 |     96% |33, 37, 41, 45 |
+| src/fractal\_task\_tools/task\_wrapper.py          |       37 |        0 |        8 |        1 |     98% |   80-\>89 |
 | **TOTAL**                                          |  **798** |   **41** |  **268** |   **23** | **93%** |           |
 
 
