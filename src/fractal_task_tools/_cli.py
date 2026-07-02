@@ -1,3 +1,7 @@
+"""
+`fractal-manifest` command-line interface.
+"""
+
 import argparse as ap
 import sys
 from pathlib import Path
@@ -90,6 +94,9 @@ def _parse_arguments(sys_argv: list[str] | None = None) -> ap.Namespace:
 
 
 def main():
+    """
+    Main CLI entrypoint.
+    """
     args = _parse_arguments()
     if args.cmd == "create":
         manifest = create_manifest(

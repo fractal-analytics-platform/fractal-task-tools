@@ -1,0 +1,116 @@
+[project]
+site_name = "Fractal Task Tools"
+site_url = "https://fractal-analytics-platform.github.io/fractal-task-tools/"
+repo_url = "https://github.com/fractal-analytics-platform/fractal-task-tools"
+repo_name = "fractal-analytics-platform/fractal-task-tools"
+extra_css = ["extra.css"]
+copyright = """
+Copyright 2026 (C) BioVisionCenter (University of Zurich) - see
+<u><a href="https://github.com/fractal-analytics-platform/fractal-task-tools/blob/main/LICENSE">LICENSE</a></u>.
+"""
+
+nav = [
+    { "Home" = "index.md" },
+    { "Usage" =  [
+      "usage/index.md",
+      "usage/install.md",
+      "usage/manifest.md",
+      "usage/task_types.md",
+      "usage/run_task.md",
+    ]
+    },
+    { "CLI reference" = [
+        "cli_reference/index.md",
+        "cli_reference/create.md",
+        "cli_reference/check.md",
+    ]
+    },
+    { "Code reference" = "code_reference/" },
+    { "Changelog" = "changelog.md" },
+    { "Development" = "development.md" },
+]
+# Missing: CLI reference
+
+[project.theme]
+variant = "classic"
+language = "en"
+logo = "https://raw.githubusercontent.com/fractal-analytics-platform/fractal-logos/refs/heads/main/common/fractal_logo.png"
+favicon = "https://raw.githubusercontent.com/fractal-analytics-platform/fractal-logos/refs/heads/main/common/fractal_favicon.png"
+custom_dir = "docs/overrides"
+navigation = {"expand" = true}
+
+features = [
+    "announce.dismiss",
+    "content.code.annotate",
+    "content.code.copy",
+    "content.tabs.link",
+    "content.tooltips",
+    "navigation.footer",
+    "navigation.indexes",
+    "navigation.instant",
+    "navigation.instant.prefetch",
+    "navigation.instant.progress",
+    "navigation.path",
+    "navigation.sections",
+    "navigation.tabs",
+    "navigation.tabs.sticky",
+    "search.highlight",
+    "toc.follow",
+    "toc.integrate",
+]
+
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "lime"
+accent = "light blue"
+toggle.icon = "material/weather-night"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "lime"
+accent = "light blue"
+toggle.icon = "material/weather-sunny"
+toggle.name = "Switch to light mode"
+
+[project.plugins.search]
+
+[project.plugins.autorefs]
+resolve_closest=true
+
+[project.plugins.section-index]
+
+
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["src"]
+inventories = [
+    "https://docs.python.org/3/objects.inv",
+    "https://docs.pydantic.dev/latest/objects.inv",
+]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+
+paths = ["fractal_task_tools"]
+filters = []
+
+group_by_category = true
+show_category_heading = true
+summary = true
+
+backlinks = "tree"
+docstring_style = "google"
+docstring_section_style = "spacy"
+show_source = true
+
+parameter_headings = true
+allow_inspection = true
+show_symbol_type_heading = true
+show_symbol_type_toc = false
+signature_crossrefs = true
+unwrap_annotated = true
+show_attribute_values = true
+inherited_members = true
+extensions= ["griffe_pydantic"]

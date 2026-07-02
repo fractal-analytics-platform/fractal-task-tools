@@ -30,14 +30,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/setup-python@28f2168f4d98ee0445e3c6321f6e6616c83dd5ec
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
-          python-version: ${{ matrix.python-version }}
-
-      - uses: astral-sh/setup-uv@5c62c5926145985eec91f09e2e0a75f40daed929
-        with:
-          version: "0.10.2"
+          version: "0.11.14"
           enable-cache: true
+          python-version: ${{ matrix.python-version }}
 
       - run: uv sync --frozen --extra dev
 
@@ -71,14 +68,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/setup-python@28f2168f4d98ee0445e3c6321f6e6616c83dd5ec
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
-          python-version: ${{ matrix.python-version }}
-
-      - uses: astral-sh/setup-uv@5c62c5926145985eec91f09e2e0a75f40daed929
-        with:
-          version: "0.10.2"
+          version: "0.11.14"
           enable-cache: true
+          python-version: ${{ matrix.python-version }}
 
       - run: uv lock --resolution lowest-direct
 
@@ -112,14 +106,11 @@ jobs:
           # https://github.com/py-cov-action/python-coverage-comment-action/issues/610
           persist-credentials: true
 
-      - uses: actions/setup-python@28f2168f4d98ee0445e3c6321f6e6616c83dd5ec
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
-          python-version: "3.12"
-
-      - uses: astral-sh/setup-uv@5c62c5926145985eec91f09e2e0a75f40daed929
-        with:
-          version: "0.10.2"
+          version: "0.11.14"
           enable-cache: true
+          python-version: ${{ matrix.python-version }}
 
       - run: uv sync --frozen --extra dev
 
