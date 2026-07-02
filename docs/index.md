@@ -3,7 +3,7 @@ hide:
   - toc
 ---
 
-# Welcome to Fractal Command-line Client's documentation!
+# Welcome to Fractal Task Tools documentation!
 
 
 Fractal is a framework developed at the [BioVisionCenter](https://www.biovisioncenter.uzh.ch/en.html) to process bioimaging data at scale in the OME-Zarr format and prepare the images for interactive visualization.
