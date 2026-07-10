@@ -21,9 +21,9 @@
 | src/fractal\_task\_tools/\_task\_docs.py           |       47 |       15 |       16 |        3 |     65% |33-\>35, 41-43, 91-107 |
 | src/fractal\_task\_tools/\_titles.py               |       37 |        3 |       22 |        2 |     92% |30-32, 75-\>73 |
 | src/fractal\_task\_tools/logging\_config.py        |       24 |        0 |        2 |        0 |    100% |           |
-| src/fractal\_task\_tools/task\_models.py           |      109 |        4 |        2 |        0 |     96% |33, 37, 41, 45 |
+| src/fractal\_task\_tools/task\_models.py           |      110 |        4 |        2 |        0 |     96% |33, 37, 41, 45 |
 | src/fractal\_task\_tools/task\_wrapper.py          |       37 |        0 |        8 |        1 |     98% |   80-\>89 |
-| **TOTAL**                                          |  **798** |   **41** |  **268** |   **23** | **93%** |           |
+| **TOTAL**                                          |  **799** |   **41** |  **268** |   **23** | **93%** |           |
 
 
 ## Setup coverage badge
