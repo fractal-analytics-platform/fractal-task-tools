@@ -201,3 +201,4 @@ class _TaskList(RootModel):
         task_names = [task.name for task in self.root]
         if len(set(task_names)) != len(task_names):
             raise ValueError(f"Task names must be unique (given: {task_names}).")
+        return self
