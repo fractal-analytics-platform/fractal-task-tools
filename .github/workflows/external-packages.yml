@@ -97,7 +97,7 @@ jobs:
       - name: Print matrix-element information
         run: echo '${{ matrix.package }}, ${{ matrix.github_repo }}, ${{ matrix.github_branch }}, ${{ matrix.cmd_install }}'
 
-      - uses: actions/setup-python@28f2168f4d98ee0445e3c6321f6e6616c83dd5ec
+      - uses: actions/setup-python@06da6279cdbca41027908073e81a4544dc79c06b
         with:
           python-version: "3.11"
 
@@ -168,7 +168,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up pixi
-        uses: prefix-dev/setup-pixi@33be5bafa68042a7d0747866e21e5a686bf961a1
+        uses: prefix-dev/setup-pixi@5fdf4c63feb5df02c8e3280dfd11f97246229470
         with:
           run-install: false
 
