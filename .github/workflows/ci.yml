@@ -25,6 +25,8 @@ jobs:
             pydantic-version: "2.11.7"
           - python-version: "3.15"
             pydantic-version: "2.11.7"
+          - python-version: "3.15"
+            pydantic-version: "2.12.5"
 
     steps:
 
