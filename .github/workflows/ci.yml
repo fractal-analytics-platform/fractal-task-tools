@@ -18,10 +18,12 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.11", "3.12", "3.13", "3.14", "3.15"]
         pydantic-version: ["2.11.7", "2.12.5", "2.14.0"]
         exclude:
           - python-version: "3.14"
+            pydantic-version: "2.11.7"
+          - python-version: "3.15"
             pydantic-version: "2.11.7"
 
     steps:
