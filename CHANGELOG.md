@@ -1,4 +1,4 @@
-# 0.5.1 (unreleased)
+# 0.5.1
 
 * Validation:
     * Require task names to be unique (\#174).
