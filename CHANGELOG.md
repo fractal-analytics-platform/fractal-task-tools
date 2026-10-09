@@ -3,8 +3,11 @@
 * Validation:
     * Require task names to be unique (\#174).
 * Dependencies:
+    * Support pydantic 2.14.0 (\#182).
     * Support pydantic 2.13 (\#170).
     * Bump `pytest` to v9 (\#171).
+    * Support Python 3.15 (\#182).
+    * Support `docstring-parser` v0.18 (\#182).
 * Documentation:
     * Switch from `mkdocs` to `zensical` (\#176).
 
