@@ -97,7 +97,7 @@ jobs:
       - name: Print matrix-element information
         run: echo '${{ matrix.package }}, ${{ matrix.github_repo }}, ${{ matrix.github_branch }}, ${{ matrix.cmd_install }}'
 
-      - uses: actions/setup-python@06da6279cdbca41027908073e81a4544dc79c06b
+      - uses: actions/setup-python@ec52d0af729a7c50ced4261d17a07916f43f5b8e
         with:
           python-version: "3.11"
 
