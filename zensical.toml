@@ -82,7 +82,7 @@ toggle.name = "Switch to light mode"
 resolve_closest=true
 
 [project.plugins.section-index]
-
+[project.plugins.privacy]
 
 [project.plugins.mkdocstrings.handlers.python]
 paths = ["src"]
